@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "allowJs": true,
+    "checkJs": true,
     "noEmit": true,
     "strict": true,
     "isolatedModules": true,
@@ -16,5 +17,8 @@
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
