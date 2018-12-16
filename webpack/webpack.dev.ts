@@ -17,7 +17,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(tsx|ts)?$/,
         use: 'babel-loader',
         exclude: /node_modules/
       },
@@ -29,6 +29,16 @@ const config = {
           "sass-loader" // compiles Sass to CSS, using Node Sass by default
         ]
       },
+    {
+        test: /\.(tsx|ts)$/,
+        enforce: 'pre',
+        use: [
+            {
+                loader: 'tslint-loader',
+                options: { /* Loader options go here */ }
+            }
+        ]
+    },
     ]
   },
     plugins: [
