@@ -1,5 +1,5 @@
+import dva from "dva"
 import React from "react"
-import * as ReactDOM from "react-dom"
 
 interface IProps {
     compiler: string,
@@ -17,4 +17,8 @@ class Hello extends React.Component<IProps, {}> {
     }
 }
 
-ReactDOM.render(<Hello compiler="Typescript" framework="React" bundler="Webpack" />, document.getElementById("root"))
+const app = dva()
+
+app.router(() => <Hello compiler="Typescript DVA" framework="React" bundler="Webpack" />)
+
+app.start("#root")
