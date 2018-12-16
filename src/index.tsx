@@ -1,4 +1,6 @@
+// import "@babel/polyfill"
 import dva from "dva"
+import createLoading from "dva-loading"
 import React from "react"
 
 interface IProps {
@@ -18,6 +20,8 @@ class Hello extends React.Component<IProps, {}> {
 }
 
 const app = dva()
+
+app.use(createLoading())
 
 app.router(() => <Hello compiler="Typescript DVA" framework="React" bundler="Webpack" />)
 
