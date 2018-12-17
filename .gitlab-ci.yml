@@ -11,9 +11,9 @@ pages:
   script:
     - ls
     - npm i
-    - npm run dev:build
+    - npm run prod:build
     - rm -rf public
-    - mv dist public
+    - mv prod public
     - cd public
     - ls
   artifacts:
