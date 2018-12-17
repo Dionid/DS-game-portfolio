@@ -1,13 +1,19 @@
 image: node:10.5.0
 
+before_script:
+  - apt-get update -qq && apt-get install
+
 pages:
-  stage: deploy
+  cache:
+    paths:
+      - node_modules/
   script:
     - ls
     - npm i
     - npm run dev:build
     - mkdir public
-    - cp -r dist public
+    - mv dist public
+    - ls
   artifacts:
     paths:
       - public
