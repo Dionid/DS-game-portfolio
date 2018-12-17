@@ -3,6 +3,7 @@ import React from "react"
 import {connect} from "dva"
 import IAppState from "models"
 import Hello from "components/Hello"
+import styles from "./Main.scss"
 
 interface IProps {
     dispatch: Dispatch<Action>,
@@ -10,11 +11,13 @@ interface IProps {
 
 interface IState {}
 
+console.log(styles)
+
 class MainLayout extends React.Component<IProps, IState> {
     public render() {
         return (
             <div>
-                <h1>MainLayout</h1>
+                <h1 className={ styles.test }>MainLayout</h1>
                 <Hello/>
             </div>
         )

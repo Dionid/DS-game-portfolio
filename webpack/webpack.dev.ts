@@ -1,6 +1,8 @@
 import path from "path"
 // @ts-ignore
 import HtmlWebpackPlugin from "html-webpack-plugin"
+import { env } from "process"
+
 // import webpack from "webpack"
 
 // const webpack = require("webpack");
@@ -22,12 +24,54 @@ const config = {
         use: "babel-loader",
         exclude: /node_modules/,
       },
+        {
+            test: /\.(jpe?g|png|gif)$/,
+            use: [{
+                /* inline if smaller than 10 KB, otherwise load as a file */
+                loader: "url-loader",
+                options: {
+                    limit: 10000,
+                },
+            }],
+        },
+        {
+            test: /\.(eot|svg|ttf|woff2?|otf)$/,
+            use: "file-loader",
+        },
       {
-        test: /\.scss$/,
+        test: /\.(s*)css$/,
         use: [
           "style-loader", // creates style nodes from JS strings
-          "css-loader", // translates CSS into CommonJS
-          "sass-loader", // compiles Sass to CSS, using Node Sass by default
+            {
+                loader: "css-loader",
+              options: {
+                  importLoaders: 1,
+                  modules: true,
+                  localIdentName: env.NODE_ENV === "production"
+                      ? "[hash:base64:8]"
+                      : "[folder]_[name]__[local]___[hash:base64:5]",
+              }  ,
+            },
+          //   {
+          //       loader: "typings-for-css-modules-loader",
+          //       options:
+          //           {
+          //               importLoaders: 1,
+          //               modules: true,
+          //               namedExport: true,
+          //               camelCase: true,
+          //               localIdentName: "[name]_[local][hash:base64:5]",
+          //               banner: "// *** Generated File - Do not Edit ***",
+          //           },
+          //   },
+            {
+                loader: "sass-loader",
+                options:
+                    {
+                        sourceMap: true,
+                        modules: true,
+                    },
+            },
         ],
       },
     {
@@ -63,7 +107,7 @@ const config = {
         namedModules: true,
     },
     resolve: {
-        extensions: [ ".tsx", ".ts", ".js", ".scss" ],
+        extensions: [ ".tsx", ".ts", ".js" ],
         alias: {
             dvaApp: path.resolve(__dirname, "../src/dvaApp/index.ts"),
             models: path.resolve(__dirname, "../src/models/"),
