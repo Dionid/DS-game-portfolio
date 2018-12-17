@@ -1,8 +1,9 @@
-image: alpine:latest
+image: node:10.5.0
 
 pages:
   stage: deploy
   script:
+    - ls
     - npm i
     - npm run dev:build
     - mkdir public
