@@ -1,0 +1,14 @@
+image: alpine:latest
+
+pages:
+  stage: deploy
+  script:
+    - npm i
+    - npm run dev:build
+    - mkdir public
+    - cp -r dist public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
