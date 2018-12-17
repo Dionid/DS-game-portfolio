@@ -1,28 +1,25 @@
-// import "@babel/polyfill"
-import dva from "dva"
+import "@babel/polyfill"
+import dva, { connect } from "dva"
 import createLoading from "dva-loading"
 import React from "react"
+import MainLayout from "./layouts/Main"
+import dvaApp from "dvaApp"
+// import dvaApp from "dvaApp"
 
-interface IProps {
-    compiler: string,
-    framework: string,
-    bundler: string,
-}
+// @ts-ignore
+const modelsReq = require.context("./models", true, /\.ts$/)
 
-class Hello extends React.Component<IProps, {}> {
-    public render() {
-        return (
-            <h1>
-                This is a {this.props.framework} application using    {this.props.compiler} with {this.props.bundler}
-            </h1>
-        )
+// const dvaApp = dva()
+
+modelsReq.keys().forEach((filename: string) => {
+    const model = modelsReq(filename).default
+    if (model) {
+        dvaApp.model(model)
     }
-}
+})
 
-const app = dva()
+dvaApp.use(createLoading())
 
-app.use(createLoading())
+dvaApp.router(() => <MainLayout />)
 
-app.router(() => <Hello compiler="Typescript DVA" framework="React" bundler="Webpack" />)
-
-app.start("#root")
+dvaApp.start("#root")

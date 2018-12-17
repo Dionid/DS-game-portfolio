@@ -1,50 +1,51 @@
-import path from "path";
-// import webpack from 'webpack';
+import path from "path"
+// @ts-ignore
+import HtmlWebpackPlugin from "html-webpack-plugin"
+// import webpack from "webpack"
 
-// const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const webpack = require("webpack");
+// const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const config = {
     context: path.resolve(__dirname, "../"),
-  entry: './src/index.tsx',
-  mode: 'development',
+  entry: "./src/index.tsx",
+  mode: "development",
   // output: {
-  //   filename: '[name].bundle.js',
-  //   path: '/dist',
+  //   filename: "[name].bundle.js",
+  //   path: "/dist",
   // },
-  devtool: 'inline-source-map',
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
         test: /\.(tsx|ts)?$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        use: "babel-loader",
+        exclude: /node_modules/,
       },
       {
         test: /\.scss$/,
         use: [
           "style-loader", // creates style nodes from JS strings
           "css-loader", // translates CSS into CommonJS
-          "sass-loader" // compiles Sass to CSS, using Node Sass by default
-        ]
+          "sass-loader", // compiles Sass to CSS, using Node Sass by default
+        ],
       },
     {
         test: /\.(tsx|ts)$/,
-        enforce: 'pre',
+        enforce: "pre",
         use: [
             {
-                loader: 'tslint-loader',
-                options: { /* Loader options go here */ }
-            }
-        ]
+                loader: "tslint-loader",
+                options: { /* Loader options go here */ },
+            },
+        ],
     },
-    ]
+    ],
   },
     plugins: [
       new HtmlWebpackPlugin({
-          template: './src/index.html',
-          filename: 'index.html',
+          template: "./src/index.html",
+          filename: "index.html",
           inject: true,
           hash: true,
           compile: true,
@@ -52,9 +53,9 @@ const config = {
           minify: false,
           cache: true,
           showErrors: true,
-          chunks: 'all',
+          chunks: "all",
           excludeChunks: [],
-          title: 'Webpack App',
+          title: "Webpack App",
           xhtml: false,
       }),
     ],
@@ -62,10 +63,15 @@ const config = {
         namedModules: true,
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js', '.scss' ]
+        extensions: [ ".tsx", ".ts", ".js", ".scss" ],
+        alias: {
+            dvaApp: path.resolve(__dirname, "../src/dvaApp/index.ts"),
+            models: path.resolve(__dirname, "../src/models/"),
+            components: path.resolve(__dirname, "../src/components/"),
+        },
     },
     devServer: {
-        contentBase: './dist',
+        contentBase: "./dist",
         compress: true,
         open: true,
         historyApiFallback: true,
@@ -76,7 +82,7 @@ const config = {
     },
     externals: {
     },
-};
+}
 
 // export default config;
-module.exports = config;
+module.exports = config
