@@ -20,7 +20,9 @@
       "models": ["src/models/index.ts"],
       "models/*": ["src/models/*"],
       "components/*": ["src/components/*"],
-      "styles/*": ["src/styles/*"]
+      "styles/*": ["src/styles/*"],
+      "game": ["src/game/index.ts"],
+      "game/*": ["src/game/*"]
     }
   },
   "include": [

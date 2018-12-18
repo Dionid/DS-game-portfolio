@@ -5,6 +5,7 @@ import IAppState from "models"
 import styles from "./Main.scss"
 import classnamesBind from "classnames/bind"
 import TopMenu from "components/TopMenu/TopMenu"
+import PhaserGame from "components/PhaserGame/PhaserGame"
 
 const cx = classnamesBind.bind(styles)
 
@@ -13,8 +14,6 @@ interface IProps {
 }
 
 interface IState {}
-
-console.log(styles)
 
 class MainLayout extends React.Component<IProps, IState> {
     public render() {
@@ -50,7 +49,7 @@ class MainLayout extends React.Component<IProps, IState> {
                             </div>
                         </div>
                         <div className={ cx("gameContainer") }>
-
+                            <PhaserGame/>
                         </div>
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>

@@ -115,6 +115,7 @@ const config = {
             components: path.resolve(__dirname, "../src/components/"),
             styles: path.resolve(__dirname, "../src/styles/"),
             variables: path.resolve(__dirname, "../src/styles/variables.scss"),
+            game: path.resolve(__dirname, "../src/game/"),
         },
     },
     externals: {
