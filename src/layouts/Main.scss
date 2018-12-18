@@ -1,14 +1,115 @@
-
+@import "variables";
 
 .wrapper{
   display: flex;
   justify-content: center;
-  align-items: center;
+  //align-items: center;
+  height: 100%;
 }
 
 .container{
-  width: 1200px;
+  width: 1192px;
   color: #fff;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+}
+
+.content{
+  display: flex;
+  flex-grow: 1;
+  max-height: 650px;
+  .leftMenu{
+    width: 84px;
+    padding-left: 20px;
+    position: relative;
+    .leftMenuContent{
+      transform: rotate(-90deg);
+      position: absolute;
+      top: 45%;
+      left: -240px;
+      //right: 0;
+      display: flex;
+      .nav{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .item{
+          font-size: 20px;
+          margin-right: 45px;
+          position: relative;
+          &.active{
+            &:before{
+              width: 10px;
+              height: 10px;
+              background-color: $color-gold-main;
+            }
+          }
+          &:before{
+            content: '';
+            width: 7px;
+            height: 7px;
+            transform: rotate(-45deg);
+            background-color: $color-gray-light;
+            display: block;
+            position: absolute;
+            left: -20px;
+            top: 5px;
+          }
+        }
+      }
+      .contacts{
+        display: flex;
+        margin-right: 90px;
+        justify-content: center;
+        align-items: center;
+        .item{
+          width: 25px;
+          height: 25px;
+          background-color: $color-gray-light;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          &:not(:last-child){
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+  }
+  .rightMenu{
+    width: 84px;
+    padding-right: 20px;
+    position: relative;
+    .rightMenuContent{
+      position: relative;
+      height: 100%;
+    //  transform: rotate(90deg);
+    //  position: absolute;
+    //  top: 45%;
+    //  left: -20px;
+    //  display: flex;
+      .textVersionLink{
+        position: absolute;
+        top: 50%;
+        transform: rotate(90deg) translateX(-50%);
+        left: -16px;
+        white-space: nowrap;
+      }
+      .copyright{
+        position: absolute;
+        bottom: 25px;
+        transform: rotate(90deg) translateX(-50%);
+        white-space: nowrap;
+        left: -20px;
+        cursor: default;
+        font-size: 14px;
+        opacity: 0.5;
+      }
+    }
+  }
+  .gameContainer{
+    width: 1024px;
+    background-color: #292929;
+  }
 }
