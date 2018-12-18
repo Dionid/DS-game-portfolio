@@ -119,6 +119,7 @@ const config = {
     },
     devServer: {
         contentBase: "./dist",
+        // publicPath: "./dist/public",
         compress: true,
         open: true,
         historyApiFallback: true,

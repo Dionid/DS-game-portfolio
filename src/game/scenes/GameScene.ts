@@ -1,3 +1,4 @@
+const STATIC_BODY = Phaser.Physics.Arcade.STATIC_BODY
 
 export class GameScene extends Phaser.Scene {
 
@@ -5,6 +6,8 @@ export class GameScene extends Phaser.Scene {
     private fullstackText?: Phaser.GameObjects.Text = undefined
     private freelancerText?: Phaser.GameObjects.Text = undefined
     private btnText?: Phaser.GameObjects.Text = undefined
+    private cursors?: Phaser.Input.Keyboard.CursorKeys = undefined
+    private player?: Phaser.GameObjects.Sprite = undefined
 
     constructor() {
         super({
@@ -13,7 +16,12 @@ export class GameScene extends Phaser.Scene {
     }
 
     public create(): void {
-        console.log("CREATED")
+        // const background = this.add.tileSprite(0, 0, this.game, this.sys.canvas.height, "background")
+        // background.setOrigin(0, 0)
+
+        this.player = this.add.sprite(this.sys.canvas.width - 100, this.sys.canvas.height / 2, "block")
+        this.physics.world.enable(this.player)
+        this.cursors = this.input.keyboard.createCursorKeys()
 
         const firstScreenOffsetY = 0
 
@@ -79,6 +87,9 @@ export class GameScene extends Phaser.Scene {
         rect.setStrokeStyle(3, 0xd4d4d4)
         rect.setOrigin(0, 0)
 
+        this.physics.world.enable(rect, STATIC_BODY)
+        this.physics.add.collider(this.player, rect)
+
         const btnTextY = freelancerTextY + this.freelancerText.height + 20
 
         this.btnText = this.add.text(
@@ -101,7 +112,26 @@ export class GameScene extends Phaser.Scene {
         this.btnText.setInteractive().on("pointerdown", () => {
             window.open(link, "_self")
         })
+    }
 
+    public update(): void {
+        if (this.player) {
+            this.player.body.setVelocity(0);
 
+            if (this.cursors && this.cursors.left && this.cursors.right && this.cursors.up && this.cursors.down) {
+                if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+                    this.player.body.setVelocityX(-150)
+                }
+                if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+                    this.player.body.setVelocityX(150)
+                }
+                if (this.cursors.up.isDown && !this.cursors.down.isDown) {
+                    this.player.body.setVelocityY(-150)
+                }
+                if (this.cursors.down.isDown && !this.cursors.up.isDown) {
+                    this.player.body.setVelocityY(150)
+                }
+            }
+        }
     }
 }

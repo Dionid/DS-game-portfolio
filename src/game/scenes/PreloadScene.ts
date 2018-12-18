@@ -48,7 +48,7 @@ export class PreloadScene extends Phaser.Scene {
             this,
         )
 
-
+        this.load.image("background", "public/assets/images/repeatxy.png")
     }
 
     private createLoadingbar(): void {
