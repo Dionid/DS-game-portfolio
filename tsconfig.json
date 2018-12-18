@@ -19,7 +19,8 @@
       "dvaApp": ["src/dvaApp/index.ts"],
       "models": ["src/models/index.ts"],
       "models/*": ["src/models/*"],
-      "components/*": ["src/components/*"]
+      "components/*": ["src/components/*"],
+      "styles/*": ["src/styles/*"]
     }
   },
   "include": [

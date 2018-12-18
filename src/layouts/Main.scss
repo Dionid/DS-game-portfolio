@@ -1,9 +1,14 @@
 
 
-.test{
-  color: red;
+.wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.wjojoj{
-
+.container{
+  width: 1200px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
 }

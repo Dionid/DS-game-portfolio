@@ -112,6 +112,8 @@ const config = {
             dvaApp: path.resolve(__dirname, "../src/dvaApp/index.ts"),
             models: path.resolve(__dirname, "../src/models/"),
             components: path.resolve(__dirname, "../src/components/"),
+            styles: path.resolve(__dirname, "../src/styles/"),
+            variables: path.resolve(__dirname, "../src/styles/variables.scss"),
         },
     },
     devServer: {

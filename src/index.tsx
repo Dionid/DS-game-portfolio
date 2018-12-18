@@ -4,6 +4,8 @@ import createLoading from "dva-loading"
 import React from "react"
 import MainLayout from "./layouts/Main"
 import dvaApp from "dvaApp"
+import "reset-css"
+import "./index.scss"
 // import dvaApp from "dvaApp"
 
 // @ts-ignore
