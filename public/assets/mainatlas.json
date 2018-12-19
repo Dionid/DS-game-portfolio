@@ -4,8 +4,8 @@
 			"image": "mainatlas.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 552,
-				"h": 304
+				"w": 672,
+				"h": 259
 			},
 			"scale": 1,
 			"frames": [
@@ -35,7 +35,7 @@
 					}
 				},
 				{
-					"filename": "objects/chests.psd",
+					"filename": "objects/chests/chests.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -49,8 +49,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 1,
-						"y": 260,
+						"x": 515,
+						"y": 1,
 						"w": 156,
 						"h": 43
 					},
@@ -75,9 +75,84 @@
 					},
 					"frame": {
 						"x": 515,
-						"y": 1,
+						"y": 46,
 						"w": 36,
 						"h": 119
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/chestDefault.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 52,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 52,
+						"h": 43
+					},
+					"frame": {
+						"x": 515,
+						"y": 167,
+						"w": 52,
+						"h": 43
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/chestOpened.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 52,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 52,
+						"h": 43
+					},
+					"frame": {
+						"x": 515,
+						"y": 212,
+						"w": 52,
+						"h": 43
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/chestTouched.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 52,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 52,
+						"h": 43
+					},
+					"frame": {
+						"x": 569,
+						"y": 46,
+						"w": 52,
+						"h": 43
 					},
 					"anchor": {
 						"x": 0.5,
@@ -90,6 +165,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:a573f880243473688586fa8b934aa193:57825d35e22a17a484343deadbfe59d9:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:0aecbc2e6fdfb34f742a1640a209d31b:b29ab0bfa190e297c504b3a1bdbeb7e1:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

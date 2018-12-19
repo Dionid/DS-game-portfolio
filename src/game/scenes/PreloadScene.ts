@@ -24,7 +24,7 @@ export class PreloadScene extends Phaser.Scene {
             (value: number) => {
                 if (this.progressBar) {
                     this.progressBar.clear()
-                    this.progressBar.fillStyle(0xfb00fd, 1)
+                    this.progressBar.fillStyle(0xffba4d, 1)
                     this.progressBar.fillRect(
                         this.cameras.main.width / 4,
                         this.cameras.main.height / 2 - 16,
@@ -54,7 +54,7 @@ export class PreloadScene extends Phaser.Scene {
 
     private createLoadingbar(): void {
         this.loadingBar = this.add.graphics()
-        this.loadingBar.fillStyle(0xad00af, 1)
+        this.loadingBar.fillStyle(0xffba4d, 1)
         this.loadingBar.fillRect(
             this.cameras.main.width / 4 - 2,
             this.cameras.main.height / 2 - 18,

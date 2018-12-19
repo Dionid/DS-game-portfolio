@@ -1,39 +1,44 @@
 import {Player} from "game/objects/Player"
-
-const STATIC_BODY = Phaser.Physics.Arcade.STATIC_BODY
-
+import {Chest} from "game/objects/Chest"
 
 class Room {
     public numberOfScreens: number = 0
+    public offsetY: number = 0
 }
 
-
 export class GameScene extends Phaser.Scene {
-
     private helloText?: Phaser.GameObjects.Text = undefined
     private fullstackText?: Phaser.GameObjects.Text = undefined
     private freelancerText?: Phaser.GameObjects.Text = undefined
     private btnText?: Phaser.GameObjects.Text = undefined
     private cursors?: Phaser.Input.Keyboard.CursorKeys = undefined
-    private player?: Player = undefined
+    private player!: Player
 
+    // UTILS
+    private gameHeight: number = 0
+    private gameWidth: number = 0
+    private spawnPosition: {x: number, y: number} = {x: 0, y: 0}
+
+    // Rooms
     private rooms: { [key: string]: Room } = {
         firstRoom: {
             numberOfScreens: 1,
+            offsetY: 0,
         },
         secondRoom: {
             numberOfScreens: 1,
+            offsetY: 0,
         },
         thirdRoom: {
             numberOfScreens: 3,
+            offsetY: 0,
         },
         fourthRoom: {
             numberOfScreens: 1,
+            offsetY: 0,
         },
     }
-
-    private gameHeight: number = 0
-    private gameWidth: number = 0
+    private roomScreensTotalNumber: number = 0
 
     constructor() {
         super({
@@ -51,8 +56,15 @@ export class GameScene extends Phaser.Scene {
     private calculateRooms() {
         this.gameWidth = this.sys.canvas.width
         Object.keys(this.rooms).forEach((roomName: string) => {
-            this.gameHeight += this.rooms[roomName].numberOfScreens * this.sys.canvas.height
+            const room = this.rooms[roomName]
+            room.offsetY = this.roomScreensTotalNumber * this.sys.canvas.height
+            this.roomScreensTotalNumber += room.numberOfScreens
+            this.gameHeight += room.numberOfScreens * this.sys.canvas.height
         })
+        this.spawnPosition = {
+            x: this.gameWidth - 100,
+            y: this.rooms.secondRoom.offsetY + this.sys.canvas.height / 2,
+        }
     }
 
     private createBackground() {
@@ -77,31 +89,24 @@ export class GameScene extends Phaser.Scene {
         trigger.setStrokeStyle(3, 0xd4d4d4)
         trigger.setOrigin(0, 0)
 
-        this.physics.world.enable(trigger, STATIC_BODY)
-        if (this.player) {
-            this.physics.add.overlap(this.player, trigger, () => {
-                // if (!this.secondPageCamera) {
-                //     console.log("Triggered")
-                //     this.setSecondPageCamera()
-                // }
-            }, undefined, this)
-        }
+        this.physics.world.enable(trigger, Phaser.Physics.Arcade.STATIC_BODY)
+        this.physics.add.overlap(this.player, trigger, () => {
+            // if (!this.secondPageCamera) {
+            //     console.log("Triggered")
+            //     this.setSecondPageCamera()
+            // }
+        }, undefined, this)
     }
 
     private createPlayer() {
         this.player = new Player(
             this,
-            this.sys.canvas.width - 100,
-            this.sys.canvas.height / 2,
+            this.spawnPosition.x,
+            this.spawnPosition.y,
             "mainatlas",
             "player/player.psd",
         )
         this.add.existing(this.player)
-        // this.player = this.add.sprite(this.sys.canvas.width - 100, this.sys.canvas.height / 2, "block")
-        // this.physics.world.enable(this.player)
-
-        // const b: Phaser.Physics.Arcade.Body = this.player.body
-        // b.setCollideWorldBounds(true)
     }
 
     private createInputs() {
@@ -175,7 +180,7 @@ export class GameScene extends Phaser.Scene {
         rect.setStrokeStyle(3, 0xd4d4d4)
         rect.setOrigin(0, 0)
 
-        this.physics.world.enable(rect, STATIC_BODY)
+        this.physics.world.enable(rect, Phaser.Physics.Arcade.STATIC_BODY)
 
         if (this.player) {
             this.physics.add.collider(this.player, rect)
@@ -206,7 +211,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     private createSecondRoom() {
-        const secondScreenOffsetY = this.sys.canvas.height
+        const secondScreenOffsetY = this.rooms.secondRoom.offsetY
 
         const titleY = secondScreenOffsetY + 50
 
@@ -236,9 +241,12 @@ export class GameScene extends Phaser.Scene {
             },
         )
 
+        // const chests = this.add.group()
 
+        const firstChest = new Chest(this, this.gameWidth - 150, secondScreenOffsetY + 150)
+        this.add.existing(firstChest)
 
-
+        this.physics.add.collider(this.player, firstChest)
     }
 
     private createMainCamera() {
@@ -288,23 +296,27 @@ export class GameScene extends Phaser.Scene {
                 if (this.cursors.right.isDown) {
                     this.player.flipX = false
                 }
-                if (this.cursors.left.isDown && !this.cursors.right.isDown && this.player.x - this.player.width / 2 > 0) {
-                    this.player.body.setVelocityX(-this.player.speed)
+                if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+                    if (this.player.x - this.player.width / 2 > 0) {
+                        this.player.body.setVelocityX(-this.player.speed)
+                    }
                 }
-                if (this.cursors.right.isDown && !this.cursors.left.isDown && this.player.x + this.player.width / 2 < this.gameWidth) {
-                    this.player.body.setVelocityX(this.player.speed)
+                if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+                    if (this.player.x + this.player.width / 2 < this.gameWidth) {
+                        this.player.body.setVelocityX(this.player.speed)
+                    }
                 }
-                if (this.cursors.up.isDown && !this.cursors.down.isDown && this.player.y - this.player.height / 2 > 0) {
-                    this.player.body.setVelocityY(-this.player.speed)
+                if (this.cursors.up.isDown && !this.cursors.down.isDown) {
+                    if (this.player.y - this.player.height / 2 > 0) {
+                        this.player.body.setVelocityY(-this.player.speed)
+                    }
                 }
-                if (this.cursors.down.isDown && !this.cursors.up.isDown && this.player.y + this.player.height / 2 < this.gameHeight) {
-                    this.player.body.setVelocityY(this.player.speed)
+                if (this.cursors.down.isDown && !this.cursors.up.isDown) {
+                    if (this.player.y + this.player.height / 2 < this.gameHeight) {
+                        this.player.body.setVelocityY(this.player.speed)
+                    }
                 }
             }
-
-            // if (this.player.x + this.player.width / 2 > this.gameWidth || this.player.x - this.player.width / 2 < 0) {
-            //     this.player.body.setVelocity(0)
-            // }
         }
     }
 }

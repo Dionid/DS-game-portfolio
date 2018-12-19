@@ -53,8 +53,8 @@ class MainLayout extends React.Component<IProps, IState> {
                         </div>
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>
-                                <a href="" className={ cx("textVersionLink") }>
-                                    TEXT Version
+                                <a href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn" target="_blank" className={ cx("textVersionLink") }>
+                                    LINK to TEXT Version
                                 </a>
                                 <div className={ cx("copyright") }>
                                 	copyright @2019
