@@ -48,7 +48,8 @@ export class PreloadScene extends Phaser.Scene {
             this,
         )
 
-        this.load.image("background", "public/assets/images/repeatxy.png")
+        this.load.image("background", "assets/images/repeatxy.png")
+        this.load.multiatlas("mainatlas", "assets/mainatlas.json", "assets")
     }
 
     private createLoadingbar(): void {

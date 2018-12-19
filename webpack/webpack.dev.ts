@@ -2,6 +2,9 @@ import path from "path"
 // @ts-ignore
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import { env } from "process"
+import CopyWebpackPlugin from "copy-webpack-plugin"
+// @ts-ignore
+import WriteFilePlugin from "write-file-webpack-plugin"
 
 // import webpack from "webpack"
 
@@ -102,6 +105,11 @@ const config = {
           title: "Webpack App",
           xhtml: false,
       }),
+        new WriteFilePlugin(),
+        new CopyWebpackPlugin([{
+            from: "public",
+            // to: "dist/public",
+        }]),
     ],
     optimization: {
         namedModules: true,

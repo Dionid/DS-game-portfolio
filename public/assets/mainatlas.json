@@ -1,0 +1,95 @@
+{
+	"textures": [
+		{
+			"image": "mainatlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 552,
+				"h": 304
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "bg/bg.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 512,
+						"h": 257
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 512,
+						"h": 257
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 512,
+						"h": 257
+					},
+					"anchor": {
+						"x": 0,
+						"y": 0
+					}
+				},
+				{
+					"filename": "objects/chests.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 156,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 156,
+						"h": 43
+					},
+					"frame": {
+						"x": 1,
+						"y": 260,
+						"w": 156,
+						"h": 43
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "player/player.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 36,
+						"h": 119
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 36,
+						"h": 119
+					},
+					"frame": {
+						"x": 515,
+						"y": 1,
+						"w": 36,
+						"h": 119
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:a573f880243473688586fa8b934aa193:57825d35e22a17a484343deadbfe59d9:9b2a4530a0a88d46c7c406cc86ad22f4$"
+	}
+}
