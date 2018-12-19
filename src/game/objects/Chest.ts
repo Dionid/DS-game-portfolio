@@ -14,5 +14,6 @@ export class Chest extends Phaser.GameObjects.Sprite {
 
         this.body.setOffset(0, this.body.height / 2)
         this.body.setSize(this.body.width, this.body.height / 2)
+        this.setDepth(this.body.y)
     }
 }

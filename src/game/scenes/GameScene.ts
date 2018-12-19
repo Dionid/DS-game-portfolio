@@ -103,8 +103,6 @@ export class GameScene extends Phaser.Scene {
             this,
             this.spawnPosition.x,
             this.spawnPosition.y,
-            "mainatlas",
-            "player/player.psd",
         )
         this.add.existing(this.player)
     }
@@ -252,7 +250,7 @@ export class GameScene extends Phaser.Scene {
     private createMainCamera() {
         this.cameras.main.setBounds(0, 0, this.sys.canvas.width, this.gameHeight)
         // make the camera follow the player
-        this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
+        this.cameras.main.startFollow(this.player, false, 0.075, 0.075)
     }
 
     public create(): void {
@@ -286,37 +284,37 @@ export class GameScene extends Phaser.Scene {
     }
 
     public update(): void {
-        if (this.player) {
-            this.player.body.setVelocity(0)
+        this.player.body.setVelocity(0)
 
-            if (this.cursors && this.cursors.left && this.cursors.right && this.cursors.up && this.cursors.down) {
-                if (this.cursors.left.isDown) {
-                    this.player.flipX = true
+        if (this.cursors && this.cursors.left && this.cursors.right && this.cursors.up && this.cursors.down) {
+            if (this.cursors.left.isDown) {
+                this.player.flipX = true
+            }
+            if (this.cursors.right.isDown) {
+                this.player.flipX = false
+            }
+            if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+                if (this.player.x - this.player.width / 2 > 0) {
+                    this.player.body.setVelocityX(-this.player.speed)
                 }
-                if (this.cursors.right.isDown) {
-                    this.player.flipX = false
+            }
+            if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+                if (this.player.x + this.player.width / 2 < this.gameWidth) {
+                    this.player.body.setVelocityX(this.player.speed)
                 }
-                if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-                    if (this.player.x - this.player.width / 2 > 0) {
-                        this.player.body.setVelocityX(-this.player.speed)
-                    }
+            }
+            if (this.cursors.up.isDown && !this.cursors.down.isDown) {
+                if (this.player.y - this.player.height / 2 > 0) {
+                    this.player.body.setVelocityY(-this.player.speed)
                 }
-                if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-                    if (this.player.x + this.player.width / 2 < this.gameWidth) {
-                        this.player.body.setVelocityX(this.player.speed)
-                    }
-                }
-                if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-                    if (this.player.y - this.player.height / 2 > 0) {
-                        this.player.body.setVelocityY(-this.player.speed)
-                    }
-                }
-                if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-                    if (this.player.y + this.player.height / 2 < this.gameHeight) {
-                        this.player.body.setVelocityY(this.player.speed)
-                    }
+            }
+            if (this.cursors.down.isDown && !this.cursors.up.isDown) {
+                if (this.player.y + this.player.height / 2 < this.gameHeight) {
+                    this.player.body.setVelocityY(this.player.speed)
                 }
             }
         }
+
+        this.player.setDepth(this.player.body.y)
     }
 }
