@@ -290,7 +290,7 @@ export class GameScene extends Phaser.Scene {
         this.createMainCamera()
     }
 
-    public spaceOnHold = false
+    public dashBtnOnHold = false
     public dashInProcess = false
     public dashInProcessTimestamp = 0
     public dashInProcessTimelong = 100
@@ -323,8 +323,8 @@ export class GameScene extends Phaser.Scene {
         } else {
             // console.log()
             if (
-                !this.spaceOnHold
-                && this.cursors.space.isDown
+                !this.dashBtnOnHold
+                && this.input.mousePointer.isDown
                 && time > this.dashEndedTimestamp + this.dashRestTimelong
             ) {
                 const mousePosVector = this.cameras.main.getWorldPoint(
@@ -465,7 +465,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     private playerSpaceHoldSystem() {
-        this.spaceOnHold = this.cursors.space.isDown
+        this.dashBtnOnHold = this.input.mousePointer.isDown
     }
 
     public update(time: number, delta: number): void {
