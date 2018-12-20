@@ -254,6 +254,10 @@ export class GameScene extends Phaser.Scene {
         this.add.existing(firstChest)
 
         this.physics.add.collider(this.player, firstChest)
+
+        // this.physics.add.overlap(this.player, firstChest, () => {
+        //     console.log("COLLIDED")
+        // })
     }
 
     private createMainCamera() {
@@ -293,10 +297,10 @@ export class GameScene extends Phaser.Scene {
     public dashBtnOnHold = false
     public dashInProcess = false
     public dashInProcessTimestamp = 0
-    public dashInProcessTimelong = 100
+    public dashInProcessTimelong = 150
     public dashEndedTimestamp = 0
     private dashRestTimelong = 200
-    private dashSpeed = 3600
+    private dashSpeed = 3000
     public dashMoveVectorNormalized!: Phaser.Math.Vector2
 
     public cameraMousePointerFollorSystem() {
@@ -316,7 +320,7 @@ export class GameScene extends Phaser.Scene {
     private playerDashSystem(time: number, delta: number) {
         if (this.dashInProcess) {
             if (time > this.dashInProcessTimestamp + this.dashInProcessTimelong) {
-                console.log("dashEndedTimestamp")
+                // console.log("dashEndedTimestamp")
                 this.dashInProcess = false
                 this.dashEndedTimestamp = time
             }
@@ -332,7 +336,7 @@ export class GameScene extends Phaser.Scene {
                     this.input.mousePointer.position.y,
                 )
                 this.dashMoveVectorNormalized = mousePosVector.subtract(this.player.body.position).normalize()
-                console.log(this.dashMoveVectorNormalized)
+                // console.log(this.dashMoveVectorNormalized)
                 this.dashInProcess = true
                 this.dashInProcessTimestamp = time
             }
@@ -358,53 +362,46 @@ export class GameScene extends Phaser.Scene {
                 this.dashMoveVectorNormalized.y * this.dashSpeed * accelerationOverTime,
             )
         } else {
-            const playerSpeed = this.player.speed * (delta * 60 / 1000)
+            let playerSpeed = this.player.speed * (delta * 60 / 1000)
 
-            const mousePosVector = this.cameras.main.getWorldPoint(
-                this.input.mousePointer.position.x,
-                this.input.mousePointer.position.y,
-            )
-            // const moveVector = mousePosVector.subtract(this.player.body.position).normalize()
-            //
-            // console.log(moveVector)
-            //
-            // if ((moveVector.x > 0.5 || moveVector.x < -0.5) && (moveVector.y < 0.5 || moveVector.y > -0.5)) {
-            //     this.player.body.setVelocity(
-            //         moveVector.x * playerSpeed,
-            //         moveVector.y * playerSpeed,
-            //     )
-            // }
-
-            console.log(
-                this.player.body.position
-                    .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
-                    .distance(mousePosVector),
-            )
-
-            if (
-                (!playerWasInMove && this.player.body.position.distance(mousePosVector) > 150)
-                ||
-                (playerWasInMove && this.player.body.position.distance(mousePosVector) > 100)
-            ) {
-                this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, this.player.speed)
+            if (this.cursors.shift.isDown) {
+                playerSpeed *= 1.5
             }
 
-            // if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-            //     this.player.body.setVelocityX(-playerSpeed)
+            // // Mouse movement
+            // const mousePosVector = this.cameras.main.getWorldPoint(
+            //     this.input.mousePointer.position.x,
+            //     this.input.mousePointer.position.y,
+            // )
+            //
+            // const playerDistance = this.player.body.position
+            //     .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
+            //     .distance(mousePosVector)
+            //
+            // if (
+            //     (!playerWasInMove && playerDistance > 150)
+            //     ||
+            //     (playerWasInMove && playerDistance > 100)
+            // ) {
+            //     this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, playerSpeed)
             // }
-            // if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-            //     this.player.body.setVelocityX(playerSpeed)
-            // }
-            // if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-            //     this.player.body.setVelocityY(-playerSpeed)
-            // }
-            // if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-            //     this.player.body.setVelocityY(playerSpeed)
-            // }
-            // if (this.playerMovesVert && this.playerMovesHor) {
-            //     this.player.body.velocity.x = this.player.body.velocity.x * 0.8
-            //     this.player.body.velocity.y = this.player.body.velocity.y * 0.8
-            // }
+
+            if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+                this.player.body.setVelocityX(-playerSpeed)
+            }
+            if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+                this.player.body.setVelocityX(playerSpeed)
+            }
+            if (this.cursors.up.isDown && !this.cursors.down.isDown) {
+                this.player.body.setVelocityY(-playerSpeed)
+            }
+            if (this.cursors.down.isDown && !this.cursors.up.isDown) {
+                this.player.body.setVelocityY(playerSpeed)
+            }
+            if (this.playerMovesVert && this.playerMovesHor) {
+                this.player.body.velocity.x = this.player.body.velocity.x * 0.8
+                this.player.body.velocity.y = this.player.body.velocity.y * 0.8
+            }
         }
     }
 
@@ -470,7 +467,7 @@ export class GameScene extends Phaser.Scene {
 
     public update(time: number, delta: number): void {
 
-        // this.cameraMousePointerFollorSystem()
+        this.cameraMousePointerFollorSystem()
 
         // Then we add Dash if it is needed
         this.playerDashSystem(time, delta)
