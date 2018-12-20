@@ -1,17 +1,14 @@
 import {Player} from "game/objects/Player"
 import {Chest} from "game/objects/Chest"
-
-class Room {
-    public numberOfScreens: number = 0
-    public offsetY: number = 0
-}
+import Room from "game/models/Room"
+import Cursors from "game/models/Cursors"
 
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
     private fullstackText?: Phaser.GameObjects.Text = undefined
     private freelancerText?: Phaser.GameObjects.Text = undefined
     private btnText?: Phaser.GameObjects.Text = undefined
-    private cursors?: Phaser.Input.Keyboard.CursorKeys = undefined
+    private cursors!: Cursors
     private player!: Player
 
     // UTILS
@@ -63,7 +60,7 @@ export class GameScene extends Phaser.Scene {
         })
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.secondRoom.offsetY + this.sys.canvas.height / 2,
+            y: this.rooms.firstRoom.offsetY + this.sys.canvas.height / 2,
         }
     }
 
@@ -105,10 +102,11 @@ export class GameScene extends Phaser.Scene {
             this.spawnPosition.y,
         )
         this.add.existing(this.player)
+        // this.player.body.setCollideWorldBounds(true)
     }
 
     private createInputs() {
-        this.cursors = this.input.keyboard.createCursorKeys()
+        this.cursors = new Cursors(this)
     }
 
     private leftTextStartOffsetX: number = 100
@@ -132,6 +130,8 @@ export class GameScene extends Phaser.Scene {
             },
         )
 
+        this.helloText.setDepth(this.gameHeight)
+
         const fullstackTextY = helloTextY + this.helloText.height
 
         this.fullstackText = this.add.text(
@@ -146,6 +146,8 @@ export class GameScene extends Phaser.Scene {
                 fill: "#fff",
             },
         )
+
+        this.fullstackText.setDepth(this.gameHeight)
 
         const freelancerTextY = fullstackTextY + this.fullstackText.height
 
@@ -162,6 +164,8 @@ export class GameScene extends Phaser.Scene {
             },
         )
 
+        this.freelancerText.setDepth(this.gameHeight)
+
         const rectWidth = 170
         const rectHeight = 40
         const rectX = this.leftTextStartOffsetX
@@ -177,12 +181,12 @@ export class GameScene extends Phaser.Scene {
 
         rect.setStrokeStyle(3, 0xd4d4d4)
         rect.setOrigin(0, 0)
+        rect.setDepth(this.gameHeight)
 
-        this.physics.world.enable(rect, Phaser.Physics.Arcade.STATIC_BODY)
-
-        if (this.player) {
-            this.physics.add.collider(this.player, rect)
-        }
+        // this.physics.world.enable(rect, Phaser.Physics.Arcade.STATIC_BODY)
+        // if (this.player) {
+        //     this.physics.add.collider(this.player, rect)
+        // }
 
         const btnTextY = freelancerTextY + this.freelancerText.height + 20
 
@@ -206,6 +210,7 @@ export class GameScene extends Phaser.Scene {
         this.btnText.setInteractive().on("pointerdown", () => {
             window.open(link, "_self")
         })
+        this.btnText.setDepth(this.gameHeight + 1)
     }
 
     private createSecondRoom() {
@@ -226,6 +231,8 @@ export class GameScene extends Phaser.Scene {
             },
         )
 
+        title.setDepth(this.gameHeight)
+
         const subtitleText = this.add.text(
             this.leftTextStartOffsetX,
             titleY + title.height,
@@ -239,9 +246,11 @@ export class GameScene extends Phaser.Scene {
             },
         )
 
+        subtitleText.setDepth(this.gameHeight)
+
         // const chests = this.add.group()
 
-        const firstChest = new Chest(this, this.gameWidth - 150, secondScreenOffsetY + 150)
+        const firstChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + 250)
         this.add.existing(firstChest)
 
         this.physics.add.collider(this.player, firstChest)
@@ -250,7 +259,9 @@ export class GameScene extends Phaser.Scene {
     private createMainCamera() {
         this.cameras.main.setBounds(0, 0, this.sys.canvas.width, this.gameHeight)
         // make the camera follow the player
-        this.cameras.main.startFollow(this.player, false, 0.075, 0.075)
+        this.cameras.main.startFollow(this.player, false, 0.2, 0.2)
+
+        // this.cameras.main.followOffset.y = 200
     }
 
     public create(): void {
@@ -279,42 +290,201 @@ export class GameScene extends Phaser.Scene {
         this.createMainCamera()
     }
 
-    public movementSystem() {
+    public spaceOnHold = false
+    public dashInProcess = false
+    public dashInProcessTimestamp = 0
+    public dashInProcessTimelong = 100
+    public dashEndedTimestamp = 0
+    private dashRestTimelong = 200
+    private dashSpeed = 3600
+    public dashMoveVectorNormalized!: Phaser.Math.Vector2
 
+    public cameraMousePointerFollorSystem() {
+        const halsOfScreenY = this.sys.canvas.height / 2
+        this.cameras.main.followOffset.y = (this.input.mousePointer.position.y - halsOfScreenY) * -1
+        const minus = this.cameras.main.followOffset.y < 0
+        this.cameras.main.followOffset.y = Phaser.Math.Linear(
+            0,
+            100,
+            Math.abs(this.cameras.main.followOffset.y / halsOfScreenY),
+        )
+        if (minus) {
+            this.cameras.main.followOffset.y *=  -1
+        }
     }
 
-    public update(): void {
-        this.player.body.setVelocity(0)
-
-        if (this.cursors && this.cursors.left && this.cursors.right && this.cursors.up && this.cursors.down) {
-            if (this.cursors.left.isDown) {
-                this.player.flipX = true
+    private playerDashSystem(time: number, delta: number) {
+        if (this.dashInProcess) {
+            if (time > this.dashInProcessTimestamp + this.dashInProcessTimelong) {
+                console.log("dashEndedTimestamp")
+                this.dashInProcess = false
+                this.dashEndedTimestamp = time
             }
-            if (this.cursors.right.isDown) {
-                this.player.flipX = false
-            }
-            if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-                if (this.player.x - this.player.width / 2 > 0) {
-                    this.player.body.setVelocityX(-this.player.speed)
-                }
-            }
-            if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-                if (this.player.x + this.player.width / 2 < this.gameWidth) {
-                    this.player.body.setVelocityX(this.player.speed)
-                }
-            }
-            if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-                if (this.player.y - this.player.height / 2 > 0) {
-                    this.player.body.setVelocityY(-this.player.speed)
-                }
-            }
-            if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-                if (this.player.y + this.player.height / 2 < this.gameHeight) {
-                    this.player.body.setVelocityY(this.player.speed)
-                }
+        } else {
+            // console.log()
+            if (
+                !this.spaceOnHold
+                && this.cursors.space.isDown
+                && time > this.dashEndedTimestamp + this.dashRestTimelong
+            ) {
+                const mousePosVector = this.cameras.main.getWorldPoint(
+                    this.input.mousePointer.position.x,
+                    this.input.mousePointer.position.y,
+                )
+                this.dashMoveVectorNormalized = mousePosVector.subtract(this.player.body.position).normalize()
+                console.log(this.dashMoveVectorNormalized)
+                this.dashInProcess = true
+                this.dashInProcessTimestamp = time
             }
         }
+    }
 
+    private playerMovesLeft = false
+    private playerMovesRight = false
+    private playerMovesUp = false
+    private playerMovesDown = false
+    private playerMovesVert = false
+    private playerMovesHor = false
+
+    public playerMovementSystem(time: number, delta: number) {
+        let playerWasInMove = !!this.player.body.velocity
+
+        this.player.body.setVelocity(0)
+
+        if (this.dashInProcess) {
+            const accelerationOverTime = (time - this.dashInProcessTimestamp) / this.dashInProcessTimelong + 0.3
+            this.player.body.setVelocity(
+                this.dashMoveVectorNormalized.x * this.dashSpeed * accelerationOverTime,
+                this.dashMoveVectorNormalized.y * this.dashSpeed * accelerationOverTime,
+            )
+        } else {
+            const playerSpeed = this.player.speed * (delta * 60 / 1000)
+
+            const mousePosVector = this.cameras.main.getWorldPoint(
+                this.input.mousePointer.position.x,
+                this.input.mousePointer.position.y,
+            )
+            // const moveVector = mousePosVector.subtract(this.player.body.position).normalize()
+            //
+            // console.log(moveVector)
+            //
+            // if ((moveVector.x > 0.5 || moveVector.x < -0.5) && (moveVector.y < 0.5 || moveVector.y > -0.5)) {
+            //     this.player.body.setVelocity(
+            //         moveVector.x * playerSpeed,
+            //         moveVector.y * playerSpeed,
+            //     )
+            // }
+
+            console.log(
+                this.player.body.position
+                    .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
+                    .distance(mousePosVector),
+            )
+
+            if (
+                (!playerWasInMove && this.player.body.position.distance(mousePosVector) > 150)
+                ||
+                (playerWasInMove && this.player.body.position.distance(mousePosVector) > 100)
+            ) {
+                this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, this.player.speed)
+            }
+
+            // if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+            //     this.player.body.setVelocityX(-playerSpeed)
+            // }
+            // if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+            //     this.player.body.setVelocityX(playerSpeed)
+            // }
+            // if (this.cursors.up.isDown && !this.cursors.down.isDown) {
+            //     this.player.body.setVelocityY(-playerSpeed)
+            // }
+            // if (this.cursors.down.isDown && !this.cursors.up.isDown) {
+            //     this.player.body.setVelocityY(playerSpeed)
+            // }
+            // if (this.playerMovesVert && this.playerMovesHor) {
+            //     this.player.body.velocity.x = this.player.body.velocity.x * 0.8
+            //     this.player.body.velocity.y = this.player.body.velocity.y * 0.8
+            // }
+        }
+    }
+
+    private playerMovesDirectionSystem() {
+        this.playerMovesLeft = false
+        this.playerMovesRight = false
+        this.playerMovesUp = false
+        this.playerMovesDown = false
+        this.playerMovesHor = false
+        this.playerMovesVert = false
+
+        if (this.player.body.velocity.x > 0) {
+            this.playerMovesRight = true
+            this.playerMovesHor = true
+        } else if (this.player.body.velocity.x < 0) {
+            this.playerMovesLeft = true
+            this.playerMovesHor = true
+        }
+
+        if (this.player.body.velocity.y < 0) {
+            this.playerMovesUp = true
+            this.playerMovesVert = true
+        } else if (this.player.body.velocity.y > 0) {
+            this.playerMovesDown = true
+            this.playerMovesVert = true
+        }
+    }
+
+    private playerAnimationSystem(time: number, delta: number) {
+        if (this.playerMovesLeft) {
+            this.player.flipX = true
+        }
+        if (this.playerMovesRight) {
+            this.player.flipX = false
+        }
+    }
+
+    private playerBorderCollisionSystem() {
+        if (
+            this.player.x + this.player.width / 2 >= this.gameWidth && this.playerMovesRight
+            ||
+            this.player.x - this.player.width / 2 <= 0 && this.playerMovesLeft
+        ) {
+            this.player.body.velocity.x = 0
+        }
+
+        if (
+            this.player.y - this.player.height / 2 <= 0 && this.playerMovesUp
+            ||
+            this.player.y + this.player.height / 2 > this.gameHeight && this.playerMovesDown
+        ) {
+            this.player.body.velocity.y = 0
+        }
+    }
+
+    private playerDepthSystem() {
         this.player.setDepth(this.player.body.y)
+    }
+
+    private playerSpaceHoldSystem() {
+        this.spaceOnHold = this.cursors.space.isDown
+    }
+
+    public update(time: number, delta: number): void {
+
+        // this.cameraMousePointerFollorSystem()
+
+        // Then we add Dash if it is needed
+        this.playerDashSystem(time, delta)
+        // First of all we move Player
+        this.playerMovementSystem(time, delta)
+        // After all Moves we determining Player Direction
+        this.playerMovesDirectionSystem()
+        // After Moves and Direction we adding animation
+        this.playerAnimationSystem(time, delta)
+        // After Moves and Direction we checking for world border collision
+        this.playerBorderCollisionSystem()
+
+        this.playerDepthSystem()
+
+        this.playerSpaceHoldSystem()
     }
 }
