@@ -51,24 +51,33 @@ export default class EntitiesManager {
     }
 
     public queryByComponentsName(componentNamesArr: string[]): IEntity[] {
+        let res: IEntity[] | undefined
+
         if (componentNamesArr.length === 1) {
-            return this.entitiesByComponentName[componentNamesArr[0]]
+            res = this.entitiesByComponentName[componentNamesArr[0]]
+        } else {
+            res = componentNamesArr.reduce((sum: IEntity[] | undefined, compName) => {
+                const checkEnt = this.entitiesByComponentName[compName]
+
+                if (sum === undefined || checkEnt === undefined) {
+                    return undefined
+                }
+
+                if (sum.length === 0) {
+                    sum = checkEnt
+                } else {
+                    sum = sum.filter((ent: IEntity) => {
+                        return !!ent.componentsByName[compName]
+                    })
+                }
+                return sum
+            }, [])
         }
 
-        return componentNamesArr.reduce((sum: IEntity[], compName) => {
-            const checkEnt = this.entitiesByComponentName[compName]
-            if (sum.length === 0) {
-                sum = checkEnt
-            } else {
-                sum = sum.filter((ent: IEntity) => {
-                    return !!ent.componentsByName[compName]
-                })
-            }
-            return sum
-        }, [])
+        return res || []
     }
 
-    public queryById(id: string): IEntity {
+    public queryById(id: string): IEntity | undefined {
         return this.entitiesById[id]
     }
 
@@ -87,8 +96,12 @@ export default class EntitiesManager {
     }
 
     public removeComponent(ent: IEntity, componentName: string): boolean {
+        const ents = this.entitiesByComponentName[componentName]
+        if (ents === undefined) {
+            return true
+        }
         delete ent.componentsByName[componentName]
-        this.entitiesByComponentName[componentName].filter((cEnt) => cEnt !== ent)
+        this.entitiesByComponentName[componentName] = ents.filter((cEnt) => cEnt !== ent)
         return true
     }
 }

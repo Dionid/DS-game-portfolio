@@ -2,8 +2,6 @@ import {Player} from "game/objects/Player"
 import {Chest} from "game/objects/Chest"
 import Room from "game/models/Room"
 import Cursors from "game/models/Cursors"
-import "game/ECS/test"
-
 
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined

@@ -438,7 +438,7 @@ declare type CallbacksConfig = {
      */
     preBoot?: BootCallback;
     /**
-     * A function to run at the end of the boot sequence. At this point, all the game systems have started and plugins have been loaded.
+     * A function to run at the end of the boot sequence. At this point, all the game systemsObj have started and plugins have been loaded.
      */
     postBoot?: BootCallback;
 };
@@ -537,7 +537,7 @@ declare type PluginObjectItem = {
      */
     start?: boolean;
     /**
-     * For a scene plugin, add the plugin to the scene's systems object under this key (`this.sys.KEY`, from the scene).
+     * For a scene plugin, add the plugin to the scene's systemsObj object under this key (`this.sys.KEY`, from the scene).
      */
     systemKey?: string;
     /**
@@ -4174,10 +4174,10 @@ declare namespace Phaser {
     /**
      * The Phaser.Game instance is the main controller for the entire Phaser game. It is responsible
      * for handling the boot process, parsing the configuration values, creating the renderer,
-     * and setting-up all of the global Phaser systems, such as sound and input.
+     * and setting-up all of the global Phaser systemsObj, such as sound and input.
      * Once that is complete it will start the Scene Manager and then begin the main game loop.
      * 
-     * You should generally avoid accessing any of the systems created by Game, and instead use those
+     * You should generally avoid accessing any of the systemsObj created by Game, and instead use those
      * made available to you via the Phaser.Scene Systems class instead.
      */
     class Game {
@@ -4236,7 +4236,7 @@ declare namespace Phaser {
         readonly isRunning: boolean;
 
         /**
-         * An Event Emitter which is used to broadcast game-level events from the global systems.
+         * An Event Emitter which is used to broadcast game-level events from the global systemsObj.
          */
         events: Phaser.Events.EventEmitter;
 
@@ -4284,7 +4284,7 @@ declare namespace Phaser {
          * A reference to the Device inspector.
          * 
          * Contains information about the device running this game, such as OS, browser vendor and feature support.
-         * Used by various systems to determine capabilities and code paths.
+         * Used by various systemsObj to determine capabilities and code paths.
          */
         device: Phaser.DeviceConf;
 
@@ -4334,12 +4334,12 @@ declare namespace Phaser {
         /**
          * This method is called automatically when the DOM is ready. It is responsible for creating the renderer,
          * displaying the Debug Header, adding the game canvas to the DOM and emitting the 'boot' event.
-         * It listens for a 'ready' event from the base systems and once received it will call `Game.start`.
+         * It listens for a 'ready' event from the base systemsObj and once received it will call `Game.start`.
          */
         protected boot(): void;
 
         /**
-         * Called automatically by Game.boot once all of the global systems have finished setting themselves up.
+         * Called automatically by Game.boot once all of the global systemsObj have finished setting themselves up.
          * By this point the Game is now ready to start the main loop running.
          * It will also enable the Visibility Handler.
          */
@@ -5068,7 +5068,7 @@ declare namespace Phaser {
              * Removes and item from this cache based on the given key.
              * 
              * If an entry matching the key is found it is removed from the cache and a `remove` event emitted.
-             * No additional checks are done on the item removed. If other systems or parts of your game code
+             * No additional checks are done on the item removed. If other systemsObj or parts of your game code
              * are relying on this item, it is up to you to sever those relationships prior to removing the item.
              * @param key The unique key of the item to remove from the cache.
              */
@@ -5084,7 +5084,7 @@ declare namespace Phaser {
         /**
          * The Cache Manager is the global cache owned and maintained by the Game instance.
          * 
-         * Various systems, such as the file Loader, rely on this cache in order to store the files
+         * Various systemsObj, such as the file Loader, rely on this cache in order to store the files
          * it has loaded. The manager itself doesn't store any files, but instead owns multiple BaseCache
          * instances, one per type of file. You can also add your own custom caches.
          */
@@ -8374,7 +8374,7 @@ declare namespace Phaser {
         /**
          * Determines the audio playback capabilities of the device running this Phaser Game instance.
          * These values are read-only and populated during the boot sequence of the game.
-         * They are then referenced by internal game systems and are available for you to access
+         * They are then referenced by internal game systemsObj and are available for you to access
          * via `this.sys.game.device.audio` from within any Scene.
          */
         type Audio = {
@@ -8419,7 +8419,7 @@ declare namespace Phaser {
         /**
          * Determines the browser type and version running this Phaser Game instance.
          * These values are read-only and populated during the boot sequence of the game.
-         * They are then referenced by internal game systems and are available for you to access
+         * They are then referenced by internal game systemsObj and are available for you to access
          * via `this.sys.game.device.browser` from within any Scene.
          */
         type Browser = {
@@ -8484,7 +8484,7 @@ declare namespace Phaser {
         /**
          * Determines the canvas features of the browser running this Phaser Game instance.
          * These values are read-only and populated during the boot sequence of the game.
-         * They are then referenced by internal game systems and are available for you to access
+         * They are then referenced by internal game systemsObj and are available for you to access
          * via `this.sys.game.device.canvasFeatures` from within any Scene.
          */
         type CanvasFeatures = {
@@ -8501,7 +8501,7 @@ declare namespace Phaser {
         /**
          * Determines the features of the browser running this Phaser Game instance.
          * These values are read-only and populated during the boot sequence of the game.
-         * They are then referenced by internal game systems and are available for you to access
+         * They are then referenced by internal game systemsObj and are available for you to access
          * via `this.sys.game.device.features` from within any Scene.
          */
         type Features = {
@@ -8558,7 +8558,7 @@ declare namespace Phaser {
         /**
          * Determines the full screen support of the browser running this Phaser Game instance.
          * These values are read-only and populated during the boot sequence of the game.
-         * They are then referenced by internal game systems and are available for you to access
+         * They are then referenced by internal game systemsObj and are available for you to access
          * via `this.sys.game.device.fullscreen` from within any Scene.
          */
         type Fullscreen = {
@@ -8583,7 +8583,7 @@ declare namespace Phaser {
         /**
          * Determines the input support of the browser running this Phaser Game instance.
          * These values are read-only and populated during the boot sequence of the game.
-         * They are then referenced by internal game systems and are available for you to access
+         * They are then referenced by internal game systemsObj and are available for you to access
          * via `this.sys.game.device.input` from within any Scene.
          */
         type Input = {
@@ -8608,7 +8608,7 @@ declare namespace Phaser {
         /**
          * Determines the operating system of the device running this Phaser Game instance.
          * These values are read-only and populated during the boot sequence of the game.
-         * They are then referenced by internal game systems and are available for you to access
+         * They are then referenced by internal game systemsObj and are available for you to access
          * via `this.sys.game.device.os` from within any Scene.
          */
         type OS = {
@@ -8705,7 +8705,7 @@ declare namespace Phaser {
         /**
          * Determines the video support of the browser running this Phaser Game instance.
          * These values are read-only and populated during the boot sequence of the game.
-         * They are then referenced by internal game systems and are available for you to access
+         * They are then referenced by internal game systemsObj and are available for you to access
          * via `this.sys.game.device.video` from within any Scene.
          */
         type Video = {
@@ -11611,7 +11611,7 @@ declare namespace Phaser {
          * them their speed.
          * 
          * If you have a need to blast a large volume of frames around the screen then Blitter objects are well worth
-         * investigating. They are especially useful for using as a base for your own special effects systems.
+         * investigating. They are especially useful for using as a base for your own special effects systemsObj.
          */
         class Blitter extends Phaser.GameObjects.GameObject implements Phaser.GameObjects.Components.Alpha, Phaser.GameObjects.Components.BlendMode, Phaser.GameObjects.Components.Depth, Phaser.GameObjects.Components.Mask, Phaser.GameObjects.Components.Pipeline, Phaser.GameObjects.Components.ScaleMode, Phaser.GameObjects.Components.ScrollFactor, Phaser.GameObjects.Components.Size, Phaser.GameObjects.Components.Texture, Phaser.GameObjects.Components.Transform, Phaser.GameObjects.Components.Visible {
             /**
@@ -15181,7 +15181,7 @@ declare namespace Phaser {
             /**
              * The active state of this Game Object.
              * A Game Object with an active state of `true` is processed by the Scenes UpdateList, if added to it.
-             * An active object is one which is having its logic and internal systems updated.
+             * An active object is one which is having its logic and internal systemsObj updated.
              */
             active: boolean;
 
@@ -18681,7 +18681,7 @@ declare namespace Phaser {
             scene: Phaser.Scene;
 
             /**
-             * A reference to the Scene's systems.
+             * A reference to the Scene's systemsObj.
              */
             systems: Phaser.Scenes.Systems;
 
@@ -37721,7 +37721,7 @@ declare namespace Phaser {
         }
 
         /**
-         * The Input Manager is responsible for handling the pointer related systems in a single Phaser Game instance.
+         * The Input Manager is responsible for handling the pointer related systemsObj in a single Phaser Game instance.
          * 
          * Based on the Game Config it will create handlers for mouse and touch support.
          * 
@@ -37924,7 +37924,7 @@ declare namespace Phaser {
              * Please understand that these callbacks are invoked when the browser feels like doing so,
              * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
              * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
-             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * change Scenes or manipulate internal systemsObj, otherwise you run a very real risk of creating
              * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
              * solve.
              * @param callback The callback to be invoked on this dom event.
@@ -37950,7 +37950,7 @@ declare namespace Phaser {
              * Please understand that these callbacks are invoked when the browser feels like doing so,
              * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
              * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
-             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * change Scenes or manipulate internal systemsObj, otherwise you run a very real risk of creating
              * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
              * solve.
              * @param callback The callback to be invoked on this dom event.
@@ -37976,7 +37976,7 @@ declare namespace Phaser {
              * Please understand that these callbacks are invoked when the browser feels like doing so,
              * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
              * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
-             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * change Scenes or manipulate internal systemsObj, otherwise you run a very real risk of creating
              * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
              * solve.
              * @param callback The callback to be invoked on this dom event.
@@ -38065,7 +38065,7 @@ declare namespace Phaser {
             getScaleY(): number;
 
             /**
-             * Destroys the Input Manager and all of its systems.
+             * Destroys the Input Manager and all of its systemsObj.
              * 
              * There is no way to recover from doing this.
              */
@@ -38433,7 +38433,7 @@ declare namespace Phaser {
              * Please understand that these callbacks are invoked when the browser feels like doing so,
              * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
              * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
-             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * change Scenes or manipulate internal systemsObj, otherwise you run a very real risk of creating
              * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
              * solve.
              * @param callback The callback to be invoked on this DOM event.
@@ -38459,7 +38459,7 @@ declare namespace Phaser {
              * Please understand that these callbacks are invoked when the browser feels like doing so,
              * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
              * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
-             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * change Scenes or manipulate internal systemsObj, otherwise you run a very real risk of creating
              * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
              * solve.
              * @param callback The callback to be invoked on this dom event.
@@ -38485,7 +38485,7 @@ declare namespace Phaser {
              * Please understand that these callbacks are invoked when the browser feels like doing so,
              * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
              * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
-             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * change Scenes or manipulate internal systemsObj, otherwise you run a very real risk of creating
              * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
              * solve.
              * @param callback The callback to be invoked on this dom event.
@@ -57835,7 +57835,7 @@ declare namespace Phaser {
 
             /**
              * A handy reference to the Plugin Manager that is responsible for this plugin.
-             * Can be used as a route to gain access to game systems and  events.
+             * Can be used as a route to gain access to game systemsObj and  events.
              */
             protected pluginManager: Phaser.Plugins.PluginManager;
 
@@ -57887,7 +57887,7 @@ declare namespace Phaser {
 
             /**
              * If this is a Scene Plugin (i.e. installed into a Scene) then this method is called when the Scene boots.
-             * By this point the plugin properties `scene` and `systems` will have already been set.
+             * By this point the plugin properties `scene` and `systemsObj` will have already been set.
              * In here you can listen for Scene events and set-up whatever you need for this plugin to run.
              */
             boot(): void;
@@ -58006,7 +58006,7 @@ declare namespace Phaser {
             /**
              * Called by the Scene Systems class. Tells the plugin manager to install all Scene plugins into it.
              * 
-             * First it will install global references, i.e. references from the Game systems into the Scene Systems (and Scene if mapped.)
+             * First it will install global references, i.e. references from the Game systemsObj into the Scene Systems (and Scene if mapped.)
              * Then it will install Core Scene Plugins followed by Scene Plugins registered with the PluginManager.
              * Finally it will install any references to Global Plugins that have a Scene mapping property into the Scene itself.
              * @param sys The Scene Systems class to install all the plugins in to.
@@ -58242,7 +58242,7 @@ declare namespace Phaser {
             /**
              * This method is called when the Scene boots. It is only ever called once.
              * 
-             * By this point the plugin properties `scene` and `systems` will have already been set.
+             * By this point the plugin properties `scene` and `systemsObj` will have already been set.
              * 
              * In here you can listen for Scene events and set-up whatever you need for this plugin to run.
              * Here are the Scene events you can listen to:
@@ -58267,7 +58267,7 @@ declare namespace Phaser {
              * At the very least you should offer a destroy handler for when the Scene closes down, i.e:
              * 
              * ```javascript
-             * var eventEmitter = this.systems.events;
+             * var eventEmitter = this.systemsObj.events;
              * eventEmitter.once('destroy', this.sceneDestroy, this);
              * ```
              */
@@ -59167,8 +59167,8 @@ declare namespace Phaser {
                 /**
                  * Called when the Game has fully booted and the Renderer has finished setting up.
                  * 
-                 * By this stage all Game level systems are now in place and you can perform any final
-                 * tasks that the pipeline may need that relied on game systems such as the Texture Manager.
+                 * By this stage all Game level systemsObj are now in place and you can perform any final
+                 * tasks that the pipeline may need that relied on game systemsObj such as the Texture Manager.
                  */
                 boot(): void;
 
@@ -60058,7 +60058,7 @@ declare namespace Phaser {
 
         /**
          * Builds an array of which physics plugins should be activated for the given Scene.
-         * @param sys The scene system to get the physics systems of.
+         * @param sys The scene system to get the physics systemsObj of.
          */
         function GetPhysicsPlugins(sys: Phaser.Scenes.Systems): any[];
 
@@ -60326,7 +60326,7 @@ declare namespace Phaser {
             dump(): void;
 
             /**
-             * Destroy the SceneManager and all of its Scene's systems.
+             * Destroy the SceneManager and all of its Scene's systemsObj.
              */
             destroy(): void;
 
@@ -60725,7 +60725,7 @@ declare namespace Phaser {
          * 
          * This class is available from within a Scene under the property `sys`.
          * It is responsible for managing all of the plugins a Scene has running, including the display list, and
-         * handling the update step and renderer. It also contains references to global systems belonging to Game.
+         * handling the update step and renderer. It also contains references to global systemsObj belonging to Game.
          */
         class Systems {
             /**
@@ -60918,7 +60918,7 @@ declare namespace Phaser {
 
             /**
              * Pause this Scene.
-             * A paused Scene still renders, it just doesn't run ANY of its update handlers or systems.
+             * A paused Scene still renders, it just doesn't run ANY of its update handlers or systemsObj.
              * @param data A data object that will be passed in the 'pause' event.
              */
             pause(data?: object): Phaser.Scenes.Systems;
@@ -60933,7 +60933,7 @@ declare namespace Phaser {
              * Send this Scene to sleep.
              * 
              * A sleeping Scene doesn't run it's update step or render anything, but it also isn't shut down
-             * or have any of its systems or children removed, meaning it can be re-activated at any point and
+             * or have any of its systemsObj or children removed, meaning it can be re-activated at any point and
              * will carry on from where it left off. It also keeps everything in memory and events and callbacks
              * from other Scenes may still invoke changes within it, so be careful what is left active.
              * @param data A data object that will be passed in the 'sleep' event.
@@ -61013,7 +61013,7 @@ declare namespace Phaser {
             resize(width: number, height: number): void;
 
             /**
-             * Shutdown this Scene and send a shutdown event to all of its systems.
+             * Shutdown this Scene and send a shutdown event to all of its systemsObj.
              * A Scene that has been shutdown will not run its update loop or render, but it does
              * not destroy any of its plugins or references. It is put into hibernation for later use.
              * If you don't ever plan to use this Scene again, then it should be destroyed instead
@@ -69699,7 +69699,7 @@ declare namespace Phaser {
      * Game app that has its own unique app ID. Facebook have also provided a dashboard interface for setting up
      * various features for your game, including leaderboards, ad requests and the payments API. There are lots
      * of guides on the Facebook Developers portal to assist with setting these
-     * various systems up: https://developers.facebook.com/docs/games/instant-games/guides
+     * various systemsObj up: https://developers.facebook.com/docs/games/instant-games/guides
      * 
      * For more details follow the Quick Start guide here: https://developers.facebook.com/docs/games/instant-games
      */

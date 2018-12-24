@@ -1,4 +1,4 @@
-import {ICountState} from "./test"
+import {ICountState} from "./count"
 
 export interface IAppStateLoading {
     global: boolean,
