@@ -10,8 +10,8 @@ export default class ServiceDescription {
         private subtitle: string,
         private desc: string,
     ) {
-        const rectWidth = 170
-        const rectHeight = 140
+        const rectWidth = 190
+        const rectHeight = 160
         const rectX = x - rectWidth / 2
         const rectY = y
 
@@ -35,7 +35,7 @@ export default class ServiceDescription {
             this.title,
             {
                 fontFamily: "Connection",
-                fontSize: 16,
+                fontSize: 20,
                 // stroke: "#000",
                 // strokeThickness: 5,
                 fill: "#fff",
@@ -50,7 +50,7 @@ export default class ServiceDescription {
             this.subtitle,
             {
                 fontFamily: "Connection",
-                fontSize: 14,
+                fontSize: 15,
                 fill: "#fff",
                 align: "center",
             },
@@ -64,7 +64,7 @@ export default class ServiceDescription {
             this.desc,
             {
                 fontFamily: "Connection",
-                fontSize: 12,
+                fontSize: 13,
                 fill: "#fff",
                 align: "center",
             },

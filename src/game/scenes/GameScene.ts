@@ -542,7 +542,7 @@ export class GameScene extends Phaser.Scene {
                             chest.body.x + chest.body.width / 2,
                             chest.body.y,
                             chest.depth - 1,
-                            30,
+                            35,
                             lootData.title,
                             lootData.subtitle,
                             lootData.desc,
