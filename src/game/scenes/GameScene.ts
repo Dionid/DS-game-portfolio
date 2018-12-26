@@ -4,6 +4,7 @@ import Room from "game/models/Room"
 import Cursors from "game/models/Cursors"
 import {Loot} from "game/objects/Loot"
 import ServiceDescription from "game/objects/ServiceDescription"
+import {Folder} from "game/objects/Folder"
 
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
@@ -265,6 +266,45 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.chests)
     }
 
+    private createThirdRoom() {
+        const thirdScreenOffsetY = this.rooms.thirdRoom.offsetY
+
+        const titleY = thirdScreenOffsetY + 50
+
+        const title = this.add.text(
+            this.leftTextStartOffsetX,
+            titleY,
+            "Projects",
+            {
+                fontFamily: "Connection",
+                fontSize: 60,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#fff",
+            },
+        )
+
+        title.setDepth(this.gameHeight)
+
+        const subtitleText = this.add.text(
+            this.leftTextStartOffsetX,
+            titleY + title.height,
+            "What have I done...",
+            {
+                fontFamily: "Connection",
+                fontSize: 25,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#bdbdbd",
+            },
+        )
+
+        subtitleText.setDepth(this.gameHeight)
+
+        const fFolder = new Folder(this, "SPA", this.gameWidth / 2, thirdScreenOffsetY + this.screenHeight / 2 )
+        this.add.existing(fFolder)
+    }
+
     private createMainCamera() {
         this.cameras.main.setBounds(0, 0, this.sys.canvas.width, this.gameHeight)
         // make the camera follow the player
@@ -301,6 +341,7 @@ export class GameScene extends Phaser.Scene {
         this.createSecondRoom()
 
         // Third room
+        this.createThirdRoom()
 
         // Fourth room
 

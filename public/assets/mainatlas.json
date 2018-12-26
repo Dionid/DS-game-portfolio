@@ -4,7 +4,7 @@
 			"image": "mainatlas.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 672,
+				"w": 680,
 				"h": 259
 			},
 			"scale": 1,
@@ -85,24 +85,49 @@
 					}
 				},
 				{
-					"filename": "objects/chests/energy.psd",
+					"filename": "objects/chests/chestDefault.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 39,
-						"h": 52
+						"w": 52,
+						"h": 43
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 39,
-						"h": 52
+						"w": 52,
+						"h": 43
 					},
 					"frame": {
 						"x": 627,
 						"y": 46,
-						"w": 39,
-						"h": 52
+						"w": 52,
+						"h": 43
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderOpened.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 81,
+						"h": 54
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 81,
+						"h": 54
+					},
+					"frame": {
+						"x": 515,
+						"y": 65,
+						"w": 81,
+						"h": 54
 					},
 					"anchor": {
 						"x": 0.5,
@@ -125,7 +150,7 @@
 					},
 					"frame": {
 						"x": 515,
-						"y": 100,
+						"y": 121,
 						"w": 36,
 						"h": 119
 					},
@@ -135,24 +160,74 @@
 					}
 				},
 				{
-					"filename": "objects/chests/chestDefault.psd",
+					"filename": "objects/projects/folderClodesTouched.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 52,
-						"h": 43
+						"w": 64,
+						"h": 50
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 52,
-						"h": 43
+						"w": 64,
+						"h": 50
+					},
+					"frame": {
+						"x": 598,
+						"y": 91,
+						"w": 64,
+						"h": 50
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/energy.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 39,
+						"h": 52
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 39,
+						"h": 52
 					},
 					"frame": {
 						"x": 553,
-						"y": 65,
-						"w": 52,
-						"h": 43
+						"y": 121,
+						"w": 39,
+						"h": 52
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderClosed.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 50
+					},
+					"frame": {
+						"x": 594,
+						"y": 143,
+						"w": 64,
+						"h": 50
 					},
 					"anchor": {
 						"x": 0.5,
@@ -174,8 +249,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 607,
-						"y": 100,
+						"x": 553,
+						"y": 195,
 						"w": 52,
 						"h": 43
 					},
@@ -199,8 +274,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 553,
-						"y": 110,
+						"x": 607,
+						"y": 195,
 						"w": 52,
 						"h": 43
 					},
@@ -215,6 +290,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:2225035633dc979b6a7eded5c2033200:f4b237ee8576818226730577d6683dca:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:b8dfc3f64b35d8a76ab945557a0987ed:710254fdfa614219d80fcf0a8d13e48c:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

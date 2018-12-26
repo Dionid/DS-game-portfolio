@@ -7,7 +7,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, "mainatlas", "player/player.psd")
 
-        this.setScale(0.9, 0.9)
+        this.setScale(0.85, 0.85)
 
         this.initPhysics()
     }
