@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin"
 // @ts-ignore
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import { env } from "process"
+import CopyWebpackPlugin from "copy-webpack-plugin"
 
 // import webpack from "webpack"
 
@@ -103,6 +104,11 @@ const config = {
             filename: "[name].[hash].css",
             chunkFilename: "[id].[hash].css",
         }),
+        // new WriteFilePlugin(),
+        new CopyWebpackPlugin([{
+            from: "public",
+            // to: "dist/public",
+        }]),
     ],
     optimization: {
         namedModules: true,
