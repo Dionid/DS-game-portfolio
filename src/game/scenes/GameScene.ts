@@ -405,10 +405,15 @@ export class GameScene extends Phaser.Scene {
     private playerMovesVert = false
     private playerMovesHor = false
 
-    public playerMovementSystem(time: number, delta: number) {
-        let playerWasInMove = !!this.player.body.velocity
+    private movementStartTime = 0
+    private movementStopTime = 0
+    private accelerationTime = 200
+    private deaccelerationTime = 300
 
-        this.player.body.setVelocity(0)
+    public playerMovementSystem(time: number, delta: number) {
+        // let playerWasInMove = !!this.player.body.velocity
+
+        // this.player.body.setVelocity(0)
 
         if (this.dashInProcess) {
             const accelerationOverTime = (time - this.dashInProcessTimestamp) / this.dashInProcessTimelong + 0.3
@@ -417,48 +422,122 @@ export class GameScene extends Phaser.Scene {
                 this.dashMoveVectorNormalized.y * this.dashSpeed * accelerationOverTime,
             )
         } else {
-            let playerSpeed = this.player.speed * (delta * 60 / 1000)
+            if (
+                this.cursors.left.isDown ||
+                this.cursors.right.isDown ||
+                this.cursors.up.isDown ||
+                this.cursors.down.isDown
+            ) {
+                this.movementStopTime = 0
+                if (this.movementStartTime === 0) {
+                    this.movementStartTime = time
+                }
+                let playerSpeed = this.player.speed * (delta * 60 / 1000)
+                const acc = (time - this.movementStartTime) / this.accelerationTime
 
-            if (this.cursors.shift.isDown) {
-                playerSpeed *= 1.5
-            }
+                if (acc < 1) {
+                    playerSpeed *= acc
+                }
 
-            // // Mouse movement
-            // const mousePosVector = this.cameras.main.getWorldPoint(
-            //     this.input.mousePointer.position.x,
-            //     this.input.mousePointer.position.y,
-            // )
-            //
-            // const playerDistance = this.player.body.position
-            //     .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
-            //     .distance(mousePosVector)
-            //
-            // if (
-            //     (!playerWasInMove && playerDistance > 150)
-            //     ||
-            //     (playerWasInMove && playerDistance > 100)
-            // ) {
-            //     this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, playerSpeed)
-            // }
+                if (this.cursors.shift.isDown) {
+                    playerSpeed *= 1.5
+                }
 
-            if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-                this.player.body.setVelocityX(-playerSpeed)
-            }
-            if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-                this.player.body.setVelocityX(playerSpeed)
-            }
-            if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-                this.player.body.setVelocityY(-playerSpeed)
-            }
-            if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-                this.player.body.setVelocityY(playerSpeed)
-            }
-            if (this.playerMovesVert && this.playerMovesHor) {
-                this.player.body.velocity.x = this.player.body.velocity.x * 0.8
-                this.player.body.velocity.y = this.player.body.velocity.y * 0.8
+                if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+                    this.player.body.setVelocityX(-playerSpeed)
+                }
+                if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+                    this.player.body.setVelocityX(playerSpeed)
+                }
+                if (this.cursors.up.isDown && !this.cursors.down.isDown) {
+                    this.player.body.setVelocityY(-playerSpeed)
+                }
+                if (this.cursors.down.isDown && !this.cursors.up.isDown) {
+                    this.player.body.setVelocityY(playerSpeed)
+                }
+                if (this.playerMovesVert && this.playerMovesHor) {
+                    this.player.body.velocity.x = this.player.body.velocity.x * 0.8
+                    this.player.body.velocity.y = this.player.body.velocity.y * 0.8
+                }
+            } else {
+                if (this.movementStopTime === 0) {
+                    this.movementStopTime = time
+                }
+                this.movementStartTime = 0
+
+                const deacc = 1 - (time - this.movementStopTime) / this.deaccelerationTime
+
+                if (deacc > 0) {
+                    this.player.body.setVelocity(
+                        this.player.body.velocity.x * deacc,
+                        this.player.body.velocity.y * deacc,
+                    )
+                } else {
+                    this.player.body.setVelocity(0)
+                }
+
+                // console.log(this.player.body.velocity.x, this.player.body.velocity.y)
+                // if (this.player.body.velocity.x > 0 || this.player.body.velocity.y > 0) {
+                //     this.player.body.setVelocity(this.player.body.velocity.x * deacc, this.player.body.velocity.y * deacc)
+                // }
             }
         }
     }
+
+    // public playerMovementSystem(time: number, delta: number) {
+    //     let playerWasInMove = !!this.player.body.velocity
+    //
+    //     this.player.body.setVelocity(0)
+    //
+    //     if (this.dashInProcess) {
+    //         const accelerationOverTime = (time - this.dashInProcessTimestamp) / this.dashInProcessTimelong + 0.3
+    //         this.player.body.setVelocity(
+    //             this.dashMoveVectorNormalized.x * this.dashSpeed * accelerationOverTime,
+    //             this.dashMoveVectorNormalized.y * this.dashSpeed * accelerationOverTime,
+    //         )
+    //     } else {
+    //         let playerSpeed = this.player.speed * (delta * 60 / 1000)
+    //
+    //         if (this.cursors.shift.isDown) {
+    //             playerSpeed *= 1.5
+    //         }
+    //
+    //         // // Mouse movement
+    //         // const mousePosVector = this.cameras.main.getWorldPoint(
+    //         //     this.input.mousePointer.position.x,
+    //         //     this.input.mousePointer.position.y,
+    //         // )
+    //         //
+    //         // const playerDistance = this.player.body.position
+    //         //     .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
+    //         //     .distance(mousePosVector)
+    //         //
+    //         // if (
+    //         //     (!playerWasInMove && playerDistance > 150)
+    //         //     ||
+    //         //     (playerWasInMove && playerDistance > 100)
+    //         // ) {
+    //         //     this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, playerSpeed)
+    //         // }
+    //
+    //         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+    //             this.player.body.setVelocityX(-playerSpeed)
+    //         }
+    //         if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+    //             this.player.body.setVelocityX(playerSpeed)
+    //         }
+    //         if (this.cursors.up.isDown && !this.cursors.down.isDown) {
+    //             this.player.body.setVelocityY(-playerSpeed)
+    //         }
+    //         if (this.cursors.down.isDown && !this.cursors.up.isDown) {
+    //             this.player.body.setVelocityY(playerSpeed)
+    //         }
+    //         if (this.playerMovesVert && this.playerMovesHor) {
+    //             this.player.body.velocity.x = this.player.body.velocity.x * 0.8
+    //             this.player.body.velocity.y = this.player.body.velocity.y * 0.8
+    //         }
+    //     }
+    // }
 
     private playerMovesDirectionSystem() {
         this.playerMovesLeft = false
