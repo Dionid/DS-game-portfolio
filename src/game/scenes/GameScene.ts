@@ -3,6 +3,7 @@ import {Chest} from "game/objects/Chest"
 import Room from "game/models/Room"
 import Cursors from "game/models/Cursors"
 import {Loot} from "game/objects/Loot"
+import ServiceDescription from "game/objects/ServiceDescription"
 
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
@@ -253,9 +254,9 @@ export class GameScene extends Phaser.Scene {
 
         // const chests = this.add.group()
 
-        const fChest = new Chest(this, this.gameWidth - 300, secondScreenOffsetY + this.screenHeight / 3 )
+        const fChest = new Chest(this, this.gameWidth - 330, secondScreenOffsetY + this.screenHeight / 3 )
         const sChest = new Chest(this, 200, secondScreenOffsetY + this.screenHeight / 3 * 2)
-        const thChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + this.screenHeight / 3 * 2.5)
+        const thChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + this.screenHeight / 3 * 2.3)
 
         this.chests.add(fChest, true)
         this.chests.add(sChest, true)
@@ -482,14 +483,14 @@ export class GameScene extends Phaser.Scene {
         {
             title: "Frontend",
             subtitle: "React, Redux",
-            desc: "and  everything including modern stack",
+            desc: "and  everything\nincluding modern stack",
             img: "objects/chests/katana.psd",
             opened: false,
         },
         {
             title: "Backend",
             subtitle: "NodeJS /Golang\nAPI's, microservices",
-            desc: "everything needed for SPA backend",
+            desc: "everything needed\nfor SPA backend",
             img: "objects/chests/energy.psd",
             opened: false,
         },
@@ -536,6 +537,16 @@ export class GameScene extends Phaser.Scene {
                             chest.depth,
                         )
                         this.add.existing(loot)
+                        const sd = new ServiceDescription(
+                            this,
+                            chest.body.x + chest.body.width / 2,
+                            chest.body.y,
+                            chest.depth - 1,
+                            30,
+                            lootData.title,
+                            lootData.subtitle,
+                            lootData.desc,
+                        )
                         lootData.opened = true
                     }
                 }
