@@ -60,6 +60,56 @@
 					}
 				},
 				{
+					"filename": "objects/chests/katana.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 110,
+						"h": 17
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 110,
+						"h": 17
+					},
+					"frame": {
+						"x": 515,
+						"y": 46,
+						"w": 110,
+						"h": 17
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/energy.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 39,
+						"h": 52
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 39,
+						"h": 52
+					},
+					"frame": {
+						"x": 627,
+						"y": 46,
+						"w": 39,
+						"h": 52
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
 					"filename": "player/player.psd",
 					"rotated": false,
 					"trimmed": false,
@@ -75,7 +125,7 @@
 					},
 					"frame": {
 						"x": 515,
-						"y": 46,
+						"y": 100,
 						"w": 36,
 						"h": 119
 					},
@@ -99,8 +149,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 515,
-						"y": 167,
+						"x": 553,
+						"y": 65,
 						"w": 52,
 						"h": 43
 					},
@@ -124,8 +174,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 515,
-						"y": 212,
+						"x": 607,
+						"y": 100,
 						"w": 52,
 						"h": 43
 					},
@@ -149,8 +199,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 569,
-						"y": 46,
+						"x": 553,
+						"y": 110,
 						"w": 52,
 						"h": 43
 					},
@@ -165,6 +215,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:0aecbc2e6fdfb34f742a1640a209d31b:b29ab0bfa190e297c504b3a1bdbeb7e1:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:2225035633dc979b6a7eded5c2033200:f4b237ee8576818226730577d6683dca:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

@@ -78,10 +78,6 @@ describe("ESC testing", () => {
         beforeAll(() => {
             ECS = new ECSManager([])
         })
-
-        test("constructor", () => {
-
-        })
     })
 
     describe("Entities", () => {
@@ -320,7 +316,11 @@ interface ISystemPhaserInjectable {
 const PlayerMovementSystemName = "playerMovementSystem"
 
 class PlayerMovementSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
-    public update(entityManager: EntitiesManager, additional: ISystemAdditional, inj: ISystemPhaserInjectable): undefined {
+    public update(
+        entityManager: EntitiesManager,
+        additional: ISystemAdditional,
+        inj: ISystemPhaserInjectable,
+    ): undefined {
         const playerEntity = entityManager.queryByComponentsName([
             PLAYER_COMPONENT_NAME,
             MOVEMENT_COMPONENT_NAME,

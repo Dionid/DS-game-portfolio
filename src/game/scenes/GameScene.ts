@@ -2,6 +2,7 @@ import {Player} from "game/objects/Player"
 import {Chest} from "game/objects/Chest"
 import Room from "game/models/Room"
 import Cursors from "game/models/Cursors"
+import {Loot} from "game/objects/Loot"
 
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
@@ -15,6 +16,7 @@ export class GameScene extends Phaser.Scene {
     private gameHeight: number = 0
     private gameWidth: number = 0
     private spawnPosition: {x: number, y: number} = {x: 0, y: 0}
+    private screenHeight: number = 0
 
     // Rooms
     private rooms: { [key: string]: Room } = {
@@ -52,15 +54,16 @@ export class GameScene extends Phaser.Scene {
 
     private calculateRooms() {
         this.gameWidth = this.sys.canvas.width
+        this.screenHeight = this.sys.canvas.height
         Object.keys(this.rooms).forEach((roomName: string) => {
             const room = this.rooms[roomName]
-            room.offsetY = this.roomScreensTotalNumber * this.sys.canvas.height
+            room.offsetY = this.roomScreensTotalNumber * this.screenHeight
             this.roomScreensTotalNumber += room.numberOfScreens
-            this.gameHeight += room.numberOfScreens * this.sys.canvas.height
+            this.gameHeight += room.numberOfScreens * this.screenHeight
         })
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.firstRoom.offsetY + this.sys.canvas.height / 2,
+            y: this.rooms.firstRoom.offsetY + this.screenHeight / 2,
         }
     }
 
@@ -250,14 +253,15 @@ export class GameScene extends Phaser.Scene {
 
         // const chests = this.add.group()
 
-        const firstChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + 250)
-        this.add.existing(firstChest)
+        const fChest = new Chest(this, this.gameWidth - 300, secondScreenOffsetY + this.screenHeight / 3 )
+        const sChest = new Chest(this, 200, secondScreenOffsetY + this.screenHeight / 3 * 2)
+        const thChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + this.screenHeight / 3 * 2.5)
 
-        this.physics.add.collider(this.player, firstChest)
+        this.chests.add(fChest, true)
+        this.chests.add(sChest, true)
+        this.chests.add(thChest, true)
 
-        // this.physics.add.overlap(this.player, firstChest, () => {
-        //     console.log("COLLIDED")
-        // })
+        this.physics.add.collider(this.player, this.chests)
     }
 
     private createMainCamera() {
@@ -268,6 +272,12 @@ export class GameScene extends Phaser.Scene {
         // this.cameras.main.followOffset.y = 200
     }
 
+    private chests!: Phaser.GameObjects.Group
+
+    private createObjectsAndGroups() {
+        this.chests = this.add.group({ classType: Chest })
+    }
+
     public create(): void {
         // Utils
         this.calculateRooms()
@@ -276,6 +286,9 @@ export class GameScene extends Phaser.Scene {
 
         // Inputs
         this.createInputs()
+
+        // Objects
+        this.createObjectsAndGroups()
 
         // Player
         this.createPlayer()
@@ -465,6 +478,71 @@ export class GameScene extends Phaser.Scene {
         this.dashBtnOnHold = this.input.mousePointer.isDown
     }
 
+    private chestLoot = [
+        {
+            title: "Frontend",
+            subtitle: "React, Redux",
+            desc: "and  everything including modern stack",
+            img: "objects/chests/katana.psd",
+            opened: false,
+        },
+        {
+            title: "Backend",
+            subtitle: "NodeJS /Golang\nAPI's, microservices",
+            desc: "everything needed for SPA backend",
+            img: "objects/chests/energy.psd",
+            opened: false,
+        },
+        {
+            title: "Outsource PM",
+            subtitle: "Write TechSpec\n" +
+                "Assemble Team\n" +
+                "Lead the Project",
+            desc: "like outsource CTO",
+            img: "objects/chests/katana.psd",
+            opened: false,
+        },
+    ]
+
+    private nearByChests: Chest[] = []
+
+    private chestTriggerSystem() {
+        const chests = this.chests.getChildren() as Chest[]
+
+        for (let i = 0; i < chests.length; i++) {
+            const chest = chests[i]
+            if (this.player.body.position.distance(chest.body.position) < 100) {
+                // ToDo: Think of over check for changing Frame
+                if (chest.frame.name === "objects/chests/chestDefault.psd") {
+                    chest.setFrame("objects/chests/chestTouched.psd")
+                    this.nearByChests.push(chest)
+                }
+            } else {
+                if (chest.frame.name === "objects/chests/chestTouched.psd") {
+                    chest.setFrame("objects/chests/chestDefault.psd")
+                    this.nearByChests = this.nearByChests.filter((ch) => ch !== chest)
+                }
+            }
+            if (this.nearByChests.indexOf(chest) > -1 && chest.frame.name !== "objects/chests/chestOpened.psd") {
+                if (this.cursors.action.isDown) {
+                    chest.setFrame("objects/chests/chestOpened.psd")
+                    const lootData = this.chestLoot.find((l) => !l.opened)
+                    if (lootData) {
+                        const loot = new Loot(
+                            this,
+                            chest.body.x + chest.body.width / 2,
+                            chest.body.y - chest.body.height,
+                            lootData.img,
+                            chest.depth,
+                        )
+                        this.add.existing(loot)
+                        lootData.opened = true
+                    }
+                }
+            }
+        }
+    }
+
     public update(time: number, delta: number): void {
 
         this.cameraMousePointerFollorSystem()
@@ -479,6 +557,8 @@ export class GameScene extends Phaser.Scene {
         this.playerAnimationSystem(time, delta)
         // After Moves and Direction we checking for world border collision
         this.playerBorderCollisionSystem()
+
+        this.chestTriggerSystem()
 
         this.playerDepthSystem()
 

@@ -6,6 +6,7 @@ export default class Cursors {
     public right: Phaser.Input.Keyboard.Key = new Phaser.Input.Keyboard.Key(Phaser.Input.Keyboard.KeyCodes.D)
     public space: Phaser.Input.Keyboard.Key = new Phaser.Input.Keyboard.Key(Phaser.Input.Keyboard.KeyCodes.SPACE)
     public shift: Phaser.Input.Keyboard.Key = new Phaser.Input.Keyboard.Key(Phaser.Input.Keyboard.KeyCodes.SHIFT)
+    public action: Phaser.Input.Keyboard.Key = new Phaser.Input.Keyboard.Key(Phaser.Input.Keyboard.KeyCodes.E)
 
     constructor(scene: Phaser.Scene) {
         this.up = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
@@ -14,5 +15,6 @@ export default class Cursors {
         this.right = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         this.space = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         this.shift = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
+        this.action = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E)
     }
 }
