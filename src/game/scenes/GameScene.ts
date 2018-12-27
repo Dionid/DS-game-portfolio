@@ -120,7 +120,7 @@ export class GameScene extends Phaser.Scene {
     private createFirstRoom() {
         this.firstScreenOffsetY = 0
 
-        const helloTextY = this.firstScreenOffsetY + this.sys.canvas.height / 2 - 150
+        const helloTextY = this.firstScreenOffsetY + this.sys.canvas.height / 2 - 175
 
         this.helloText = this.add.text(
             this.leftTextStartOffsetX,
