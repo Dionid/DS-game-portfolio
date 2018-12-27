@@ -4,7 +4,7 @@
 			"image": "mainatlas.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 680,
+				"w": 698,
 				"h": 259
 			},
 			"scale": 1,
@@ -85,24 +85,24 @@
 					}
 				},
 				{
-					"filename": "objects/chests/chestDefault.psd",
+					"filename": "objects/projects/folderClodesTouched.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 52,
-						"h": 43
+						"w": 64,
+						"h": 50
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 52,
-						"h": 43
+						"w": 64,
+						"h": 50
 					},
 					"frame": {
 						"x": 627,
 						"y": 46,
-						"w": 52,
-						"h": 43
+						"w": 64,
+						"h": 50
 					},
 					"anchor": {
 						"x": 0.5,
@@ -160,7 +160,32 @@
 					}
 				},
 				{
-					"filename": "objects/projects/folderClodesTouched.psd",
+					"filename": "player/playerDown.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 36,
+						"h": 119
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 36,
+						"h": 119
+					},
+					"frame": {
+						"x": 553,
+						"y": 121,
+						"w": 36,
+						"h": 119
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderClosed.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -175,7 +200,7 @@
 					},
 					"frame": {
 						"x": 598,
-						"y": 91,
+						"y": 98,
 						"w": 64,
 						"h": 50
 					},
@@ -199,8 +224,8 @@
 						"h": 52
 					},
 					"frame": {
-						"x": 553,
-						"y": 121,
+						"x": 591,
+						"y": 150,
 						"w": 39,
 						"h": 52
 					},
@@ -210,24 +235,24 @@
 					}
 				},
 				{
-					"filename": "objects/projects/folderClosed.psd",
+					"filename": "objects/chests/chestDefault.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 50
+						"w": 52,
+						"h": 43
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 50
+						"w": 52,
+						"h": 43
 					},
 					"frame": {
-						"x": 594,
-						"y": 143,
-						"w": 64,
-						"h": 50
+						"x": 591,
+						"y": 204,
+						"w": 52,
+						"h": 43
 					},
 					"anchor": {
 						"x": 0.5,
@@ -249,8 +274,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 553,
-						"y": 195,
+						"x": 645,
+						"y": 150,
 						"w": 52,
 						"h": 43
 					},
@@ -274,7 +299,7 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 607,
+						"x": 645,
 						"y": 195,
 						"w": 52,
 						"h": 43
@@ -290,6 +315,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:b8dfc3f64b35d8a76ab945557a0987ed:710254fdfa614219d80fcf0a8d13e48c:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:d01aa7671f3f2825665cd9d11785657a:bdfe4b65d689e68a308a90192ff9b227:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

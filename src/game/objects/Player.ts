@@ -19,4 +19,18 @@ export class Player extends Phaser.GameObjects.Sprite {
         this.body.setOffset(0, this.body.height - 10)
         this.body.setSize(this.body.width, 10, false)
     }
+
+    public setLeftMovementPose() {
+        this.setFrame("player/player.psd")
+        this.flipX = true
+    }
+
+    public setRightMovementPose() {
+        this.setFrame("player/player.psd")
+        this.flipX = false
+    }
+
+    public setDownMovementPose() {
+        this.setFrame("player/playerDown.psd")
+    }
 }

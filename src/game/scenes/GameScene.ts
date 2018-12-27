@@ -354,7 +354,7 @@ export class GameScene extends Phaser.Scene {
     public dashInProcessTimestamp = 0
     public dashInProcessTimelong = 150
     public dashEndedTimestamp = 0
-    private dashRestTimelong = 200
+    private dashRestTimelong = 500
     private dashSpeed = 3000
     public dashMoveVectorNormalized!: Phaser.Math.Vector2
 
@@ -375,12 +375,10 @@ export class GameScene extends Phaser.Scene {
     private playerDashSystem(time: number, delta: number) {
         if (this.dashInProcess) {
             if (time > this.dashInProcessTimestamp + this.dashInProcessTimelong) {
-                // console.log("dashEndedTimestamp")
                 this.dashInProcess = false
                 this.dashEndedTimestamp = time
             }
         } else {
-            // console.log()
             if (
                 !this.dashBtnOnHold
                 && this.input.mousePointer.isDown
@@ -391,7 +389,6 @@ export class GameScene extends Phaser.Scene {
                     this.input.mousePointer.position.y,
                 )
                 this.dashMoveVectorNormalized = mousePosVector.subtract(this.player.body.position).normalize()
-                // console.log(this.dashMoveVectorNormalized)
                 this.dashInProcess = true
                 this.dashInProcessTimestamp = time
             }
@@ -411,9 +408,6 @@ export class GameScene extends Phaser.Scene {
     private deaccelerationTime = 300
 
     public playerMovementSystem(time: number, delta: number) {
-        // let playerWasInMove = !!this.player.body.velocity
-
-        // this.player.body.setVelocity(0)
 
         if (this.dashInProcess) {
             const accelerationOverTime = (time - this.dashInProcessTimestamp) / this.dashInProcessTimelong + 0.3
@@ -428,6 +422,23 @@ export class GameScene extends Phaser.Scene {
                 this.cursors.up.isDown ||
                 this.cursors.down.isDown
             ) {
+                //         // // Mouse movement
+                //         // const mousePosVector = this.cameras.main.getWorldPoint(
+                //         //     this.input.mousePointer.position.x,
+                //         //     this.input.mousePointer.position.y,
+                //         // )
+                //         //
+                //         // const playerDistance = this.player.body.position
+                //         //     .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
+                //         //     .distance(mousePosVector)
+                //         //
+                //         // if (
+                //         //     (!playerWasInMove && playerDistance > 150)
+                //         //     ||
+                //         //     (playerWasInMove && playerDistance > 100)
+                //         // ) {
+                //         //     this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, playerSpeed)
+                //         // }
                 this.movementStopTime = 0
                 if (this.movementStartTime === 0) {
                     this.movementStartTime = time
@@ -445,15 +456,18 @@ export class GameScene extends Phaser.Scene {
 
                 if (this.cursors.left.isDown && !this.cursors.right.isDown) {
                     this.player.body.setVelocityX(-playerSpeed)
-                }
-                if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+                } else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
                     this.player.body.setVelocityX(playerSpeed)
+                } else {
+                    this.player.body.setVelocityX(0)
                 }
+
                 if (this.cursors.up.isDown && !this.cursors.down.isDown) {
                     this.player.body.setVelocityY(-playerSpeed)
-                }
-                if (this.cursors.down.isDown && !this.cursors.up.isDown) {
+                } else if (this.cursors.down.isDown && !this.cursors.up.isDown) {
                     this.player.body.setVelocityY(playerSpeed)
+                } else {
+                    this.player.body.setVelocityY(0)
                 }
                 if (this.playerMovesVert && this.playerMovesHor) {
                     this.player.body.velocity.x = this.player.body.velocity.x * 0.8
@@ -475,69 +489,9 @@ export class GameScene extends Phaser.Scene {
                 } else {
                     this.player.body.setVelocity(0)
                 }
-
-                // console.log(this.player.body.velocity.x, this.player.body.velocity.y)
-                // if (this.player.body.velocity.x > 0 || this.player.body.velocity.y > 0) {
-                //     this.player.body.setVelocity(this.player.body.velocity.x * deacc, this.player.body.velocity.y * deacc)
-                // }
             }
         }
     }
-
-    // public playerMovementSystem(time: number, delta: number) {
-    //     let playerWasInMove = !!this.player.body.velocity
-    //
-    //     this.player.body.setVelocity(0)
-    //
-    //     if (this.dashInProcess) {
-    //         const accelerationOverTime = (time - this.dashInProcessTimestamp) / this.dashInProcessTimelong + 0.3
-    //         this.player.body.setVelocity(
-    //             this.dashMoveVectorNormalized.x * this.dashSpeed * accelerationOverTime,
-    //             this.dashMoveVectorNormalized.y * this.dashSpeed * accelerationOverTime,
-    //         )
-    //     } else {
-    //         let playerSpeed = this.player.speed * (delta * 60 / 1000)
-    //
-    //         if (this.cursors.shift.isDown) {
-    //             playerSpeed *= 1.5
-    //         }
-    //
-    //         // // Mouse movement
-    //         // const mousePosVector = this.cameras.main.getWorldPoint(
-    //         //     this.input.mousePointer.position.x,
-    //         //     this.input.mousePointer.position.y,
-    //         // )
-    //         //
-    //         // const playerDistance = this.player.body.position
-    //         //     .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
-    //         //     .distance(mousePosVector)
-    //         //
-    //         // if (
-    //         //     (!playerWasInMove && playerDistance > 150)
-    //         //     ||
-    //         //     (playerWasInMove && playerDistance > 100)
-    //         // ) {
-    //         //     this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, playerSpeed)
-    //         // }
-    //
-    //         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-    //             this.player.body.setVelocityX(-playerSpeed)
-    //         }
-    //         if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-    //             this.player.body.setVelocityX(playerSpeed)
-    //         }
-    //         if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-    //             this.player.body.setVelocityY(-playerSpeed)
-    //         }
-    //         if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-    //             this.player.body.setVelocityY(playerSpeed)
-    //         }
-    //         if (this.playerMovesVert && this.playerMovesHor) {
-    //             this.player.body.velocity.x = this.player.body.velocity.x * 0.8
-    //             this.player.body.velocity.y = this.player.body.velocity.y * 0.8
-    //         }
-    //     }
-    // }
 
     private playerMovesDirectionSystem() {
         this.playerMovesLeft = false
@@ -547,29 +501,32 @@ export class GameScene extends Phaser.Scene {
         this.playerMovesHor = false
         this.playerMovesVert = false
 
-        if (this.player.body.velocity.x > 0) {
+        if (this.cursors.right.isDown && !this.cursors.left.isDown) {
             this.playerMovesRight = true
             this.playerMovesHor = true
-        } else if (this.player.body.velocity.x < 0) {
+        } else if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             this.playerMovesLeft = true
             this.playerMovesHor = true
         }
 
-        if (this.player.body.velocity.y < 0) {
+        if (this.cursors.up.isDown && !this.cursors.down.isDown) {
             this.playerMovesUp = true
             this.playerMovesVert = true
-        } else if (this.player.body.velocity.y > 0) {
+        } else if (this.cursors.down.isDown && !this.cursors.up.isDown) {
             this.playerMovesDown = true
             this.playerMovesVert = true
         }
     }
 
     private playerAnimationSystem(time: number, delta: number) {
+        if (this.playerMovesDown) {
+            this.player.setDownMovementPose()
+        }
         if (this.playerMovesLeft) {
-            this.player.flipX = true
+            this.player.setLeftMovementPose()
         }
         if (this.playerMovesRight) {
-            this.player.flipX = false
+            this.player.setRightMovementPose()
         }
     }
 
