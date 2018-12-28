@@ -10,6 +10,7 @@ export function GODecorator<T extends {new(...args: any[]): {}}>(cl: T): T {
 }
 
 export class GOSprite extends Phaser.GameObjects.Sprite implements IGO {
+    public body!: Phaser.Physics.Arcade.Body
     public id = "id" + (new Date()).getTime()
 }
 
