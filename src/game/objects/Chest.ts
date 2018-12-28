@@ -1,12 +1,11 @@
+import {GOSprite} from "game/GOManager"
 
-export class Chest extends Phaser.GameObjects.Sprite {
+export class Chest extends GOSprite {
     public body!: Phaser.Physics.Arcade.Body
-    public id: string
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, "mainatlas", "objects/chests/chestDefault.psd")
 
-        this.id = "id" + (new Date()).getTime()
         this.initPhysics()
     }
 

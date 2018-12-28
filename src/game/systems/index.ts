@@ -10,6 +10,7 @@ export interface ISystemAdditional {
 // TODO: Add PhaserToInputsSystem
 export interface ISystemPhaserInjectable {
     cursors: Cursors,
+    scene: Phaser.Scene,
     playerGO: Player,
     goManager: GOManager,
     gameWidth: number,

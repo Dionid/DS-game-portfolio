@@ -22,6 +22,8 @@ import GOManager from "game/GOManager"
 import BodyComponentComponentFactory from "game/components/BodyComponent"
 import PhaserInputBodySystem from "game/systems/PhaserInputBodySystem"
 import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
+import ChestComponentFactory from "game/components/ChestComponent"
+import ChestSystem from "game/systems/ChestSystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -29,6 +31,7 @@ const ECS = new ECSManager([
     PlayerMovementSystem,
     WorldBorderCollisionSystem,
     DynamicDepthSystem,
+    ChestSystem,
     PhaserOutputPlayerAnimationSystem,
     PhaserOutputPlayerMovementSystem,
     PhaserOutputDynamicDepthSystem,
@@ -75,13 +78,6 @@ export class GameScene extends Phaser.Scene {
             key: "GameScene",
         })
     }
-
-    // private secondPageCamera = false
-    //
-    // private setSecondPageCamera() {
-    //     this.secondPageCamera = true
-    //     this.cameras.main.setScroll(0, this.sys.canvas.height)
-    // }
 
     private calculateRooms() {
         this.gameWidth = this.sys.canvas.width
@@ -305,8 +301,69 @@ export class GameScene extends Phaser.Scene {
         // const chests = this.add.group()
 
         const fChest = new Chest(this, this.gameWidth - 330, secondScreenOffsetY + this.screenHeight / 3 )
+        ECS.entitiesManager.createEntity([
+            ChestComponentFactory(
+                this.chestLoot[0],
+            ),
+            GOComponentFactory(fChest.id),
+            BodyComponentComponentFactory(
+                fChest.body.x,
+                fChest.body.y,
+                fChest.body.width,
+                fChest.body.height,
+            ),
+            PositionComponentFactory(
+                fChest.x,
+                fChest.y,
+                fChest.width,
+                fChest.height,
+            ),
+            DepthComponentComponentFactory(fChest.depth),
+        ])
         const sChest = new Chest(this, 200, secondScreenOffsetY + this.screenHeight / 3 * 2)
+        ECS.entitiesManager.createEntity([
+            ChestComponentFactory(
+                this.chestLoot[1],
+            ),
+            GOComponentFactory(sChest.id),
+            BodyComponentComponentFactory(
+                sChest.body.x,
+                sChest.body.y,
+                sChest.body.width,
+                sChest.body.height,
+            ),
+            PositionComponentFactory(
+                sChest.x,
+                sChest.y,
+                sChest.width,
+                sChest.height,
+            ),
+            DepthComponentComponentFactory(sChest.depth),
+        ])
         const thChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + this.screenHeight / 3 * 2.3)
+        ECS.entitiesManager.createEntity([
+            ChestComponentFactory(
+                this.chestLoot[2],
+            ),
+            GOComponentFactory(thChest.id),
+            BodyComponentComponentFactory(
+                thChest.body.x,
+                thChest.body.y,
+                thChest.body.width,
+                thChest.body.height,
+            ),
+            PositionComponentFactory(
+                thChest.x,
+                thChest.y,
+                thChest.width,
+                thChest.height,
+            ),
+            DepthComponentComponentFactory(thChest.depth),
+        ])
+
+        this.goManager.addGO(fChest)
+        this.goManager.addGO(sChest)
+        this.goManager.addGO(thChest)
 
         this.chests.add(fChest, true)
         this.chests.add(sChest, true)
@@ -444,10 +501,6 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    private playerDepthSystem() {
-        this.player.setDepth(this.player.body.y)
-    }
-
     private playerSpaceHoldSystem() {
         this.dashBtnOnHold = this.input.mousePointer.isDown
     }
@@ -539,13 +592,14 @@ export class GameScene extends Phaser.Scene {
             delta,
         }, {
             cursors: this.cursors,
+            scene: this,
             goManager: this.goManager,
             playerGO: this.player,
             gameWidth: this.gameWidth,
             gameHeight: this.gameHeight,
         })
 
-        this.chestTriggerSystem()
+        // this.chestTriggerSystem()
 
         // this.playerDepthSystem()
 
