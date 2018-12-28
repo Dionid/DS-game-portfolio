@@ -17,4 +17,5 @@ export interface ISystemPhaserInjectable {
     timeSpeedScale: {
         value: number,
     },
+    deltaTimeScaled: number,
 }

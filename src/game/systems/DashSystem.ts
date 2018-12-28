@@ -67,7 +67,7 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
             const go = inj.goManager.getGOById(ent.componentsByName[GO_COMPONENT_NAME].state.id) as GOSprite
 
             if (dashComp.dashInProcess) {
-                inj.timeSpeedScale.value = Math.min(1, inj.timeSpeedScale.value * 1.1)
+                inj.timeSpeedScale.value = Math.min(1, inj.timeSpeedScale.value * 1.3)
                 movComp.active = false
                 const destVector = new Vector2(
                     dashComp.dashDestX - dashComp.dashStartingPosX,
@@ -82,7 +82,7 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                 dashComp.dashDistancePassed +=
                     Math.sqrt(Math.pow(movComp.curVelocityX, 2) + Math.pow(movComp.curVelocityY, 2))
                     *
-                    (additional.delta * inj.timeSpeedScale.value / 1000)
+                    (inj.deltaTimeScaled / 1000)
 
                 inj.scene.cameras.main.setZoom(inj.scene.cameras.main.zoom * 0.999)
 

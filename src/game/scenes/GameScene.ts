@@ -569,6 +569,7 @@ export class GameScene extends Phaser.Scene {
             gameWidth: this.gameWidth,
             gameHeight: this.gameHeight,
             timeSpeedScale: this.timeSpeedScale,
+            deltaTimeScaled: delta * this.timeSpeedScale.value,
         })
 
         this.playerSpaceHoldSystem()
