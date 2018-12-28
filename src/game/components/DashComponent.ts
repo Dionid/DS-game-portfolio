@@ -1,8 +1,9 @@
 import {IComponentFactory} from "game/ECS/types"
 
 export interface IDashComponentState {
-    dashRange: number
-    dashRangePassed: number
+    dashDistanceMax: number
+    dashDistancePassed: number
+    dashDistanceCur: number
     dashDestX: number
     dashDestY: number
     dashSpeed: number
@@ -18,9 +19,10 @@ const DashComponentFactory: IComponentFactory<IDashComponentState> = (dashRange:
     return {
         name: DASH_COMPONENT_NAME,
         state: {
-            dashRange: dashRange || 200,
+            dashDistanceMax: dashRange || 300,
+            dashDistanceCur: 0,
+            dashDistancePassed: 0,
             dashSpeed: dashSpeed || 10,
-            dashRangePassed: 0,
             dashInProcess: false,
             dashAiming: false,
             dashStartingPosX: 0,

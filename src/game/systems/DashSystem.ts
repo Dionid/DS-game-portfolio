@@ -6,16 +6,18 @@ import {IMovementComponentState, MOVEMENT_COMPONENT_NAME} from "game/components/
 import {BODY_COMPONENT_NAME, IBodyComponentState} from "game/components/BodyComponent"
 import {GO_COMPONENT_NAME} from "game/components/GOComponent"
 import {GOSprite} from "game/GOManager"
+const Vector2 = Phaser.Math.Vector2
 
 const DashSystemName = "DashSystem"
 
 class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
     private line!: Phaser.GameObjects.Graphics
+    private playerShadow!: Phaser.GameObjects.Sprite
 
     public init(
         entityManager: EntitiesManager,
         additional: ISystemAdditional,
-        injectable: ISystemPhaserInjectable
+        injectable: ISystemPhaserInjectable,
     ): undefined {
         this.line = injectable.scene.add.graphics({
             x: 0,
@@ -30,6 +32,16 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                 alpha: 1,
             },
         })
+        this.playerShadow = new Phaser.GameObjects.Sprite(
+            injectable.scene,
+            0,
+            0,
+            "mainatlas",
+            "player/player.psd",
+        )
+        this.playerShadow.setScale(0.85, 0.85)
+        this.playerShadow.setAlpha(0.5)
+        injectable.scene.add.existing(this.playerShadow)
         return
     }
 
@@ -55,23 +67,23 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
 
             if (dashComp.dashInProcess) {
                 movComp.active = false
-                const destVector = new Phaser.Math.Vector2(
+                const destVector = new Vector2(
                     dashComp.dashDestX - dashComp.dashStartingPosX,
                     dashComp.dashDestY - dashComp.dashStartingPosY,
                 )
-                    .scale(((dashComp.dashRangePassed / dashComp.dashRange) + 0.6) * dashComp.dashSpeed)
+                    .scale(((dashComp.dashDistancePassed / dashComp.dashDistanceCur) + 0.6) * dashComp.dashSpeed)
 
                 movComp.curVelocityX = destVector.x
                 movComp.curVelocityY = destVector.y
 
                 // Formula from distanceFromVelocity * timePassed
-                dashComp.dashRangePassed +=
+                dashComp.dashDistancePassed +=
                     Math.sqrt(Math.pow(movComp.curVelocityX, 2) + Math.pow(movComp.curVelocityY, 2))
                     *
                     (additional.delta / 1000)
 
                 if (
-                    dashComp.dashRangePassed > dashComp.dashRange
+                    dashComp.dashDistancePassed > dashComp.dashDistanceCur
                 ) {
                     dashComp.dashInProcess = false
                 }
@@ -81,38 +93,66 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                         return
                     }
 
-                    movComp.active = false
+                    // movComp.active = false
                     dashComp.dashAiming = true
                     this.line.clear()
                     const bodyXCPos = bodyComp.x + bodyComp.width / 2
                     const bodyYCPos = bodyComp.y + bodyComp.height / 2
                     this.line.moveTo(bodyXCPos, bodyYCPos)
-                    const camVector = new Phaser.Math.Vector2(
+                    // const camVector = new Vector2(
+                    //     inj.scene.input.mousePointer.position.x + inj.scene.cameras.main.scrollX - bodyXCPos,
+                    //     inj.scene.input.mousePointer.position.y + inj.scene.cameras.main.scrollY - bodyYCPos,
+                    // ).normalize().scale(dashComp.dashRange)
+                    // this.line.lineTo(
+                    //     bodyXCPos + camVector.x,
+                    //     bodyYCPos + camVector.y,
+                    // )
+                    dashComp.dashDistanceCur = Math.min(
+                        dashComp.dashDistanceMax,
+                        new Vector2(
+                            inj.scene.input.mousePointer.position.x + inj.scene.cameras.main.scrollX,
+                            inj.scene.input.mousePointer.position.y + inj.scene.cameras.main.scrollY,
+                        ).distance(
+                            new Vector2(
+                                bodyXCPos,
+                                bodyYCPos,
+                            ),
+                        ),
+                    )
+                    const camVector = new Vector2(
                         inj.scene.input.mousePointer.position.x + inj.scene.cameras.main.scrollX - bodyXCPos,
                         inj.scene.input.mousePointer.position.y + inj.scene.cameras.main.scrollY - bodyYCPos,
-                    ).normalize().scale(dashComp.dashRange)
+                    ).normalize().scale(dashComp.dashDistanceCur)
                     this.line.lineTo(
                         bodyXCPos + camVector.x,
                         bodyYCPos + camVector.y,
                     )
                     this.line.strokePath()
                     inj.scene.add.existing(this.line)
+                    this.playerShadow.setPosition(
+                        bodyXCPos + camVector.x,
+                        bodyYCPos + camVector.y - this.playerShadow.height / 2 + 10,
+                    )
                 } else {
                     this.line.clear()
                     if (dashComp.dashAiming) {
+                        this.playerShadow.setPosition(
+                            -1000,
+                            -1000,
+                        )
                         const bodyXCPos = bodyComp.x + bodyComp.width / 2
                         const bodyYCPos = bodyComp.y + bodyComp.height / 2
                         dashComp.dashAiming = false
                         dashComp.dashInProcess = true
-                        dashComp.dashRangePassed = 0
+                        dashComp.dashDistancePassed = 0
                         dashComp.dashStartingPosX = bodyComp.x
                         dashComp.dashStartingPosY = bodyComp.y
-                        const camVector = new Phaser.Math.Vector2(
+                        const camVector = new Vector2(
                             inj.scene.input.mousePointer.position.x + inj.scene.cameras.main.scrollX - bodyXCPos,
                             inj.scene.input.mousePointer.position.y + inj.scene.cameras.main.scrollY - bodyYCPos,
                         )
                             .normalize()
-                            .scale(dashComp.dashRange)
+                            .scale(dashComp.dashDistanceCur)
                         dashComp.dashDestX = camVector.x + bodyXCPos
                         dashComp.dashDestY = camVector.y + bodyYCPos
                     } else {

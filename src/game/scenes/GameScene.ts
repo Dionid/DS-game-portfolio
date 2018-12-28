@@ -410,7 +410,9 @@ export class GameScene extends Phaser.Scene {
         subtitleText.setDepth(this.gameHeight)
 
         const fFolder = new Folder(this, "SPA", this.gameWidth / 2, thirdScreenOffsetY + this.screenHeight / 2 )
-        this.add.existing(fFolder)
+        this.folders.add(fFolder, true)
+
+        this.physics.add.collider(this.player, this.folders)
     }
 
     private createMainCamera() {
@@ -422,9 +424,11 @@ export class GameScene extends Phaser.Scene {
     }
 
     private chests!: Phaser.GameObjects.Group
+    private folders!: Phaser.GameObjects.Group
 
     private createObjectsAndGroups() {
         this.chests = this.add.group({ classType: Chest })
+        this.folders = this.add.group({ classType: Folder})
     }
 
     public create(): void {
