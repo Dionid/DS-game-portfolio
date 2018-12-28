@@ -5,6 +5,25 @@ import Cursors from "game/models/Cursors"
 import {Loot} from "game/objects/Loot"
 import ServiceDescription from "game/objects/ServiceDescription"
 import {Folder} from "game/objects/Folder"
+import ECSManager from "game/ECS"
+import DashComponentFactory from "game/components/DashComponent"
+import PlayerComponentFactory from "game/components/PlayerComponent"
+import GOComponentFactory from "game/components/GOComponent"
+import MovementComponentFactory from "game/components/MovementComponent"
+import PlayerMovementSystem from "game/systems/PlayerMovementSystem"
+import WorldBorderCollisionSystem from "game/systems/WorldBorderCollisionSystem"
+import PhaserOutputPlayerMovementSystem from "game/systems/PhaserOutputPlayerMovementSystem"
+import PhaserOutputPlayerAnimationSystem from "game/systems/PhaserOutputPlayerAnimationSystem"
+import PositionComponentFactory from "game/components/PositionComponent"
+import PhaserInputPositionSystem from "game/systems/PhaserInputPositionSystem"
+
+const ECS = new ECSManager([
+    PhaserInputPositionSystem,
+    PlayerMovementSystem,
+    WorldBorderCollisionSystem,
+    PhaserOutputPlayerAnimationSystem,
+    PhaserOutputPlayerMovementSystem,
+])
 
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
@@ -107,6 +126,18 @@ export class GameScene extends Phaser.Scene {
             this.spawnPosition.y,
         )
         this.add.existing(this.player)
+        ECS.entitiesManager.createEntity([
+            PlayerComponentFactory(),
+            MovementComponentFactory(this.player.speed, 200, 300, 1.5),
+            DashComponentFactory(),
+            GOComponentFactory(this.player.id),
+            PositionComponentFactory(
+                this.player.x,
+                this.player.y,
+                this.player.width,
+                this.player.height,
+            ),
+        ])
         // this.player.body.setCollideWorldBounds(true)
     }
 
@@ -349,15 +380,6 @@ export class GameScene extends Phaser.Scene {
         this.createMainCamera()
     }
 
-    public dashBtnOnHold = false
-    public dashInProcess = false
-    public dashInProcessTimestamp = 0
-    public dashInProcessTimelong = 150
-    public dashEndedTimestamp = 0
-    private dashRestTimelong = 500
-    private dashSpeed = 3000
-    public dashMoveVectorNormalized!: Phaser.Math.Vector2
-
     public cameraMousePointerFollorSystem() {
         const halsOfScreenY = this.sys.canvas.height / 2
         this.cameras.main.followOffset.y = (this.input.mousePointer.position.y - halsOfScreenY) * -1
@@ -371,6 +393,15 @@ export class GameScene extends Phaser.Scene {
             this.cameras.main.followOffset.y *=  -1
         }
     }
+
+    public dashBtnOnHold = false
+    public dashInProcess = false
+    public dashInProcessTimestamp = 0
+    public dashInProcessTimelong = 150
+    public dashEndedTimestamp = 0
+    private dashRestTimelong = 500
+    private dashSpeed = 3000
+    public dashMoveVectorNormalized!: Phaser.Math.Vector2
 
     private playerDashSystem(time: number, delta: number) {
         if (this.dashInProcess) {
@@ -637,14 +668,25 @@ export class GameScene extends Phaser.Scene {
 
         // Then we add Dash if it is needed
         this.playerDashSystem(time, delta)
+
+        ECS.exec({
+            time,
+            delta,
+        }, {
+            cursors: this.cursors,
+            playerGO: this.player,
+            gameWidth: this.gameWidth,
+            gameHeight: this.gameHeight,
+        })
+
         // First of all we move Player
-        this.playerMovementSystem(time, delta)
+        // this.playerMovementSystem(time, delta)
+
         // After all Moves we determining Player Direction
-        this.playerMovesDirectionSystem()
-        // After Moves and Direction we adding animation
-        this.playerAnimationSystem(time, delta)
+        // this.playerMovesDirectionSystem()
+
         // After Moves and Direction we checking for world border collision
-        this.playerBorderCollisionSystem()
+        // this.playerBorderCollisionSystem()
 
         this.chestTriggerSystem()
 
