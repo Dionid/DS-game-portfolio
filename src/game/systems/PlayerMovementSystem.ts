@@ -7,6 +7,24 @@ import {ISystemAdditional, ISystemPhaserInjectable} from "game/systems/index"
 const PlayerMovementSystemName = "playerMovementSystem"
 
 class PlayerMovementSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
+
+    private loseSpeed(movementComp: IMovementComponentState, additional: ISystemAdditional) {
+        if (movementComp.movementStopTime === 0) {
+            movementComp.movementStopTime = additional.time
+        }
+        movementComp.movementStartTime = 0
+
+        const deacc = 1 - (additional.time - movementComp.movementStopTime) / movementComp.deAccelerationTime
+
+        if (deacc > 0) {
+            movementComp.curVelocityX = movementComp.curVelocityX * deacc
+            movementComp.curVelocityY = movementComp.curVelocityY * deacc
+        } else {
+            movementComp.curVelocityX = 0
+            movementComp.curVelocityY = 0
+        }
+    }
+
     public update(
         entityManager: EntitiesManager,
         additional: ISystemAdditional,
@@ -25,6 +43,11 @@ class PlayerMovementSystem extends System<ISystemAdditional, ISystemPhaserInject
         movementComp.movesDown = false
         movementComp.movesHor = false
         movementComp.movesVert = false
+
+        if (!movementComp.active) {
+            this.loseSpeed(movementComp, additional)
+            return
+        }
 
         if (
             inj.cursors.left.isDown ||
@@ -76,20 +99,7 @@ class PlayerMovementSystem extends System<ISystemAdditional, ISystemPhaserInject
                 movementComp.curVelocityY = movementComp.curVelocityY * .8
             }
         } else {
-            if (movementComp.movementStopTime === 0) {
-                movementComp.movementStopTime = additional.time
-            }
-            movementComp.movementStartTime = 0
-
-            const deacc = 1 - (additional.time - movementComp.movementStopTime) / movementComp.deAccelerationTime
-
-            if (deacc > 0) {
-                movementComp.curVelocityX = movementComp.curVelocityX * deacc
-                movementComp.curVelocityY = movementComp.curVelocityY * deacc
-            } else {
-                movementComp.curVelocityX = 0
-                movementComp.curVelocityY = 0
-            }
+            this.loseSpeed(movementComp, additional)
         }
 
         return

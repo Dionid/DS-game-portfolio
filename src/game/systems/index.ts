@@ -11,7 +11,6 @@ export interface ISystemAdditional {
 export interface ISystemPhaserInjectable {
     cursors: Cursors,
     scene: Phaser.Scene,
-    playerGO: Player,
     goManager: GOManager,
     gameWidth: number,
     gameHeight: number,

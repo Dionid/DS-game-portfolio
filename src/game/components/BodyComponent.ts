@@ -5,6 +5,7 @@ export interface IBodyComponentState {
     y: number
     width: number
     height: number
+    speed: number
 }
 
 export const BODY_COMPONENT_NAME = "BodyComponent"
@@ -22,6 +23,7 @@ const BodyComponentFactory: IComponentFactory<IBodyComponentState> = (
             y,
             width,
             height,
+            speed: 0,
         },
     }
 }

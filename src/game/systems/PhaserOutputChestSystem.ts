@@ -11,9 +11,9 @@ import {GOSprite} from "game/GOManager"
 import {DEPTH_COMPONENT_NAME, IDepthComponentComponentState} from "game/components/DepthComponent"
 const Vector2 = Phaser.Math.Vector2
 
-const ChestSystemName = "ChestSystem"
+const PhaserOutputChestSystemName = "PhaserOutputChestSystem"
 
-class ChestSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
+class PhaserOutputChestSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
     private chestsOpened = 0
 
     public update(
@@ -95,4 +95,4 @@ class ChestSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
     }
 }
 
-export default new ChestSystem(ChestSystemName)
+export default new PhaserOutputChestSystem(PhaserOutputChestSystemName)

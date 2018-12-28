@@ -23,7 +23,8 @@ import BodyComponentComponentFactory from "game/components/BodyComponent"
 import PhaserInputBodySystem from "game/systems/PhaserInputBodySystem"
 import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
 import ChestComponentFactory from "game/components/ChestComponent"
-import ChestSystem from "game/systems/ChestSystem"
+import PhaserOutputChestSystem from "game/systems/PhaserOutputChestSystem"
+import DashSystem from "game/systems/DashSystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -31,7 +32,8 @@ const ECS = new ECSManager([
     PlayerMovementSystem,
     WorldBorderCollisionSystem,
     DynamicDepthSystem,
-    ChestSystem,
+    DashSystem,
+    PhaserOutputChestSystem,
     PhaserOutputPlayerAnimationSystem,
     PhaserOutputPlayerMovementSystem,
     PhaserOutputDynamicDepthSystem,
@@ -453,6 +455,17 @@ export class GameScene extends Phaser.Scene {
 
         // Main camera
         this.createMainCamera()
+
+        ECS.onInit({
+            time: 0,
+            delta: 0,
+        }, {
+            cursors: this.cursors,
+            scene: this,
+            goManager: this.goManager,
+            gameWidth: this.gameWidth,
+            gameHeight: this.gameHeight,
+        })
     }
 
     public cameraMousePointerFollorSystem() {
@@ -531,61 +544,12 @@ export class GameScene extends Phaser.Scene {
         },
     ]
 
-    private nearByChests: Chest[] = []
-
-    private chestTriggerSystem() {
-        const chests = this.chests.getChildren() as Chest[]
-
-        for (let i = 0; i < chests.length; i++) {
-            const chest = chests[i]
-            if (this.player.body.position.distance(chest.body.position) < 100) {
-                // ToDo: Think of over check for changing Frame
-                if (chest.frame.name === "objects/chests/chestDefault.psd") {
-                    chest.setFrame("objects/chests/chestTouched.psd")
-                    this.nearByChests.push(chest)
-                }
-            } else {
-                if (chest.frame.name === "objects/chests/chestTouched.psd") {
-                    chest.setFrame("objects/chests/chestDefault.psd")
-                    this.nearByChests = this.nearByChests.filter((ch) => ch !== chest)
-                }
-            }
-            if (this.nearByChests.indexOf(chest) > -1 && chest.frame.name !== "objects/chests/chestOpened.psd") {
-                if (this.cursors.action.isDown) {
-                    chest.setFrame("objects/chests/chestOpened.psd")
-                    const lootData = this.chestLoot.find((l) => !l.opened)
-                    if (lootData) {
-                        const loot = new Loot(
-                            this,
-                            chest.body.x + chest.body.width / 2,
-                            chest.body.y - chest.body.height,
-                            lootData.img,
-                            chest.depth,
-                        )
-                        this.add.existing(loot)
-                        const sd = new ServiceDescription(
-                            this,
-                            chest.body.x + chest.body.width / 2,
-                            chest.body.y,
-                            chest.depth - 1,
-                            35,
-                            lootData.title,
-                            lootData.subtitle,
-                            lootData.desc,
-                        )
-                        lootData.opened = true
-                    }
-                }
-            }
-        }
-    }
-
     public update(time: number, delta: number): void {
 
         this.cameraMousePointerFollorSystem()
 
         // Then we add Dash if it is needed
-        this.playerDashSystem(time, delta)
+        // this.playerDashSystem(time, delta)
 
         ECS.exec({
             time,
@@ -594,14 +558,9 @@ export class GameScene extends Phaser.Scene {
             cursors: this.cursors,
             scene: this,
             goManager: this.goManager,
-            playerGO: this.player,
             gameWidth: this.gameWidth,
             gameHeight: this.gameHeight,
         })
-
-        // this.chestTriggerSystem()
-
-        // this.playerDepthSystem()
 
         this.playerSpaceHoldSystem()
     }

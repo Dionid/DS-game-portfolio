@@ -1,6 +1,8 @@
 import {IComponentFactory} from "game/ECS/types"
 
 export interface IMovementComponentState {
+    active: boolean
+
     maxVelocity: number
     curVelocityX: number
     curVelocityY: number
@@ -29,6 +31,7 @@ const MovementComponentFactory: IComponentFactory<IMovementComponentState> = (
     return {
         name: MOVEMENT_COMPONENT_NAME,
         state: {
+            active: true,
             maxVelocity,
             curVelocityX: 0,
             curVelocityY: 0,

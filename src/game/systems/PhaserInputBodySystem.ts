@@ -26,6 +26,7 @@ class PhaserInputBodySystem extends System<ISystemAdditional, ISystemPhaserInjec
             const bodyComp = ent.componentsByName[BODY_COMPONENT_NAME].state as IBodyComponentState
             const goIdComp = ent.componentsByName[GO_COMPONENT_NAME].state as IGOComponentState
             const go = inj.goManager.getGOById(goIdComp.id) as GOSprite
+            bodyComp.speed = go.body.speed
             bodyComp.x = go.body.x
             bodyComp.y = go.body.y
             bodyComp.width = go.body.width

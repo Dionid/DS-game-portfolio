@@ -1,9 +1,7 @@
 import System from "game/ECS/system"
 import {ISystemAdditional, ISystemPhaserInjectable} from "game/systems/index"
 import EntitiesManager from "game/ECS/entitiesmanager"
-import {MOVEMENT_COMPONENT_NAME} from "game/components/MovementComponent"
-import {DEPTH_COMPONENT_NAME, IDepthComponentComponentState} from "game/components/DepthComponent"
-import {GO_COMPONENT_NAME, IGOComponentState} from "game/components/GOComponent"
+import {DEPTH_COMPONENT_NAME} from "game/components/DepthComponent"
 import {BODY_COMPONENT_NAME} from "game/components/BodyComponent"
 
 const DynamicDepthSystemName = "DynamicDepthSystem"
