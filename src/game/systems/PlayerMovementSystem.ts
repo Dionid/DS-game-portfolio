@@ -36,7 +36,7 @@ class PlayerMovementSystem extends System<ISystemAdditional, ISystemPhaserInject
             if (movementComp.movementStartTime === 0) {
                 movementComp.movementStartTime = additional.time
             }
-            let playerSpeed = inj.playerGO.speed * (additional.delta * 60 / 1000)
+            let playerSpeed = movementComp.maxVelocity * (additional.delta * 60 / 1000)
             const acc = (additional.time - movementComp.movementStartTime) / movementComp.accelerationTime
 
             if (acc < 1) {
