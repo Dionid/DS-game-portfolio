@@ -14,4 +14,7 @@ export interface ISystemPhaserInjectable {
     goManager: GOManager,
     gameWidth: number,
     gameHeight: number,
+    timeSpeedScale: {
+        value: number,
+    },
 }

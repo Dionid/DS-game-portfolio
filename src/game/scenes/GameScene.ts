@@ -548,6 +548,10 @@ export class GameScene extends Phaser.Scene {
         },
     ]
 
+    public timeSpeedScale = {
+        value: 1,
+    }
+
     public update(time: number, delta: number): void {
 
         this.cameraMousePointerFollorSystem()
@@ -564,6 +568,7 @@ export class GameScene extends Phaser.Scene {
             goManager: this.goManager,
             gameWidth: this.gameWidth,
             gameHeight: this.gameHeight,
+            timeSpeedScale: this.timeSpeedScale,
         })
 
         this.playerSpaceHoldSystem()

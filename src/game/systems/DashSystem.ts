@@ -66,6 +66,7 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
             const go = inj.goManager.getGOById(ent.componentsByName[GO_COMPONENT_NAME].state.id) as GOSprite
 
             if (dashComp.dashInProcess) {
+                inj.timeSpeedScale.value = 1
                 movComp.active = false
                 const destVector = new Vector2(
                     dashComp.dashDestX - dashComp.dashStartingPosX,
@@ -97,6 +98,7 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                     }
 
                     inj.scene.cameras.main.setZoom(Math.min(1.2, inj.scene.cameras.main.zoom * 1.0008))
+                    inj.timeSpeedScale.value = Math.max(0.2, inj.timeSpeedScale.value * .99)
 
                     dashComp.dashAiming = true
                     this.line.clear()

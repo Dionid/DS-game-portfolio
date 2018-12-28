@@ -24,8 +24,8 @@ class PhaserOutputMovementSystem extends System<ISystemAdditional, ISystemPhaser
             const goIdComp = ent.componentsByName[GO_COMPONENT_NAME].state as IGOComponentState
             const go = inj.goManager.getGOById(goIdComp.id) as GOSprite
             go.body.setVelocity(
-                movementComp.curVelocityX,
-                movementComp.curVelocityY,
+                movementComp.curVelocityX * inj.timeSpeedScale.value,
+                movementComp.curVelocityY * inj.timeSpeedScale.value,
             )
         }
 
