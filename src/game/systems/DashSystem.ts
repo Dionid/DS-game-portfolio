@@ -45,7 +45,7 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
         return
     }
 
-    private test = 0
+    private zoomValue = 1
 
     public update(
         entityManager: EntitiesManager,
@@ -82,10 +82,13 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                     *
                     (additional.delta / 1000)
 
+                inj.scene.cameras.main.setZoom(inj.scene.cameras.main.zoom * 0.999)
+
                 if (
                     dashComp.dashDistancePassed > dashComp.dashDistanceCur
                 ) {
                     dashComp.dashInProcess = false
+                    inj.scene.cameras.main.setZoom(1)
                 }
             } else {
                 if (inj.scene.input.mousePointer.isDown) {
@@ -93,20 +96,13 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                         return
                     }
 
-                    // movComp.active = false
+                    inj.scene.cameras.main.setZoom(Math.min(1.2, inj.scene.cameras.main.zoom * 1.0008))
+
                     dashComp.dashAiming = true
                     this.line.clear()
                     const bodyXCPos = bodyComp.x + bodyComp.width / 2
                     const bodyYCPos = bodyComp.y + bodyComp.height / 2
                     this.line.moveTo(bodyXCPos, bodyYCPos)
-                    // const camVector = new Vector2(
-                    //     inj.scene.input.mousePointer.position.x + inj.scene.cameras.main.scrollX - bodyXCPos,
-                    //     inj.scene.input.mousePointer.position.y + inj.scene.cameras.main.scrollY - bodyYCPos,
-                    // ).normalize().scale(dashComp.dashRange)
-                    // this.line.lineTo(
-                    //     bodyXCPos + camVector.x,
-                    //     bodyYCPos + camVector.y,
-                    // )
                     dashComp.dashDistanceCur = Math.min(
                         dashComp.dashDistanceMax,
                         new Vector2(
