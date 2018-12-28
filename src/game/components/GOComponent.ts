@@ -1,6 +1,6 @@
 import {IComponentFactory} from "game/ECS/types"
 
-interface IGOComponentState {
+export interface IGOComponentState {
     id: string
 }
 

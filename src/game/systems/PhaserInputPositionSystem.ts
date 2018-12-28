@@ -1,7 +1,6 @@
 import System from "game/ECS/system"
 import {ISystemAdditional, ISystemPhaserInjectable} from "game/systems/index"
 import EntitiesManager from "game/ECS/entitiesmanager"
-import {MOVEMENT_COMPONENT_NAME} from "game/components/MovementComponent"
 import {IPositionComponentState, POSITION_COMPONENT_NAME} from "game/components/PositionComponent"
 import {PLAYER_COMPONENT_NAME} from "game/components/PlayerComponent"
 

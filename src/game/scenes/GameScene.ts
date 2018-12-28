@@ -1,4 +1,4 @@
-import {Player} from "game/objects/Player"
+import Player from "game/objects/Player"
 import {Chest} from "game/objects/Chest"
 import Room from "game/models/Room"
 import Cursors from "game/models/Cursors"
@@ -16,13 +16,22 @@ import PhaserOutputPlayerMovementSystem from "game/systems/PhaserOutputPlayerMov
 import PhaserOutputPlayerAnimationSystem from "game/systems/PhaserOutputPlayerAnimationSystem"
 import PositionComponentFactory from "game/components/PositionComponent"
 import PhaserInputPositionSystem from "game/systems/PhaserInputPositionSystem"
+import DepthComponentComponentFactory from "game/components/DepthComponent"
+import PhaserOutputDynamicDepthSystem from "game/systems/PhaserOutputDynamicDepthSystem"
+import GOManager from "game/GOManager"
+import BodyComponentComponentFactory from "game/components/BodyComponent"
+import PhaserInputBodySystem from "game/systems/PhaserInputBodySystem"
+import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
+    PhaserInputBodySystem,
     PlayerMovementSystem,
     WorldBorderCollisionSystem,
+    DynamicDepthSystem,
     PhaserOutputPlayerAnimationSystem,
     PhaserOutputPlayerMovementSystem,
+    PhaserOutputDynamicDepthSystem,
 ])
 
 export class GameScene extends Phaser.Scene {
@@ -59,6 +68,7 @@ export class GameScene extends Phaser.Scene {
         },
     }
     private roomScreensTotalNumber: number = 0
+    private goManager = new GOManager()
 
     constructor() {
         super({
@@ -126,17 +136,25 @@ export class GameScene extends Phaser.Scene {
             this.spawnPosition.y,
         )
         this.add.existing(this.player)
+        this.goManager.addGO(this.player)
         ECS.entitiesManager.createEntity([
             PlayerComponentFactory(),
             MovementComponentFactory(this.player.speed, 200, 300, 1.5),
             DashComponentFactory(),
             GOComponentFactory(this.player.id),
+            BodyComponentComponentFactory(
+                this.player.body.x,
+                this.player.body.y,
+                this.player.body.width,
+                this.player.body.height,
+            ),
             PositionComponentFactory(
                 this.player.x,
                 this.player.y,
                 this.player.width,
                 this.player.height,
             ),
+            DepthComponentComponentFactory(this.player.depth),
         ])
         // this.player.body.setCollideWorldBounds(true)
     }
@@ -426,159 +444,6 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    private playerMovesLeft = false
-    private playerMovesRight = false
-    private playerMovesUp = false
-    private playerMovesDown = false
-    private playerMovesVert = false
-    private playerMovesHor = false
-
-    private movementStartTime = 0
-    private movementStopTime = 0
-    private accelerationTime = 200
-    private deaccelerationTime = 300
-
-    public playerMovementSystem(time: number, delta: number) {
-
-        if (this.dashInProcess) {
-            const accelerationOverTime = (time - this.dashInProcessTimestamp) / this.dashInProcessTimelong + 0.3
-            this.player.body.setVelocity(
-                this.dashMoveVectorNormalized.x * this.dashSpeed * accelerationOverTime,
-                this.dashMoveVectorNormalized.y * this.dashSpeed * accelerationOverTime,
-            )
-        } else {
-            if (
-                this.cursors.left.isDown ||
-                this.cursors.right.isDown ||
-                this.cursors.up.isDown ||
-                this.cursors.down.isDown
-            ) {
-                //         // // Mouse movement
-                //         // const mousePosVector = this.cameras.main.getWorldPoint(
-                //         //     this.input.mousePointer.position.x,
-                //         //     this.input.mousePointer.position.y,
-                //         // )
-                //         //
-                //         // const playerDistance = this.player.body.position
-                //         //     .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
-                //         //     .distance(mousePosVector)
-                //         //
-                //         // if (
-                //         //     (!playerWasInMove && playerDistance > 150)
-                //         //     ||
-                //         //     (playerWasInMove && playerDistance > 100)
-                //         // ) {
-                //         //     this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, playerSpeed)
-                //         // }
-                this.movementStopTime = 0
-                if (this.movementStartTime === 0) {
-                    this.movementStartTime = time
-                }
-                let playerSpeed = this.player.speed * (delta * 60 / 1000)
-                const acc = (time - this.movementStartTime) / this.accelerationTime
-
-                if (acc < 1) {
-                    playerSpeed *= acc
-                }
-
-                if (this.cursors.shift.isDown) {
-                    playerSpeed *= 1.5
-                }
-
-                if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-                    this.player.body.setVelocityX(-playerSpeed)
-                } else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-                    this.player.body.setVelocityX(playerSpeed)
-                } else {
-                    this.player.body.setVelocityX(0)
-                }
-
-                if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-                    this.player.body.setVelocityY(-playerSpeed)
-                } else if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-                    this.player.body.setVelocityY(playerSpeed)
-                } else {
-                    this.player.body.setVelocityY(0)
-                }
-                if (this.playerMovesVert && this.playerMovesHor) {
-                    this.player.body.velocity.x = this.player.body.velocity.x * 0.8
-                    this.player.body.velocity.y = this.player.body.velocity.y * 0.8
-                }
-            } else {
-                if (this.movementStopTime === 0) {
-                    this.movementStopTime = time
-                }
-                this.movementStartTime = 0
-
-                const deacc = 1 - (time - this.movementStopTime) / this.deaccelerationTime
-
-                if (deacc > 0) {
-                    this.player.body.setVelocity(
-                        this.player.body.velocity.x * deacc,
-                        this.player.body.velocity.y * deacc,
-                    )
-                } else {
-                    this.player.body.setVelocity(0)
-                }
-            }
-        }
-    }
-
-    private playerMovesDirectionSystem() {
-        this.playerMovesLeft = false
-        this.playerMovesRight = false
-        this.playerMovesUp = false
-        this.playerMovesDown = false
-        this.playerMovesHor = false
-        this.playerMovesVert = false
-
-        if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-            this.playerMovesRight = true
-            this.playerMovesHor = true
-        } else if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-            this.playerMovesLeft = true
-            this.playerMovesHor = true
-        }
-
-        if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-            this.playerMovesUp = true
-            this.playerMovesVert = true
-        } else if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-            this.playerMovesDown = true
-            this.playerMovesVert = true
-        }
-    }
-
-    private playerAnimationSystem(time: number, delta: number) {
-        if (this.playerMovesDown) {
-            this.player.setDownMovementPose()
-        }
-        if (this.playerMovesLeft) {
-            this.player.setLeftMovementPose()
-        }
-        if (this.playerMovesRight) {
-            this.player.setRightMovementPose()
-        }
-    }
-
-    private playerBorderCollisionSystem() {
-        if (
-            this.player.x + this.player.width / 2 >= this.gameWidth && this.playerMovesRight
-            ||
-            this.player.x - this.player.width / 2 <= 0 && this.playerMovesLeft
-        ) {
-            this.player.body.velocity.x = 0
-        }
-
-        if (
-            this.player.y - this.player.height / 2 <= 0 && this.playerMovesUp
-            ||
-            this.player.y + this.player.height / 2 > this.gameHeight && this.playerMovesDown
-        ) {
-            this.player.body.velocity.y = 0
-        }
-    }
-
     private playerDepthSystem() {
         this.player.setDepth(this.player.body.y)
     }
@@ -674,23 +539,15 @@ export class GameScene extends Phaser.Scene {
             delta,
         }, {
             cursors: this.cursors,
+            goManager: this.goManager,
             playerGO: this.player,
             gameWidth: this.gameWidth,
             gameHeight: this.gameHeight,
         })
 
-        // First of all we move Player
-        // this.playerMovementSystem(time, delta)
-
-        // After all Moves we determining Player Direction
-        // this.playerMovesDirectionSystem()
-
-        // After Moves and Direction we checking for world border collision
-        // this.playerBorderCollisionSystem()
-
         this.chestTriggerSystem()
 
-        this.playerDepthSystem()
+        // this.playerDepthSystem()
 
         this.playerSpaceHoldSystem()
     }

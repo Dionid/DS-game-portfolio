@@ -1,5 +1,6 @@
 import Cursors from "game/models/Cursors"
-import {Player} from "game/objects/Player"
+import Player from "game/objects/Player"
+import GOManager from "game/GOManager"
 
 export interface ISystemAdditional {
     time: number,
@@ -10,6 +11,7 @@ export interface ISystemAdditional {
 export interface ISystemPhaserInjectable {
     cursors: Cursors,
     playerGO: Player,
+    goManager: GOManager,
     gameWidth: number,
     gameHeight: number,
 }

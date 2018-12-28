@@ -1,14 +1,14 @@
+import {GOSprite} from "game/GOManager"
 
-export class Player extends Phaser.GameObjects.Sprite {
+class Player extends GOSprite {
     public body!: Phaser.Physics.Arcade.Body
-    public id: string
     // public speed: number = 375
     public speed: number = 250
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, "mainatlas", "player/player.psd")
 
-        this.id = "id" + (new Date()).getTime()
+        // this.id = "id" + (new Date()).getTime()
         this.setScale(0.85, 0.85)
 
         this.initPhysics()
@@ -36,3 +36,7 @@ export class Player extends Phaser.GameObjects.Sprite {
         this.setFrame("player/playerDown.psd")
     }
 }
+
+// const Player = GODecorator(PlayerCl)
+
+export default Player
