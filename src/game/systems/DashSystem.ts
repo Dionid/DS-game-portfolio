@@ -39,6 +39,7 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
             "mainatlas",
             "player/player.psd",
         )
+        this.playerShadow.setPosition(this.playerShadow.x * -2, this.playerShadow.height * -2)
         this.playerShadow.setScale(0.85, 0.85)
         this.playerShadow.setAlpha(0.5)
         injectable.scene.add.existing(this.playerShadow)
@@ -66,7 +67,7 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
             const go = inj.goManager.getGOById(ent.componentsByName[GO_COMPONENT_NAME].state.id) as GOSprite
 
             if (dashComp.dashInProcess) {
-                inj.timeSpeedScale.value = 1
+                inj.timeSpeedScale.value = Math.min(1, inj.timeSpeedScale.value * 1.1)
                 movComp.active = false
                 const destVector = new Vector2(
                     dashComp.dashDestX - dashComp.dashStartingPosX,
@@ -81,13 +82,16 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                 dashComp.dashDistancePassed +=
                     Math.sqrt(Math.pow(movComp.curVelocityX, 2) + Math.pow(movComp.curVelocityY, 2))
                     *
-                    (additional.delta / 1000)
+                    (additional.delta * inj.timeSpeedScale.value / 1000)
 
                 inj.scene.cameras.main.setZoom(inj.scene.cameras.main.zoom * 0.999)
 
                 if (
                     dashComp.dashDistancePassed > dashComp.dashDistanceCur
                 ) {
+                    movComp.curVelocityX = 0
+                    movComp.curVelocityY = 0
+                    inj.timeSpeedScale.value = 1
                     dashComp.dashInProcess = false
                     inj.scene.cameras.main.setZoom(1)
                 }
@@ -97,8 +101,8 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                         return
                     }
 
-                    inj.scene.cameras.main.setZoom(Math.min(1.2, inj.scene.cameras.main.zoom * 1.0008))
-                    inj.timeSpeedScale.value = Math.max(0.2, inj.timeSpeedScale.value * .99)
+                    inj.scene.cameras.main.setZoom(Math.min(1.2, inj.scene.cameras.main.zoom * 1.001))
+                    inj.timeSpeedScale.value = Math.max(0.2, inj.timeSpeedScale.value * .975)
 
                     dashComp.dashAiming = true
                     this.line.clear()
@@ -135,8 +139,8 @@ class DashSystem extends System<ISystemAdditional, ISystemPhaserInjectable> {
                     this.line.clear()
                     if (dashComp.dashAiming) {
                         this.playerShadow.setPosition(
-                            -1000,
-                            -1000,
+                            this.playerShadow.x * -2,
+                            this.playerShadow.height * -2,
                         )
                         const bodyXCPos = bodyComp.x + bodyComp.width / 2
                         const bodyYCPos = bodyComp.y + bodyComp.height / 2
