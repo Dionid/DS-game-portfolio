@@ -85,7 +85,7 @@
 					}
 				},
 				{
-					"filename": "objects/projects/folderClodesTouched.psd",
+					"filename": "objects/projects/folderClosed.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -185,7 +185,7 @@
 					}
 				},
 				{
-					"filename": "objects/projects/folderClosed.psd",
+					"filename": "objects/projects/folderClosedTouched.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -315,6 +315,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:d01aa7671f3f2825665cd9d11785657a:bdfe4b65d689e68a308a90192ff9b227:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:949f5411d03c87e0edaa930d12a15acf:9f15ef44163a5a56eec10328fcac5807:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

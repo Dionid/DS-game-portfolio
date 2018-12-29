@@ -25,6 +25,8 @@ import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
 import ChestComponentFactory from "game/components/ChestComponent"
 import PhaserOutputChestSystem from "game/systems/PhaserOutputChestSystem"
 import DashSystem from "game/systems/DashSystem"
+import FolderComponentFactory from "game/components/FolderComponent"
+import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -34,6 +36,7 @@ const ECS = new ECSManager([
     DynamicDepthSystem,
     DashSystem,
     PhaserOutputChestSystem,
+    PhaserOutputFolderSystem,
     PhaserOutputPlayerAnimationSystem,
     PhaserOutputPlayerMovementSystem,
     PhaserOutputDynamicDepthSystem,
@@ -410,6 +413,24 @@ export class GameScene extends Phaser.Scene {
         subtitleText.setDepth(this.gameHeight)
 
         const fFolder = new Folder(this, "SPA", this.gameWidth / 2, thirdScreenOffsetY + this.screenHeight / 2 )
+        this.goManager.addGO(fFolder)
+        ECS.entitiesManager.createEntity([
+            GOComponentFactory(fFolder.id),
+            FolderComponentFactory(),
+            BodyComponentComponentFactory(
+                fFolder.body.x,
+                fFolder.body.y,
+                fFolder.body.width,
+                fFolder.body.height,
+            ),
+            PositionComponentFactory(
+                fFolder.x,
+                fFolder.y,
+                fFolder.width,
+                fFolder.height,
+            ),
+        ])
+
         this.folders.add(fFolder, true)
 
         this.physics.add.collider(this.player, this.folders)
@@ -469,6 +490,8 @@ export class GameScene extends Phaser.Scene {
             goManager: this.goManager,
             gameWidth: this.gameWidth,
             gameHeight: this.gameHeight,
+            timeSpeedScale: this.timeSpeedScale,
+            deltaTimeScaled: 0,
         })
     }
 
