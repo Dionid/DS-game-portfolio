@@ -27,6 +27,7 @@ import PhaserOutputChestSystem from "game/systems/PhaserOutputChestSystem"
 import DashSystem from "game/systems/DashSystem"
 import FolderComponentFactory from "game/components/FolderComponent"
 import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
+import {Project} from "game/objects/Project"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -434,6 +435,12 @@ export class GameScene extends Phaser.Scene {
         this.folders.add(fFolder, true)
 
         this.physics.add.collider(this.player, this.folders)
+
+        const prostorProject = new Project(this, "Prostor", this.gameWidth / 3, thirdScreenOffsetY + this.screenHeight / 2 + 50)
+
+        this.projects.add(prostorProject, true)
+
+        this.physics.add.collider(this.player, this.projects)
     }
 
     private createMainCamera() {
@@ -446,10 +453,12 @@ export class GameScene extends Phaser.Scene {
 
     private chests!: Phaser.GameObjects.Group
     private folders!: Phaser.GameObjects.Group
+    private projects!: Phaser.GameObjects.Group
 
     private createObjectsAndGroups() {
         this.chests = this.add.group({ classType: Chest })
         this.folders = this.add.group({ classType: Folder})
+        this.projects = this.add.group({ classType: Project})
     }
 
     public create(): void {

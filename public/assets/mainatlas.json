@@ -4,7 +4,7 @@
 			"image": "mainatlas.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 698,
+				"w": 726,
 				"h": 259
 			},
 			"scale": 1,
@@ -60,74 +60,24 @@
 					}
 				},
 				{
-					"filename": "objects/chests/katana.psd",
+					"filename": "objects/chests/chestDefault.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 110,
-						"h": 17
+						"w": 52,
+						"h": 43
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 110,
-						"h": 17
+						"w": 52,
+						"h": 43
 					},
 					"frame": {
-						"x": 515,
-						"y": 46,
-						"w": 110,
-						"h": 17
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/folderClosed.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 50
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 50
-					},
-					"frame": {
-						"x": 627,
-						"y": 46,
-						"w": 64,
-						"h": 50
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/folderOpened.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 81,
-						"h": 54
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 81,
-						"h": 54
-					},
-					"frame": {
-						"x": 515,
-						"y": 65,
-						"w": 81,
-						"h": 54
+						"x": 673,
+						"y": 1,
+						"w": 52,
+						"h": 43
 					},
 					"anchor": {
 						"x": 0.5,
@@ -150,9 +100,34 @@
 					},
 					"frame": {
 						"x": 515,
-						"y": 121,
+						"y": 46,
 						"w": 36,
 						"h": 119
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderOpened.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 81,
+						"h": 54
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 81,
+						"h": 54
+					},
+					"frame": {
+						"x": 515,
+						"y": 167,
+						"w": 81,
+						"h": 54
 					},
 					"anchor": {
 						"x": 0.5,
@@ -175,7 +150,7 @@
 					},
 					"frame": {
 						"x": 553,
-						"y": 121,
+						"y": 46,
 						"w": 36,
 						"h": 119
 					},
@@ -185,24 +160,49 @@
 					}
 				},
 				{
-					"filename": "objects/projects/folderClosedTouched.psd",
+					"filename": "objects/chests/katana.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 50
+						"w": 110,
+						"h": 17
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 50
+						"w": 110,
+						"h": 17
 					},
 					"frame": {
-						"x": 598,
-						"y": 98,
-						"w": 64,
-						"h": 50
+						"x": 515,
+						"y": 223,
+						"w": 110,
+						"h": 17
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/logoProstor.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 47,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 47,
+						"h": 99
+					},
+					"frame": {
+						"x": 591,
+						"y": 46,
+						"w": 47,
+						"h": 99
 					},
 					"anchor": {
 						"x": 0.5,
@@ -224,8 +224,8 @@
 						"h": 52
 					},
 					"frame": {
-						"x": 591,
-						"y": 150,
+						"x": 598,
+						"y": 147,
 						"w": 39,
 						"h": 52
 					},
@@ -235,24 +235,49 @@
 					}
 				},
 				{
-					"filename": "objects/chests/chestDefault.psd",
+					"filename": "objects/projects/folderClosed.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 52,
-						"h": 43
+						"w": 64,
+						"h": 50
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 52,
-						"h": 43
+						"w": 64,
+						"h": 50
 					},
 					"frame": {
-						"x": 591,
-						"y": 204,
-						"w": 52,
-						"h": 43
+						"x": 627,
+						"y": 201,
+						"w": 64,
+						"h": 50
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderClosedTouched.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 50
+					},
+					"frame": {
+						"x": 639,
+						"y": 147,
+						"w": 64,
+						"h": 50
 					},
 					"anchor": {
 						"x": 0.5,
@@ -274,8 +299,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 645,
-						"y": 150,
+						"x": 640,
+						"y": 46,
 						"w": 52,
 						"h": 43
 					},
@@ -299,8 +324,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 645,
-						"y": 195,
+						"x": 640,
+						"y": 91,
 						"w": 52,
 						"h": 43
 					},
@@ -315,6 +340,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:949f5411d03c87e0edaa930d12a15acf:9f15ef44163a5a56eec10328fcac5807:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:7358477696a2433bfeebd8a74753488b:508a88193ab3e1b77a0c8ff82e68d004:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

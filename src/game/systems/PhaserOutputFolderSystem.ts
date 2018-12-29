@@ -6,8 +6,6 @@ import {PLAYER_COMPONENT_NAME} from "game/components/PlayerComponent"
 import {GO_COMPONENT_NAME, IGOComponentState} from "game/components/GOComponent"
 import {BODY_COMPONENT_NAME, IBodyComponentState} from "game/components/BodyComponent"
 import {GOSprite} from "game/GOManager"
-import {Loot} from "game/objects/Loot"
-import ServiceDescription from "game/objects/ServiceDescription"
 const Vector2 = Phaser.Math.Vector2
 
 const PhaserOutputFolderSystemName = "PhaserOutputFolderSystem"
