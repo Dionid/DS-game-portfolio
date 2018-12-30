@@ -210,6 +210,31 @@
 					}
 				},
 				{
+					"filename": "objects/projects/logoRuCont.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 47,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 47,
+						"h": 99
+					},
+					"frame": {
+						"x": 591,
+						"y": 46,
+						"w": 47,
+						"h": 99
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
 					"filename": "objects/chests/energy.psd",
 					"rotated": false,
 					"trimmed": false,
@@ -340,6 +365,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:7358477696a2433bfeebd8a74753488b:508a88193ab3e1b77a0c8ff82e68d004:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:22c532f1793f5a78bac1235feaf53088:f59f4ca8987207068ec8d97bf9ba6033:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

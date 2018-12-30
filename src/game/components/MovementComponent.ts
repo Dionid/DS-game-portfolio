@@ -27,14 +27,16 @@ const MovementComponentFactory: IComponentFactory<IMovementComponentState> = (
     accelerationTime: number,
     deAccelerationTime: number,
     shiftAcc: number,
+    curVelocityX?: number,
+    curVelocityY?: number,
     ) => {
     return {
         name: MOVEMENT_COMPONENT_NAME,
         state: {
             active: true,
             maxVelocity,
-            curVelocityX: 0,
-            curVelocityY: 0,
+            curVelocityX: curVelocityX || 0,
+            curVelocityY: curVelocityY || 0,
             shiftAcc,
             movementStartTime: 0,
             movementStopTime: 0,

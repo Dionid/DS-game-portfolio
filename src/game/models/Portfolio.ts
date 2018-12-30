@@ -24,14 +24,18 @@ const projects: IProject[] = [
     },
 ]
 
-const projectsById: { [key: string]: IProject } = projects.reduce((acc: { [key: string]: IProject }, pr: any) => {
+export interface IProjectsById {
+    [key: string]: IProject
+}
+
+const projectsById: IProjectsById = projects.reduce((acc: IProjectsById, pr: any) => {
     acc[pr.id] = pr
     return acc
 }, {})
 
-const projectsByFoldersType: { [key: string]: IProject[] } = Object.keys(EFoldersType)
-    .reduce((acc: { [key: string]: IProject[] }, fT) => {
-        acc[fT] = projects.filter((pr) => pr.folderType === fT)
+const projectsByFoldersType: { [key: string]: string[] } = Object.keys(EFoldersType)
+    .reduce((acc: { [key: string]: string[] }, fT) => {
+        acc[fT] = projects.filter((pr) => pr.folderType === fT).map((pr) => pr.id)
         return acc
     }, {})
 

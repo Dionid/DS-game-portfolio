@@ -3,9 +3,14 @@ import {ISystemAdditional, ISystemPhaserInjectable} from "game/systems/index"
 import EntitiesManager from "game/ECS/entitiesmanager"
 import {FOLDER_COMPONENT_NAME, IFolderComponentState} from "game/components/FolderComponent"
 import {PLAYER_COMPONENT_NAME} from "game/components/PlayerComponent"
-import {GO_COMPONENT_NAME, IGOComponentState} from "game/components/GOComponent"
-import {BODY_COMPONENT_NAME, IBodyComponentState} from "game/components/BodyComponent"
+import GOComponentFactory, {GO_COMPONENT_NAME, IGOComponentState} from "game/components/GOComponent"
+import BodyComponentFactory, {BODY_COMPONENT_NAME, IBodyComponentState} from "game/components/BodyComponent"
 import {GOSprite} from "game/GOManager"
+import {Project} from "game/objects/Project"
+import ProjectComponentFactory from "game/components/ProjectComponent"
+import MovementComponentFactory from "game/components/MovementComponent"
+import PositionComponentFactory from "game/components/PositionComponent"
+import DepthComponentComponentFactory from "game/components/DepthComponent"
 const Vector2 = Phaser.Math.Vector2
 
 const PhaserOutputFolderSystemName = "PhaserOutputFolderSystem"
@@ -55,6 +60,53 @@ class PhaserOutputFolderSystem extends System<ISystemAdditional, ISystemPhaserIn
                     if (inj.cursors.action.isDown) {
                         folderFolderComp.isOpened = true
                         folderGO.setFrame("objects/projects/folderOpened.psd")
+
+                        const angleDeg = 360 / folderFolderComp.projectsDataIds.length
+
+                        folderFolderComp.projectsDataIds.forEach((prId, index) => {
+                            const prData = inj.projectsById[prId]
+                            const projectGO = new Project(
+                                inj.scene,
+                                prData.name,
+                                folderBodyComp.x,
+                                folderBodyComp.y,
+                            )
+                            inj.projectsGOGroup.add(projectGO, true)
+                            inj.goManager.addGO(projectGO)
+
+                            const angleRad = angleDeg * (index + 1) * Math.PI / 180
+                            const pushDistance = Math.random() * 200 + 800
+                            projectGO.body.setVelocity(
+                                Math.cos(angleRad) * pushDistance,
+                                Math.sin(angleRad) * pushDistance,
+                            )
+
+                            entityManager.createEntity([
+                                ProjectComponentFactory(),
+                                MovementComponentFactory(
+                                    9999,
+                                    0,
+                                    0,
+                                    0,
+                                    projectGO.body.velocity.x,
+                                    projectGO.body.velocity.y,
+                                ),
+                                PositionComponentFactory(
+                                    projectGO.x,
+                                    projectGO.y,
+                                    projectGO.width,
+                                    projectGO.height,
+                                ),
+                                BodyComponentFactory(
+                                    projectGO.body.x,
+                                    projectGO.body.y,
+                                    projectGO.body.width,
+                                    projectGO.body.height,
+                                ),
+                                DepthComponentComponentFactory(projectGO.depth),
+                                GOComponentFactory(projectGO.id),
+                            ])
+                        })
                     }
                 }
             }

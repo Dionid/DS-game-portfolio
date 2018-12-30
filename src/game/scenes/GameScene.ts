@@ -14,10 +14,10 @@ import PhaserOutputMovementSystem from "game/systems/PhaserOutputMovementSystem"
 import PhaserOutputPlayerAnimationSystem from "game/systems/PhaserOutputPlayerAnimationSystem"
 import PositionComponentFactory from "game/components/PositionComponent"
 import PhaserInputPositionSystem from "game/systems/PhaserInputPositionSystem"
-import DepthComponentComponentFactory from "game/components/DepthComponent"
+import DepthComponentFactory from "game/components/DepthComponent"
 import PhaserOutputDynamicDepthSystem from "game/systems/PhaserOutputDynamicDepthSystem"
 import GOManager from "game/GOManager"
-import BodyComponentComponentFactory from "game/components/BodyComponent"
+import BodyComponentFactory from "game/components/BodyComponent"
 import PhaserInputBodySystem from "game/systems/PhaserInputBodySystem"
 import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
 import ChestComponentFactory from "game/components/ChestComponent"
@@ -26,8 +26,7 @@ import DashSystem from "game/systems/DashSystem"
 import FolderComponentFactory from "game/components/FolderComponent"
 import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
 import {Project} from "game/objects/Project"
-import PhaserOutputPlayerProjectCollision from "game/systems/PhaserOutputPlayerProjectCollision"
-import {EFoldersType, projectsByFoldersType} from "game/models/Portfolio"
+import {EFoldersType, projectsByFoldersType, projectsById} from "game/models/Portfolio"
 import ProjectComponentFactory from "game/components/ProjectComponent"
 import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
 
@@ -39,7 +38,6 @@ const ECS = new ECSManager([
     DashSystem,
     WorldBorderCollisionSystem,
     DynamicDepthSystem,
-    PhaserOutputPlayerProjectCollision,
     PhaserOutputChestSystem,
     PhaserOutputFolderSystem,
     PhaserOutputPlayerAnimationSystem,
@@ -147,7 +145,7 @@ export class GameScene extends Phaser.Scene {
             PlayerComponentFactory(),
             DashComponentFactory(),
             GOComponentFactory(this.player.id),
-            BodyComponentComponentFactory(
+            BodyComponentFactory(
                 this.player.body.x,
                 this.player.body.y,
                 this.player.body.width,
@@ -160,7 +158,7 @@ export class GameScene extends Phaser.Scene {
                 this.player.width,
                 this.player.height,
             ),
-            DepthComponentComponentFactory(this.player.depth),
+            DepthComponentFactory(this.player.depth),
         ])
         // this.player.body.setCollideWorldBounds(true)
     }
@@ -311,7 +309,7 @@ export class GameScene extends Phaser.Scene {
                 this.chestLoot[0],
             ),
             GOComponentFactory(fChest.id),
-            BodyComponentComponentFactory(
+            BodyComponentFactory(
                 fChest.body.x,
                 fChest.body.y,
                 fChest.body.width,
@@ -323,7 +321,7 @@ export class GameScene extends Phaser.Scene {
                 fChest.width,
                 fChest.height,
             ),
-            DepthComponentComponentFactory(fChest.depth),
+            DepthComponentFactory(fChest.depth),
         ])
         const sChest = new Chest(this, 200, secondScreenOffsetY + this.screenHeight / 3 * 2)
         ECS.entitiesManager.createEntity([
@@ -331,7 +329,7 @@ export class GameScene extends Phaser.Scene {
                 this.chestLoot[1],
             ),
             GOComponentFactory(sChest.id),
-            BodyComponentComponentFactory(
+            BodyComponentFactory(
                 sChest.body.x,
                 sChest.body.y,
                 sChest.body.width,
@@ -343,7 +341,7 @@ export class GameScene extends Phaser.Scene {
                 sChest.width,
                 sChest.height,
             ),
-            DepthComponentComponentFactory(sChest.depth),
+            DepthComponentFactory(sChest.depth),
         ])
         const thChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + this.screenHeight / 3 * 2.3)
         ECS.entitiesManager.createEntity([
@@ -351,7 +349,7 @@ export class GameScene extends Phaser.Scene {
                 this.chestLoot[2],
             ),
             GOComponentFactory(thChest.id),
-            BodyComponentComponentFactory(
+            BodyComponentFactory(
                 thChest.body.x,
                 thChest.body.y,
                 thChest.body.width,
@@ -363,7 +361,7 @@ export class GameScene extends Phaser.Scene {
                 thChest.width,
                 thChest.height,
             ),
-            DepthComponentComponentFactory(thChest.depth),
+            DepthComponentFactory(thChest.depth),
         ])
 
         this.goManager.addGO(fChest)
@@ -414,13 +412,14 @@ export class GameScene extends Phaser.Scene {
 
         const fFolder = new Folder(this, "SPA", this.gameWidth / 2, thirdScreenOffsetY + this.screenHeight / 2 )
         this.goManager.addGO(fFolder)
+        console.log(projectsByFoldersType[EFoldersType.SPA])
         ECS.entitiesManager.createEntity([
             GOComponentFactory(fFolder.id),
             FolderComponentFactory(
                 EFoldersType.SPA,
                 projectsByFoldersType[EFoldersType.SPA],
             ),
-            BodyComponentComponentFactory(
+            BodyComponentFactory(
                 fFolder.body.x,
                 fFolder.body.y,
                 fFolder.body.width,
@@ -438,69 +437,69 @@ export class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.folders)
 
-        const prostorProject = new Project(
-            this,
-            "Prostor",
-            this.gameWidth / 3,
-            thirdScreenOffsetY + this.screenHeight / 2 + 50,
-        )
-        ECS.entitiesManager.createEntity([
-            ProjectComponentFactory(),
-            MovementComponentFactory(0, 0, 0, 1.5),
-            PositionComponentFactory(
-                prostorProject.x,
-                prostorProject.y,
-                prostorProject.width,
-                prostorProject.height,
-            ),
-            BodyComponentComponentFactory(
-                prostorProject.body.x,
-                prostorProject.body.y,
-                prostorProject.body.width,
-                prostorProject.body.height,
-            ),
-            DepthComponentComponentFactory(prostorProject.depth),
-            GOComponentFactory(prostorProject.id),
-        ])
-        this.goManager.addGO(prostorProject)
-        this.projects.add(prostorProject, true)
-
-        const secondProject = new Project(
-            this,
-            "Prostor",
-            this.gameWidth / 3,
-            thirdScreenOffsetY + this.screenHeight / 2 + 50,
-        )
-        ECS.entitiesManager.createEntity([
-            ProjectComponentFactory(),
-            MovementComponentFactory(0, 0, 0, 1.5),
-            PositionComponentFactory(
-                secondProject.x,
-                secondProject.y,
-                secondProject.width,
-                secondProject.height,
-            ),
-            BodyComponentComponentFactory(
-                secondProject.body.x,
-                secondProject.body.y,
-                secondProject.body.width,
-                secondProject.body.height,
-            ),
-            DepthComponentComponentFactory(secondProject.depth),
-            GOComponentFactory(secondProject.id),
-        ])
-        this.goManager.addGO(secondProject)
-        this.projects.add(secondProject, true)
-
-        const angleDeg = 45
-
-        this.projects.getChildren().forEach((pr, i) => {
-            const angleRad = angleDeg * (i + 1) * Math.PI / 180
-            const pushDistance = Math.random() * 200 + 300
-            if (pr.body instanceof Phaser.Physics.Arcade.Body) {
-                pr.body.setVelocity(Math.cos(angleRad) * pushDistance, Math.sin(angleRad) * pushDistance)
-            }
-        })
+        // const prostorProject = new Project(
+        //     this,
+        //     "Prostor",
+        //     this.gameWidth / 3,
+        //     thirdScreenOffsetY + this.screenHeight / 2 + 50,
+        // )
+        // ECS.entitiesManager.createEntity([
+        //     ProjectComponentFactory(),
+        //     MovementComponentFactory(0, 0, 0, 1.5),
+        //     PositionComponentFactory(
+        //         prostorProject.x,
+        //         prostorProject.y,
+        //         prostorProject.width,
+        //         prostorProject.height,
+        //     ),
+        //     BodyComponentFactory(
+        //         prostorProject.body.x,
+        //         prostorProject.body.y,
+        //         prostorProject.body.width,
+        //         prostorProject.body.height,
+        //     ),
+        //     DepthComponentFactory(prostorProject.depth),
+        //     GOComponentFactory(prostorProject.id),
+        // ])
+        // this.goManager.addGO(prostorProject)
+        // this.projects.add(prostorProject, true)
+        //
+        // const secondProject = new Project(
+        //     this,
+        //     "Prostor",
+        //     this.gameWidth / 3,
+        //     thirdScreenOffsetY + this.screenHeight / 2 + 50,
+        // )
+        // ECS.entitiesManager.createEntity([
+        //     ProjectComponentFactory(),
+        //     MovementComponentFactory(0, 0, 0, 1.5),
+        //     PositionComponentFactory(
+        //         secondProject.x,
+        //         secondProject.y,
+        //         secondProject.width,
+        //         secondProject.height,
+        //     ),
+        //     BodyComponentFactory(
+        //         secondProject.body.x,
+        //         secondProject.body.y,
+        //         secondProject.body.width,
+        //         secondProject.body.height,
+        //     ),
+        //     DepthComponentFactory(secondProject.depth),
+        //     GOComponentFactory(secondProject.id),
+        // ])
+        // this.goManager.addGO(secondProject)
+        // this.projects.add(secondProject, true)
+        //
+        // const angleDeg = 45
+        //
+        // this.projects.getChildren().forEach((pr, i) => {
+        //     const angleRad = angleDeg * (i + 1) * Math.PI / 180
+        //     const pushDistance = Math.random() * 200 + 300
+        //     if (pr.body instanceof Phaser.Physics.Arcade.Body) {
+        //         pr.body.setVelocity(Math.cos(angleRad) * pushDistance, Math.sin(angleRad) * pushDistance)
+        //     }
+        // })
 
         this.physics.add.collider(this.projects, this.projects)
         this.physics.add.collider(this.projects, this.folders)
@@ -565,6 +564,8 @@ export class GameScene extends Phaser.Scene {
             gameHeight: this.gameHeight,
             timeSpeedScale: this.timeSpeedScale,
             deltaTimeScaled: 0,
+            projectsById,
+            projectsGOGroup: this.projects,
         })
     }
 
@@ -627,6 +628,8 @@ export class GameScene extends Phaser.Scene {
             gameHeight: this.gameHeight,
             timeSpeedScale: this.timeSpeedScale,
             deltaTimeScaled: delta * this.timeSpeedScale.value,
+            projectsById,
+            projectsGOGroup: this.projects,
         })
     }
 }
