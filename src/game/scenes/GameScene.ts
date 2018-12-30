@@ -2,8 +2,6 @@ import Player from "game/objects/Player"
 import {Chest} from "game/objects/Chest"
 import Room from "game/models/Room"
 import Cursors from "game/models/Cursors"
-import {Loot} from "game/objects/Loot"
-import ServiceDescription from "game/objects/ServiceDescription"
 import {Folder} from "game/objects/Folder"
 import ECSManager from "game/ECS"
 import DashComponentFactory from "game/components/DashComponent"
@@ -12,7 +10,7 @@ import GOComponentFactory from "game/components/GOComponent"
 import MovementComponentFactory from "game/components/MovementComponent"
 import PlayerMovementSystem from "game/systems/PlayerMovementSystem"
 import WorldBorderCollisionSystem from "game/systems/WorldBorderCollisionSystem"
-import PhaserOutputPlayerMovementSystem from "game/systems/PhaserOutputMovementSystem"
+import PhaserOutputMovementSystem from "game/systems/PhaserOutputMovementSystem"
 import PhaserOutputPlayerAnimationSystem from "game/systems/PhaserOutputPlayerAnimationSystem"
 import PositionComponentFactory from "game/components/PositionComponent"
 import PhaserInputPositionSystem from "game/systems/PhaserInputPositionSystem"
@@ -28,19 +26,25 @@ import DashSystem from "game/systems/DashSystem"
 import FolderComponentFactory from "game/components/FolderComponent"
 import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
 import {Project} from "game/objects/Project"
+import PhaserOutputPlayerProjectCollision from "game/systems/PhaserOutputPlayerProjectCollision"
+import {EFoldersType, projectsByFoldersType} from "game/models/Portfolio"
+import ProjectComponentFactory from "game/components/ProjectComponent"
+import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
     PhaserInputBodySystem,
+    PhaserInputVelocitySystem,
     PlayerMovementSystem,
+    DashSystem,
     WorldBorderCollisionSystem,
     DynamicDepthSystem,
-    DashSystem,
+    PhaserOutputPlayerProjectCollision,
     PhaserOutputChestSystem,
     PhaserOutputFolderSystem,
     PhaserOutputPlayerAnimationSystem,
-    PhaserOutputPlayerMovementSystem,
     PhaserOutputDynamicDepthSystem,
+    PhaserOutputMovementSystem,
 ])
 
 export class GameScene extends Phaser.Scene {
@@ -96,7 +100,7 @@ export class GameScene extends Phaser.Scene {
         })
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.firstRoom.offsetY + this.screenHeight / 2,
+            y: this.rooms.thirdRoom.offsetY + this.screenHeight / 2,
         }
     }
 
@@ -141,7 +145,6 @@ export class GameScene extends Phaser.Scene {
         this.goManager.addGO(this.player)
         ECS.entitiesManager.createEntity([
             PlayerComponentFactory(),
-            MovementComponentFactory(this.player.speed, 200, 300, 1.5),
             DashComponentFactory(),
             GOComponentFactory(this.player.id),
             BodyComponentComponentFactory(
@@ -150,6 +153,7 @@ export class GameScene extends Phaser.Scene {
                 this.player.body.width,
                 this.player.body.height,
             ),
+            MovementComponentFactory(this.player.speed, 200, 300, 1.5),
             PositionComponentFactory(
                 this.player.x,
                 this.player.y,
@@ -238,11 +242,6 @@ export class GameScene extends Phaser.Scene {
         rect.setStrokeStyle(3, 0xd4d4d4)
         rect.setOrigin(0, 0)
         rect.setDepth(this.gameHeight)
-
-        // this.physics.world.enable(rect, Phaser.Physics.Arcade.STATIC_BODY)
-        // if (this.player) {
-        //     this.physics.add.collider(this.player, rect)
-        // }
 
         const btnTextY = freelancerTextY + this.freelancerText.height + 20
 
@@ -417,7 +416,10 @@ export class GameScene extends Phaser.Scene {
         this.goManager.addGO(fFolder)
         ECS.entitiesManager.createEntity([
             GOComponentFactory(fFolder.id),
-            FolderComponentFactory(),
+            FolderComponentFactory(
+                EFoldersType.SPA,
+                projectsByFoldersType[EFoldersType.SPA],
+            ),
             BodyComponentComponentFactory(
                 fFolder.body.x,
                 fFolder.body.y,
@@ -436,10 +438,72 @@ export class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.folders)
 
-        const prostorProject = new Project(this, "Prostor", this.gameWidth / 3, thirdScreenOffsetY + this.screenHeight / 2 + 50)
-
+        const prostorProject = new Project(
+            this,
+            "Prostor",
+            this.gameWidth / 3,
+            thirdScreenOffsetY + this.screenHeight / 2 + 50,
+        )
+        ECS.entitiesManager.createEntity([
+            ProjectComponentFactory(),
+            MovementComponentFactory(0, 0, 0, 1.5),
+            PositionComponentFactory(
+                prostorProject.x,
+                prostorProject.y,
+                prostorProject.width,
+                prostorProject.height,
+            ),
+            BodyComponentComponentFactory(
+                prostorProject.body.x,
+                prostorProject.body.y,
+                prostorProject.body.width,
+                prostorProject.body.height,
+            ),
+            DepthComponentComponentFactory(prostorProject.depth),
+            GOComponentFactory(prostorProject.id),
+        ])
+        this.goManager.addGO(prostorProject)
         this.projects.add(prostorProject, true)
 
+        const secondProject = new Project(
+            this,
+            "Prostor",
+            this.gameWidth / 3,
+            thirdScreenOffsetY + this.screenHeight / 2 + 50,
+        )
+        ECS.entitiesManager.createEntity([
+            ProjectComponentFactory(),
+            MovementComponentFactory(0, 0, 0, 1.5),
+            PositionComponentFactory(
+                secondProject.x,
+                secondProject.y,
+                secondProject.width,
+                secondProject.height,
+            ),
+            BodyComponentComponentFactory(
+                secondProject.body.x,
+                secondProject.body.y,
+                secondProject.body.width,
+                secondProject.body.height,
+            ),
+            DepthComponentComponentFactory(secondProject.depth),
+            GOComponentFactory(secondProject.id),
+        ])
+        this.goManager.addGO(secondProject)
+        this.projects.add(secondProject, true)
+
+        const angleDeg = 45
+
+        this.projects.getChildren().forEach((pr, i) => {
+            const angleRad = angleDeg * (i + 1) * Math.PI / 180
+            const pushDistance = Math.random() * 200 + 300
+            if (pr.body instanceof Phaser.Physics.Arcade.Body) {
+                pr.body.setVelocity(Math.cos(angleRad) * pushDistance, Math.sin(angleRad) * pushDistance)
+            }
+        })
+
+        this.physics.add.collider(this.projects, this.projects)
+        this.physics.add.collider(this.projects, this.folders)
         this.physics.add.collider(this.player, this.projects)
     }
 
@@ -518,42 +582,6 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    public dashBtnOnHold = false
-    public dashInProcess = false
-    public dashInProcessTimestamp = 0
-    public dashInProcessTimelong = 150
-    public dashEndedTimestamp = 0
-    private dashRestTimelong = 500
-    private dashSpeed = 3000
-    public dashMoveVectorNormalized!: Phaser.Math.Vector2
-
-    private playerDashSystem(time: number, delta: number) {
-        if (this.dashInProcess) {
-            if (time > this.dashInProcessTimestamp + this.dashInProcessTimelong) {
-                this.dashInProcess = false
-                this.dashEndedTimestamp = time
-            }
-        } else {
-            if (
-                !this.dashBtnOnHold
-                && this.input.mousePointer.isDown
-                && time > this.dashEndedTimestamp + this.dashRestTimelong
-            ) {
-                const mousePosVector = this.cameras.main.getWorldPoint(
-                    this.input.mousePointer.position.x,
-                    this.input.mousePointer.position.y,
-                )
-                this.dashMoveVectorNormalized = mousePosVector.subtract(this.player.body.position).normalize()
-                this.dashInProcess = true
-                this.dashInProcessTimestamp = time
-            }
-        }
-    }
-
-    private playerSpaceHoldSystem() {
-        this.dashBtnOnHold = this.input.mousePointer.isDown
-    }
-
     private chestLoot = [
         {
             title: "Frontend",
@@ -588,9 +616,6 @@ export class GameScene extends Phaser.Scene {
 
         this.cameraMousePointerFollorSystem()
 
-        // Then we add Dash if it is needed
-        // this.playerDashSystem(time, delta)
-
         ECS.exec({
             time,
             delta,
@@ -603,7 +628,5 @@ export class GameScene extends Phaser.Scene {
             timeSpeedScale: this.timeSpeedScale,
             deltaTimeScaled: delta * this.timeSpeedScale.value,
         })
-
-        this.playerSpaceHoldSystem()
     }
 }

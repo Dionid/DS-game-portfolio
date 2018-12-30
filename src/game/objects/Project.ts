@@ -16,7 +16,6 @@ export class Project extends Phaser.GameObjects.Container {
         )
 
         this.add(logo)
-        // this.scene.add.existing(logo)
 
         this.initPhysics(logo.width, logo.height / 3)
 
@@ -57,6 +56,6 @@ export class Project extends Phaser.GameObjects.Container {
         this.body.setMaxVelocity(200, 200)
         this.body.setOffset(-width / 2, height / 2)
         this.body.setSize(width, height)
-        this.setDepth(this.body.y)
+        this.setDepth(this.body.y + this.body.height)
     }
 }

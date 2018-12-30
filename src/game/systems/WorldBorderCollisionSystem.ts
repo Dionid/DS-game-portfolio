@@ -23,12 +23,23 @@ class WorldBorderCollisionSystem extends System<ISystemAdditional, ISystemPhaser
             const pl = entities[i]
             const posComp = pl.componentsByName[POSITION_COMPONENT_NAME].state as IPositionComponentState
             const movComp = pl.componentsByName[MOVEMENT_COMPONENT_NAME].state as IMovementComponentState
+
+            const nextPosX = posComp.x + movComp.curVelocityX * (additional.delta / 1000)
+
             if (
-                posComp.x + posComp.width / 2 >= inj.gameWidth && movComp.curVelocityX > 0
-                ||
-                posComp.x - posComp.width / 2 <= 0 && movComp.curVelocityX < 0
+                nextPosX + posComp.width / 2 >= inj.gameWidth
             ) {
-                movComp.curVelocityX = 0
+                movComp.curVelocityX = (inj.gameWidth - (posComp.x + posComp.width / 2)) / additional.delta * 1000
+            } else if (nextPosX - posComp.width / 2 <= 0) {
+                movComp.curVelocityX = (0 - (posComp.x - posComp.width / 2)) / additional.delta * 1000
+            }
+
+            const nextPosY = posComp.y + movComp.curVelocityY * (additional.delta / 1000)
+
+            if (nextPosY - posComp.height / 2 <= 0) {
+                movComp.curVelocityY = (0 - (posComp.y - posComp.height / 2)) / additional.delta * 1000
+            } else if (nextPosY + posComp.height / 2 >= inj.gameHeight) {
+                movComp.curVelocityY = (inj.gameHeight - (posComp.y + posComp.height / 2)) / additional.delta * 1000
             }
 
             if (

@@ -16,7 +16,6 @@ class PhaserInputBodySystem extends System<ISystemAdditional, ISystemPhaserInjec
     ): undefined {
 
         const entities = entityManager.queryByComponentsName([
-            PLAYER_COMPONENT_NAME,
             BODY_COMPONENT_NAME,
             GO_COMPONENT_NAME,
         ])
