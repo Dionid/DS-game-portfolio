@@ -20,7 +20,7 @@ export default class ECSManager<T, I> {
         return this.systemsObj[sysName]
     }
 
-    public addSystem(sys: System<T, I>) {
+    public addSystem = (sys: System<T, I>) => {
         if (this.systemsObj[sys.name]) {
             throw new Error("system already exists")
         }

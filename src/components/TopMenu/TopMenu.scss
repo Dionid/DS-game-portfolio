@@ -121,6 +121,14 @@
     height: 51px;
     background-color: $color-gray-light;
     border: 2px $color-gray-light-border solid;
+    //background-image: url("");
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .avatar-img{
+    width: 39px;
   }
 
   .avatar-nickname{

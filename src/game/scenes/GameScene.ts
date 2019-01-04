@@ -1,10 +1,50 @@
-import {Player} from "game/objects/Player"
+import Player from "game/objects/Player"
 import {Chest} from "game/objects/Chest"
 import Room from "game/models/Room"
 import Cursors from "game/models/Cursors"
-import {Loot} from "game/objects/Loot"
-import ServiceDescription from "game/objects/ServiceDescription"
 import {Folder} from "game/objects/Folder"
+import ECSManager from "game/ECS"
+import DashComponentFactory from "game/components/DashComponent"
+import PlayerComponentFactory from "game/components/PlayerComponent"
+import GOComponentFactory from "game/components/GOComponent"
+import MovementComponentFactory from "game/components/MovementComponent"
+import PlayerMovementSystem from "game/systems/PlayerMovementSystem"
+import WorldBorderCollisionSystem from "game/systems/WorldBorderCollisionSystem"
+import PhaserOutputMovementSystem from "game/systems/PhaserOutputMovementSystem"
+import PhaserOutputPlayerAnimationSystem from "game/systems/PhaserOutputPlayerAnimationSystem"
+import PositionComponentFactory from "game/components/PositionComponent"
+import PhaserInputPositionSystem from "game/systems/PhaserInputPositionSystem"
+import DepthComponentFactory from "game/components/DepthComponent"
+import PhaserOutputDynamicDepthSystem from "game/systems/PhaserOutputDynamicDepthSystem"
+import GOManager from "game/GOManager"
+import BodyComponentFactory from "game/components/BodyComponent"
+import PhaserInputBodySystem from "game/systems/PhaserInputBodySystem"
+import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
+import ChestComponentFactory from "game/components/ChestComponent"
+import PhaserOutputChestSystem from "game/systems/PhaserOutputChestSystem"
+import DashSystem from "game/systems/DashSystem"
+import FolderComponentFactory from "game/components/FolderComponent"
+import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
+import {Project} from "game/objects/Project"
+import {EFoldersType, projectsByFoldersType, projectsById} from "game/models/Portfolio"
+import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
+import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
+
+const ECS = new ECSManager([
+    PhaserInputPositionSystem,
+    PhaserInputBodySystem,
+    PhaserInputVelocitySystem,
+    PlayerMovementSystem,
+    DashSystem,
+    WorldBorderCollisionSystem,
+    DynamicDepthSystem,
+    PhaserOutputChestSystem,
+    PhaserOutputFolderSystem,
+    PhaserOutputProjectSystem,
+    PhaserOutputPlayerAnimationSystem,
+    PhaserOutputDynamicDepthSystem,
+    PhaserOutputMovementSystem,
+])
 
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
@@ -40,19 +80,13 @@ export class GameScene extends Phaser.Scene {
         },
     }
     private roomScreensTotalNumber: number = 0
+    private goManager = new GOManager()
 
     constructor() {
         super({
             key: "GameScene",
         })
     }
-
-    // private secondPageCamera = false
-    //
-    // private setSecondPageCamera() {
-    //     this.secondPageCamera = true
-    //     this.cameras.main.setScroll(0, this.sys.canvas.height)
-    // }
 
     private calculateRooms() {
         this.gameWidth = this.sys.canvas.width
@@ -65,7 +99,7 @@ export class GameScene extends Phaser.Scene {
         })
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.firstRoom.offsetY + this.screenHeight / 2,
+            y: this.rooms.thirdRoom.offsetY + this.screenHeight / 2,
         }
     }
 
@@ -107,6 +141,26 @@ export class GameScene extends Phaser.Scene {
             this.spawnPosition.y,
         )
         this.add.existing(this.player)
+        this.goManager.addGO(this.player)
+        ECS.entitiesManager.createEntity([
+            PlayerComponentFactory(),
+            DashComponentFactory(),
+            GOComponentFactory(this.player.id),
+            BodyComponentFactory(
+                this.player.body.x,
+                this.player.body.y,
+                this.player.body.width,
+                this.player.body.height,
+            ),
+            MovementComponentFactory(this.player.speed, 200, 300, 1.5),
+            PositionComponentFactory(
+                this.player.x,
+                this.player.y,
+                this.player.width,
+                this.player.height,
+            ),
+            DepthComponentFactory(this.player.depth),
+        ])
         // this.player.body.setCollideWorldBounds(true)
     }
 
@@ -188,11 +242,6 @@ export class GameScene extends Phaser.Scene {
         rect.setOrigin(0, 0)
         rect.setDepth(this.gameHeight)
 
-        // this.physics.world.enable(rect, Phaser.Physics.Arcade.STATIC_BODY)
-        // if (this.player) {
-        //     this.physics.add.collider(this.player, rect)
-        // }
-
         const btnTextY = freelancerTextY + this.freelancerText.height + 20
 
         this.btnText = this.add.text(
@@ -256,8 +305,69 @@ export class GameScene extends Phaser.Scene {
         // const chests = this.add.group()
 
         const fChest = new Chest(this, this.gameWidth - 330, secondScreenOffsetY + this.screenHeight / 3 )
+        ECS.entitiesManager.createEntity([
+            ChestComponentFactory(
+                this.chestLoot[0],
+            ),
+            GOComponentFactory(fChest.id),
+            BodyComponentFactory(
+                fChest.body.x,
+                fChest.body.y,
+                fChest.body.width,
+                fChest.body.height,
+            ),
+            PositionComponentFactory(
+                fChest.x,
+                fChest.y,
+                fChest.width,
+                fChest.height,
+            ),
+            DepthComponentFactory(fChest.depth),
+        ])
         const sChest = new Chest(this, 200, secondScreenOffsetY + this.screenHeight / 3 * 2)
+        ECS.entitiesManager.createEntity([
+            ChestComponentFactory(
+                this.chestLoot[1],
+            ),
+            GOComponentFactory(sChest.id),
+            BodyComponentFactory(
+                sChest.body.x,
+                sChest.body.y,
+                sChest.body.width,
+                sChest.body.height,
+            ),
+            PositionComponentFactory(
+                sChest.x,
+                sChest.y,
+                sChest.width,
+                sChest.height,
+            ),
+            DepthComponentFactory(sChest.depth),
+        ])
         const thChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + this.screenHeight / 3 * 2.3)
+        ECS.entitiesManager.createEntity([
+            ChestComponentFactory(
+                this.chestLoot[2],
+            ),
+            GOComponentFactory(thChest.id),
+            BodyComponentFactory(
+                thChest.body.x,
+                thChest.body.y,
+                thChest.body.width,
+                thChest.body.height,
+            ),
+            PositionComponentFactory(
+                thChest.x,
+                thChest.y,
+                thChest.width,
+                thChest.height,
+            ),
+            DepthComponentFactory(thChest.depth),
+        ])
+
+        this.goManager.addGO(fChest)
+        this.goManager.addGO(sChest)
+        this.goManager.addGO(thChest)
 
         this.chests.add(fChest, true)
         this.chests.add(sChest, true)
@@ -302,7 +412,34 @@ export class GameScene extends Phaser.Scene {
         subtitleText.setDepth(this.gameHeight)
 
         const fFolder = new Folder(this, "SPA", this.gameWidth / 2, thirdScreenOffsetY + this.screenHeight / 2 )
-        this.add.existing(fFolder)
+        this.goManager.addGO(fFolder)
+        ECS.entitiesManager.createEntity([
+            GOComponentFactory(fFolder.id),
+            FolderComponentFactory(
+                EFoldersType.SPA,
+                projectsByFoldersType[EFoldersType.SPA],
+            ),
+            BodyComponentFactory(
+                fFolder.body.x,
+                fFolder.body.y,
+                fFolder.body.width,
+                fFolder.body.height,
+            ),
+            PositionComponentFactory(
+                fFolder.x,
+                fFolder.y,
+                fFolder.width,
+                fFolder.height,
+            ),
+        ])
+
+        this.folders.add(fFolder, true)
+
+        this.physics.add.collider(this.player, this.folders)
+
+        this.physics.add.collider(this.projects, this.projects)
+        this.physics.add.collider(this.projects, this.folders)
+        this.physics.add.collider(this.player, this.projects)
     }
 
     private createMainCamera() {
@@ -314,9 +451,13 @@ export class GameScene extends Phaser.Scene {
     }
 
     private chests!: Phaser.GameObjects.Group
+    private folders!: Phaser.GameObjects.Group
+    private projects!: Phaser.GameObjects.Group
 
     private createObjectsAndGroups() {
         this.chests = this.add.group({ classType: Chest })
+        this.folders = this.add.group({ classType: Folder})
+        this.projects = this.add.group({ classType: Project})
     }
 
     public create(): void {
@@ -347,16 +488,22 @@ export class GameScene extends Phaser.Scene {
 
         // Main camera
         this.createMainCamera()
-    }
 
-    public dashBtnOnHold = false
-    public dashInProcess = false
-    public dashInProcessTimestamp = 0
-    public dashInProcessTimelong = 150
-    public dashEndedTimestamp = 0
-    private dashRestTimelong = 500
-    private dashSpeed = 3000
-    public dashMoveVectorNormalized!: Phaser.Math.Vector2
+        ECS.onInit({
+            time: 0,
+            delta: 0,
+        }, {
+            cursors: this.cursors,
+            scene: this,
+            goManager: this.goManager,
+            gameWidth: this.gameWidth,
+            gameHeight: this.gameHeight,
+            timeSpeedScale: this.timeSpeedScale,
+            deltaTimeScaled: 0,
+            projectsById,
+            projectsGOGroup: this.projects,
+        })
+    }
 
     public cameraMousePointerFollorSystem() {
         const halsOfScreenY = this.sys.canvas.height / 2
@@ -370,190 +517,6 @@ export class GameScene extends Phaser.Scene {
         if (minus) {
             this.cameras.main.followOffset.y *=  -1
         }
-    }
-
-    private playerDashSystem(time: number, delta: number) {
-        if (this.dashInProcess) {
-            if (time > this.dashInProcessTimestamp + this.dashInProcessTimelong) {
-                this.dashInProcess = false
-                this.dashEndedTimestamp = time
-            }
-        } else {
-            if (
-                !this.dashBtnOnHold
-                && this.input.mousePointer.isDown
-                && time > this.dashEndedTimestamp + this.dashRestTimelong
-            ) {
-                const mousePosVector = this.cameras.main.getWorldPoint(
-                    this.input.mousePointer.position.x,
-                    this.input.mousePointer.position.y,
-                )
-                this.dashMoveVectorNormalized = mousePosVector.subtract(this.player.body.position).normalize()
-                this.dashInProcess = true
-                this.dashInProcessTimestamp = time
-            }
-        }
-    }
-
-    private playerMovesLeft = false
-    private playerMovesRight = false
-    private playerMovesUp = false
-    private playerMovesDown = false
-    private playerMovesVert = false
-    private playerMovesHor = false
-
-    private movementStartTime = 0
-    private movementStopTime = 0
-    private accelerationTime = 200
-    private deaccelerationTime = 300
-
-    public playerMovementSystem(time: number, delta: number) {
-
-        if (this.dashInProcess) {
-            const accelerationOverTime = (time - this.dashInProcessTimestamp) / this.dashInProcessTimelong + 0.3
-            this.player.body.setVelocity(
-                this.dashMoveVectorNormalized.x * this.dashSpeed * accelerationOverTime,
-                this.dashMoveVectorNormalized.y * this.dashSpeed * accelerationOverTime,
-            )
-        } else {
-            if (
-                this.cursors.left.isDown ||
-                this.cursors.right.isDown ||
-                this.cursors.up.isDown ||
-                this.cursors.down.isDown
-            ) {
-                //         // // Mouse movement
-                //         // const mousePosVector = this.cameras.main.getWorldPoint(
-                //         //     this.input.mousePointer.position.x,
-                //         //     this.input.mousePointer.position.y,
-                //         // )
-                //         //
-                //         // const playerDistance = this.player.body.position
-                //         //     .add(new Phaser.Math.Vector2(this.player.body.width / 2, this.player.body.height / 2))
-                //         //     .distance(mousePosVector)
-                //         //
-                //         // if (
-                //         //     (!playerWasInMove && playerDistance > 150)
-                //         //     ||
-                //         //     (playerWasInMove && playerDistance > 100)
-                //         // ) {
-                //         //     this.physics.moveTo(this.player, mousePosVector.x, mousePosVector.y, playerSpeed)
-                //         // }
-                this.movementStopTime = 0
-                if (this.movementStartTime === 0) {
-                    this.movementStartTime = time
-                }
-                let playerSpeed = this.player.speed * (delta * 60 / 1000)
-                const acc = (time - this.movementStartTime) / this.accelerationTime
-
-                if (acc < 1) {
-                    playerSpeed *= acc
-                }
-
-                if (this.cursors.shift.isDown) {
-                    playerSpeed *= 1.5
-                }
-
-                if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-                    this.player.body.setVelocityX(-playerSpeed)
-                } else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-                    this.player.body.setVelocityX(playerSpeed)
-                } else {
-                    this.player.body.setVelocityX(0)
-                }
-
-                if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-                    this.player.body.setVelocityY(-playerSpeed)
-                } else if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-                    this.player.body.setVelocityY(playerSpeed)
-                } else {
-                    this.player.body.setVelocityY(0)
-                }
-                if (this.playerMovesVert && this.playerMovesHor) {
-                    this.player.body.velocity.x = this.player.body.velocity.x * 0.8
-                    this.player.body.velocity.y = this.player.body.velocity.y * 0.8
-                }
-            } else {
-                if (this.movementStopTime === 0) {
-                    this.movementStopTime = time
-                }
-                this.movementStartTime = 0
-
-                const deacc = 1 - (time - this.movementStopTime) / this.deaccelerationTime
-
-                if (deacc > 0) {
-                    this.player.body.setVelocity(
-                        this.player.body.velocity.x * deacc,
-                        this.player.body.velocity.y * deacc,
-                    )
-                } else {
-                    this.player.body.setVelocity(0)
-                }
-            }
-        }
-    }
-
-    private playerMovesDirectionSystem() {
-        this.playerMovesLeft = false
-        this.playerMovesRight = false
-        this.playerMovesUp = false
-        this.playerMovesDown = false
-        this.playerMovesHor = false
-        this.playerMovesVert = false
-
-        if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-            this.playerMovesRight = true
-            this.playerMovesHor = true
-        } else if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-            this.playerMovesLeft = true
-            this.playerMovesHor = true
-        }
-
-        if (this.cursors.up.isDown && !this.cursors.down.isDown) {
-            this.playerMovesUp = true
-            this.playerMovesVert = true
-        } else if (this.cursors.down.isDown && !this.cursors.up.isDown) {
-            this.playerMovesDown = true
-            this.playerMovesVert = true
-        }
-    }
-
-    private playerAnimationSystem(time: number, delta: number) {
-        if (this.playerMovesDown) {
-            this.player.setDownMovementPose()
-        }
-        if (this.playerMovesLeft) {
-            this.player.setLeftMovementPose()
-        }
-        if (this.playerMovesRight) {
-            this.player.setRightMovementPose()
-        }
-    }
-
-    private playerBorderCollisionSystem() {
-        if (
-            this.player.x + this.player.width / 2 >= this.gameWidth && this.playerMovesRight
-            ||
-            this.player.x - this.player.width / 2 <= 0 && this.playerMovesLeft
-        ) {
-            this.player.body.velocity.x = 0
-        }
-
-        if (
-            this.player.y - this.player.height / 2 <= 0 && this.playerMovesUp
-            ||
-            this.player.y + this.player.height / 2 > this.gameHeight && this.playerMovesDown
-        ) {
-            this.player.body.velocity.y = 0
-        }
-    }
-
-    private playerDepthSystem() {
-        this.player.setDepth(this.player.body.y)
-    }
-
-    private playerSpaceHoldSystem() {
-        this.dashBtnOnHold = this.input.mousePointer.isDown
     }
 
     private chestLoot = [
@@ -582,74 +545,27 @@ export class GameScene extends Phaser.Scene {
         },
     ]
 
-    private nearByChests: Chest[] = []
-
-    private chestTriggerSystem() {
-        const chests = this.chests.getChildren() as Chest[]
-
-        for (let i = 0; i < chests.length; i++) {
-            const chest = chests[i]
-            if (this.player.body.position.distance(chest.body.position) < 100) {
-                // ToDo: Think of over check for changing Frame
-                if (chest.frame.name === "objects/chests/chestDefault.psd") {
-                    chest.setFrame("objects/chests/chestTouched.psd")
-                    this.nearByChests.push(chest)
-                }
-            } else {
-                if (chest.frame.name === "objects/chests/chestTouched.psd") {
-                    chest.setFrame("objects/chests/chestDefault.psd")
-                    this.nearByChests = this.nearByChests.filter((ch) => ch !== chest)
-                }
-            }
-            if (this.nearByChests.indexOf(chest) > -1 && chest.frame.name !== "objects/chests/chestOpened.psd") {
-                if (this.cursors.action.isDown) {
-                    chest.setFrame("objects/chests/chestOpened.psd")
-                    const lootData = this.chestLoot.find((l) => !l.opened)
-                    if (lootData) {
-                        const loot = new Loot(
-                            this,
-                            chest.body.x + chest.body.width / 2,
-                            chest.body.y - chest.body.height,
-                            lootData.img,
-                            chest.depth,
-                        )
-                        this.add.existing(loot)
-                        const sd = new ServiceDescription(
-                            this,
-                            chest.body.x + chest.body.width / 2,
-                            chest.body.y,
-                            chest.depth - 1,
-                            35,
-                            lootData.title,
-                            lootData.subtitle,
-                            lootData.desc,
-                        )
-                        lootData.opened = true
-                    }
-                }
-            }
-        }
+    public timeSpeedScale = {
+        value: 1,
     }
 
     public update(time: number, delta: number): void {
 
         this.cameraMousePointerFollorSystem()
 
-        // Then we add Dash if it is needed
-        this.playerDashSystem(time, delta)
-        // First of all we move Player
-        this.playerMovementSystem(time, delta)
-        // After all Moves we determining Player Direction
-        this.playerMovesDirectionSystem()
-        // After Moves and Direction we adding animation
-        this.playerAnimationSystem(time, delta)
-        // After Moves and Direction we checking for world border collision
-        this.playerBorderCollisionSystem()
-
-        this.chestTriggerSystem()
-
-        this.playerDepthSystem()
-
-        this.playerSpaceHoldSystem()
+        ECS.exec({
+            time,
+            delta,
+        }, {
+            cursors: this.cursors,
+            scene: this,
+            goManager: this.goManager,
+            gameWidth: this.gameWidth,
+            gameHeight: this.gameHeight,
+            timeSpeedScale: this.timeSpeedScale,
+            deltaTimeScaled: delta * this.timeSpeedScale.value,
+            projectsById,
+            projectsGOGroup: this.projects,
+        })
     }
 }
