@@ -1,15 +1,21 @@
 import {IComponentFactory} from "game/ECS/types"
 
-interface IProjectComponentState {
-    
+export interface IProjectComponentState {
+    id: string
+    isOpened: boolean
+    isTouched: boolean
 }
 
 export const PROJECT_COMPONENT_NAME = "ProjectComponent"
 
-const ProjectComponentFactory: IComponentFactory<IProjectComponentState> = () => {
+const ProjectComponentFactory: IComponentFactory<IProjectComponentState> = (id: string) => {
     return {
         name: PROJECT_COMPONENT_NAME,
-        state: {},
+        state: {
+            id,
+            isOpened: false,
+            isTouched: false,
+        },
     }
 }
 

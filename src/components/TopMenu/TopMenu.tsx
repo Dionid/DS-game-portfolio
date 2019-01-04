@@ -79,7 +79,7 @@ class TopMenu extends React.Component<IProps, IState> {
                     </div>
                     <div className={ cx("avatar-wr") }>
                         <div className={ cx("avatar-container") }>
-
+                            <img className={ cx("avatar-img") } src={ require("assets/images/playerAvatar.png") } alt=""/>
                         </div>
                         <div className={ cx("avatar-nickname") }>
                             Player 1

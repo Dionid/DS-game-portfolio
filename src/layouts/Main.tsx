@@ -6,6 +6,7 @@ import styles from "./Main.scss"
 import classnamesBind from "classnames/bind"
 import TopMenu from "components/TopMenu/TopMenu"
 import PhaserGame from "components/PhaserGame/PhaserGame"
+import ProjectModal from "components/ProjectModal/ProjectModal"
 
 const cx = classnamesBind.bind(styles)
 
@@ -16,7 +17,20 @@ interface IProps {
 interface IState {}
 
 class MainLayout extends React.Component<IProps, IState> {
+
+    public state = {
+        projectModalIsOpened: true,
+    }
+
+    private closeModal = () => {
+        this.setState({
+            projectModalIsOpened: false,
+        })
+    }
+
     public render() {
+        const { projectModalIsOpened } = this.state
+
         return (
             <div className={ cx("wrapper") }>
                 <div className={ cx("container") }>
@@ -49,7 +63,7 @@ class MainLayout extends React.Component<IProps, IState> {
                             </div>
                         </div>
                         <div className={ cx("gameContainer") }>
-                            <PhaserGame/>
+                            <PhaserGame />
                         </div>
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>
@@ -57,17 +71,22 @@ class MainLayout extends React.Component<IProps, IState> {
                                     LINK to TEXT Version
                                 </a>
                                 <div className={ cx("copyright") }>
-                                	copyright @2019
+                                    copyright @2019
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                {
+                    projectModalIsOpened && <ProjectModal closeModal={ this.closeModal }/>
+                }
             </div>
         )
     }
 }
 
 export default connect(({}: IAppState) => {
-    return {}
+    return {
+
+    }
 })(MainLayout)

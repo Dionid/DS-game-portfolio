@@ -1,13 +1,14 @@
 export class Project extends Phaser.GameObjects.Container {
     public body!: Phaser.Physics.Arcade.Body
     public id: string
+    public logo: Phaser.GameObjects.Sprite
 
     constructor(scene: Phaser.Scene, name: string, x: number, y: number) {
         super(scene, x, y)
 
         this.id = "id" + (new Date()).getTime()
 
-        const logo = new Phaser.GameObjects.Sprite(
+        this.logo = new Phaser.GameObjects.Sprite(
             scene,
             0,
             0,
@@ -15,11 +16,15 @@ export class Project extends Phaser.GameObjects.Container {
             `objects/projects/logo${name}.psd`,
         )
 
-        this.add(logo)
+        this.add(this.logo)
 
-        this.initPhysics(logo.width, logo.height / 3)
+        this.initPhysics(this.logo.width, this.logo.height / 3)
 
-        this.createName(logo.x, logo.y + logo.height / 2, name)
+        this.createName(this.logo.x, this.logo.y + this.logo.height / 2, name)
+    }
+
+    public setFrame(name: string) {
+        this.logo.setFrame(name)
     }
 
     private createName(x: number, y: number, name: string) {

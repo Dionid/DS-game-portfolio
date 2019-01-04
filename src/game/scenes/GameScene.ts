@@ -27,8 +27,8 @@ import FolderComponentFactory from "game/components/FolderComponent"
 import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
 import {Project} from "game/objects/Project"
 import {EFoldersType, projectsByFoldersType, projectsById} from "game/models/Portfolio"
-import ProjectComponentFactory from "game/components/ProjectComponent"
 import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
+import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -40,6 +40,7 @@ const ECS = new ECSManager([
     DynamicDepthSystem,
     PhaserOutputChestSystem,
     PhaserOutputFolderSystem,
+    PhaserOutputProjectSystem,
     PhaserOutputPlayerAnimationSystem,
     PhaserOutputDynamicDepthSystem,
     PhaserOutputMovementSystem,
@@ -412,7 +413,6 @@ export class GameScene extends Phaser.Scene {
 
         const fFolder = new Folder(this, "SPA", this.gameWidth / 2, thirdScreenOffsetY + this.screenHeight / 2 )
         this.goManager.addGO(fFolder)
-        console.log(projectsByFoldersType[EFoldersType.SPA])
         ECS.entitiesManager.createEntity([
             GOComponentFactory(fFolder.id),
             FolderComponentFactory(
@@ -436,70 +436,6 @@ export class GameScene extends Phaser.Scene {
         this.folders.add(fFolder, true)
 
         this.physics.add.collider(this.player, this.folders)
-
-        // const prostorProject = new Project(
-        //     this,
-        //     "Prostor",
-        //     this.gameWidth / 3,
-        //     thirdScreenOffsetY + this.screenHeight / 2 + 50,
-        // )
-        // ECS.entitiesManager.createEntity([
-        //     ProjectComponentFactory(),
-        //     MovementComponentFactory(0, 0, 0, 1.5),
-        //     PositionComponentFactory(
-        //         prostorProject.x,
-        //         prostorProject.y,
-        //         prostorProject.width,
-        //         prostorProject.height,
-        //     ),
-        //     BodyComponentFactory(
-        //         prostorProject.body.x,
-        //         prostorProject.body.y,
-        //         prostorProject.body.width,
-        //         prostorProject.body.height,
-        //     ),
-        //     DepthComponentFactory(prostorProject.depth),
-        //     GOComponentFactory(prostorProject.id),
-        // ])
-        // this.goManager.addGO(prostorProject)
-        // this.projects.add(prostorProject, true)
-        //
-        // const secondProject = new Project(
-        //     this,
-        //     "Prostor",
-        //     this.gameWidth / 3,
-        //     thirdScreenOffsetY + this.screenHeight / 2 + 50,
-        // )
-        // ECS.entitiesManager.createEntity([
-        //     ProjectComponentFactory(),
-        //     MovementComponentFactory(0, 0, 0, 1.5),
-        //     PositionComponentFactory(
-        //         secondProject.x,
-        //         secondProject.y,
-        //         secondProject.width,
-        //         secondProject.height,
-        //     ),
-        //     BodyComponentFactory(
-        //         secondProject.body.x,
-        //         secondProject.body.y,
-        //         secondProject.body.width,
-        //         secondProject.body.height,
-        //     ),
-        //     DepthComponentFactory(secondProject.depth),
-        //     GOComponentFactory(secondProject.id),
-        // ])
-        // this.goManager.addGO(secondProject)
-        // this.projects.add(secondProject, true)
-        //
-        // const angleDeg = 45
-        //
-        // this.projects.getChildren().forEach((pr, i) => {
-        //     const angleRad = angleDeg * (i + 1) * Math.PI / 180
-        //     const pushDistance = Math.random() * 200 + 300
-        //     if (pr.body instanceof Phaser.Physics.Arcade.Body) {
-        //         pr.body.setVelocity(Math.cos(angleRad) * pushDistance, Math.sin(angleRad) * pushDistance)
-        //     }
-        // })
 
         this.physics.add.collider(this.projects, this.projects)
         this.physics.add.collider(this.projects, this.folders)

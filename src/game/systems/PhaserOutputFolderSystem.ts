@@ -82,7 +82,9 @@ class PhaserOutputFolderSystem extends System<ISystemAdditional, ISystemPhaserIn
                             )
 
                             entityManager.createEntity([
-                                ProjectComponentFactory(),
+                                ProjectComponentFactory(
+                                    prId,
+                                ),
                                 MovementComponentFactory(
                                     9999,
                                     0,

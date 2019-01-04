@@ -16,13 +16,15 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
+      "src/*": ["../src/*"],
       "dvaApp": ["src/dvaApp/index.ts"],
       "models": ["src/models/index.ts"],
       "models/*": ["src/models/*"],
       "components/*": ["src/components/*"],
       "styles/*": ["src/styles/*"],
       "game": ["src/game/index.ts"],
-      "game/*": ["src/game/*"]
+      "game/*": ["src/game/*"],
+      "assets/*": ["public/assets"]
     }
   },
   "include": [
