@@ -19,7 +19,7 @@ interface IState {}
 class MainLayout extends React.Component<IProps, IState> {
 
     public state = {
-        projectModalIsOpened: true,
+        projectModalIsOpened: false,
     }
 
     private closeModal = () => {

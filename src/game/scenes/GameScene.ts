@@ -35,7 +35,7 @@ const ECS = new ECSManager([
     PhaserInputBodySystem,
     PhaserInputVelocitySystem,
     PlayerMovementSystem,
-    DashSystem,
+    // DashSystem,
     WorldBorderCollisionSystem,
     DynamicDepthSystem,
     PhaserOutputChestSystem,
@@ -99,7 +99,7 @@ export class GameScene extends Phaser.Scene {
         })
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.thirdRoom.offsetY + this.screenHeight / 2,
+            y: this.rooms.firstRoom.offsetY + this.screenHeight / 2,
         }
     }
 
@@ -242,6 +242,24 @@ export class GameScene extends Phaser.Scene {
         rect.setOrigin(0, 0)
         rect.setDepth(this.gameHeight)
 
+        rect.setInteractive({
+            useHandCursor: true,
+        })
+
+        rect.on("pointerover", () => {
+            rect.setStrokeStyle(3, 0xeb41ff)
+            rect.setFillStyle(0xffffff)
+            this.btnText.setFill("#000")
+            this.btnText.setStroke("#fff", 5)
+        })
+
+        rect.on("pointerout", () => {
+            rect.setStrokeStyle(3, 0xd4d4d4)
+            rect.setFillStyle(0x080808)
+            this.btnText.setFill("#fff")
+            this.btnText.setStroke("#000", 5)
+        })
+
         const btnTextY = freelancerTextY + this.freelancerText.height + 20
 
         this.btnText = this.add.text(
@@ -256,6 +274,24 @@ export class GameScene extends Phaser.Scene {
                 fill: "#fff",
             },
         )
+
+        this.btnText.setInteractive({
+            useHandCursor: true,
+        })
+
+        this.btnText.on("pointerover", () => {
+            rect.setStrokeStyle(3, 0xeb41ff)
+            rect.setFillStyle(0xffffff)
+            this.btnText.setFill("#000")
+            this.btnText.setStroke("#fff", 5)
+        })
+
+        this.btnText.on("pointerout", () => {
+            rect.setStrokeStyle(3, 0xd4d4d4)
+            rect.setFillStyle(0x080808)
+            this.btnText.setFill("#fff")
+            this.btnText.setStroke("#000", 5)
+        })
 
         const link = "https://docs.google.com/document/d/" +
             "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
