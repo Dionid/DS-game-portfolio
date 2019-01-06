@@ -29,6 +29,7 @@ import {Project} from "game/objects/Project"
 import {EFoldersType, projectsByFoldersType, projectsById} from "game/models/Portfolio"
 import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
 import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
+import {GoToTextBtn} from "game/objects/GoToTextBtn"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -225,82 +226,89 @@ export class GameScene extends Phaser.Scene {
 
         this.freelancerText.setDepth(this.gameHeight)
 
-        const rectWidth = 170
-        const rectHeight = 40
-        const rectX = this.leftTextStartOffsetX
-        const rectY = freelancerTextY + this.freelancerText.height + 20
-
-        const rect = this.add.rectangle(
-            rectX,
-            rectY,
-            rectWidth,
-            rectHeight,
-            0x080808,
-        )
-
-        rect.setStrokeStyle(3, 0xd4d4d4)
-        rect.setOrigin(0, 0)
-        rect.setDepth(this.gameHeight)
-
-        rect.setInteractive({
-            useHandCursor: true,
-        })
-
-        rect.on("pointerover", () => {
-            rect.setStrokeStyle(3, 0xeb41ff)
-            rect.setFillStyle(0xffffff)
-            this.btnText.setFill("#000")
-            this.btnText.setStroke("#fff", 5)
-        })
-
-        rect.on("pointerout", () => {
-            rect.setStrokeStyle(3, 0xd4d4d4)
-            rect.setFillStyle(0x080808)
-            this.btnText.setFill("#fff")
-            this.btnText.setStroke("#000", 5)
-        })
-
-        const btnTextY = freelancerTextY + this.freelancerText.height + 20
-
-        this.btnText = this.add.text(
+        const btn = new GoToTextBtn(
+            this,
             this.leftTextStartOffsetX,
-            btnTextY,
-            "GO TO TEXT VERSION",
-            {
-                fontFamily: "Connection",
-                fontSize: 14,
-                stroke: "#000",
-                strokeThickness: 5,
-                fill: "#fff",
-            },
+            freelancerTextY + this.freelancerText.height + 20,
+            this.gameHeight,
         )
 
-        this.btnText.setInteractive({
-            useHandCursor: true,
-        })
-
-        this.btnText.on("pointerover", () => {
-            rect.setStrokeStyle(3, 0xeb41ff)
-            rect.setFillStyle(0xffffff)
-            this.btnText.setFill("#000")
-            this.btnText.setStroke("#fff", 5)
-        })
-
-        this.btnText.on("pointerout", () => {
-            rect.setStrokeStyle(3, 0xd4d4d4)
-            rect.setFillStyle(0x080808)
-            this.btnText.setFill("#fff")
-            this.btnText.setStroke("#000", 5)
-        })
-
-        const link = "https://docs.google.com/document/d/" +
-            "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
-
-        this.btnText.setPadding(10, 10, 20, 10)
-        this.btnText.setInteractive().on("pointerdown", () => {
-            window.open(link, "_self")
-        })
-        this.btnText.setDepth(this.gameHeight + 1)
+        // const rectWidth = 170
+        // const rectHeight = 40
+        // const rectX = this.leftTextStartOffsetX
+        // const rectY = freelancerTextY + this.freelancerText.height + 20
+        //
+        // const rect = this.add.rectangle(
+        //     rectX,
+        //     rectY,
+        //     rectWidth,
+        //     rectHeight,
+        //     0x080808,
+        // )
+        //
+        // rect.setStrokeStyle(3, 0xd4d4d4)
+        // rect.setOrigin(0, 0)
+        // rect.setDepth(this.gameHeight)
+        //
+        // rect.setInteractive({
+        //     useHandCursor: true,
+        // })
+        //
+        // rect.on("pointerover", () => {
+        //     rect.setStrokeStyle(3, 0xeb41ff)
+        //     rect.setFillStyle(0xffffff)
+        //     this.btnText.setFill("#000")
+        //     this.btnText.setStroke("#fff", 5)
+        // })
+        //
+        // rect.on("pointerout", () => {
+        //     rect.setStrokeStyle(3, 0xd4d4d4)
+        //     rect.setFillStyle(0x080808)
+        //     this.btnText.setFill("#fff")
+        //     this.btnText.setStroke("#000", 5)
+        // })
+        //
+        // const btnTextY = freelancerTextY + this.freelancerText.height + 20
+        //
+        // this.btnText = this.add.text(
+        //     this.leftTextStartOffsetX,
+        //     btnTextY,
+        //     "GO TO TEXT VERSION",
+        //     {
+        //         fontFamily: "Connection",
+        //         fontSize: 14,
+        //         stroke: "#000",
+        //         strokeThickness: 5,
+        //         fill: "#fff",
+        //     },
+        // )
+        //
+        // this.btnText.setInteractive({
+        //     useHandCursor: true,
+        // })
+        //
+        // this.btnText.on("pointerover", () => {
+        //     rect.setStrokeStyle(3, 0xeb41ff)
+        //     rect.setFillStyle(0xffffff)
+        //     this.btnText.setFill("#000")
+        //     this.btnText.setStroke("#fff", 5)
+        // })
+        //
+        // this.btnText.on("pointerout", () => {
+        //     rect.setStrokeStyle(3, 0xd4d4d4)
+        //     rect.setFillStyle(0x080808)
+        //     this.btnText.setFill("#fff")
+        //     this.btnText.setStroke("#000", 5)
+        // })
+        //
+        // const link = "https://docs.google.com/document/d/" +
+        //     "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
+        //
+        // this.btnText.setPadding(10, 10, 20, 10)
+        // this.btnText.setInteractive().on("pointerdown", () => {
+        //     window.open(link, "_self")
+        // })
+        // this.btnText.setDepth(this.gameHeight + 1)
     }
 
     private createSecondRoom() {
