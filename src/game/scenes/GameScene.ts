@@ -29,7 +29,7 @@ import {Project} from "game/objects/Project"
 import {EFoldersType, projectsByFoldersType, projectsById} from "game/models/Portfolio"
 import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
 import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
-import {GoToTextBtn} from "game/objects/GoToTextBtn"
+import GoToTextBtn from "game/objects/GoToTextBtn"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -47,11 +47,12 @@ const ECS = new ECSManager([
     PhaserOutputMovementSystem,
 ])
 
+const cuttingCornersVersion = true
+
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
     private fullstackText?: Phaser.GameObjects.Text = undefined
     private freelancerText?: Phaser.GameObjects.Text = undefined
-    private btnText?: Phaser.GameObjects.Text = undefined
     private cursors!: Cursors
     private player!: Player
 
@@ -72,7 +73,7 @@ export class GameScene extends Phaser.Scene {
             offsetY: 0,
         },
         thirdRoom: {
-            numberOfScreens: 3,
+            numberOfScreens: cuttingCornersVersion ? 1 : 3,
             offsetY: 0,
         },
         fourthRoom: {
@@ -100,7 +101,7 @@ export class GameScene extends Phaser.Scene {
         })
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.firstRoom.offsetY + this.screenHeight / 2,
+            y: this.rooms.thirdRoom.offsetY + this.screenHeight / 2,
         }
     }
 
@@ -232,83 +233,6 @@ export class GameScene extends Phaser.Scene {
             freelancerTextY + this.freelancerText.height + 20,
             this.gameHeight,
         )
-
-        // const rectWidth = 170
-        // const rectHeight = 40
-        // const rectX = this.leftTextStartOffsetX
-        // const rectY = freelancerTextY + this.freelancerText.height + 20
-        //
-        // const rect = this.add.rectangle(
-        //     rectX,
-        //     rectY,
-        //     rectWidth,
-        //     rectHeight,
-        //     0x080808,
-        // )
-        //
-        // rect.setStrokeStyle(3, 0xd4d4d4)
-        // rect.setOrigin(0, 0)
-        // rect.setDepth(this.gameHeight)
-        //
-        // rect.setInteractive({
-        //     useHandCursor: true,
-        // })
-        //
-        // rect.on("pointerover", () => {
-        //     rect.setStrokeStyle(3, 0xeb41ff)
-        //     rect.setFillStyle(0xffffff)
-        //     this.btnText.setFill("#000")
-        //     this.btnText.setStroke("#fff", 5)
-        // })
-        //
-        // rect.on("pointerout", () => {
-        //     rect.setStrokeStyle(3, 0xd4d4d4)
-        //     rect.setFillStyle(0x080808)
-        //     this.btnText.setFill("#fff")
-        //     this.btnText.setStroke("#000", 5)
-        // })
-        //
-        // const btnTextY = freelancerTextY + this.freelancerText.height + 20
-        //
-        // this.btnText = this.add.text(
-        //     this.leftTextStartOffsetX,
-        //     btnTextY,
-        //     "GO TO TEXT VERSION",
-        //     {
-        //         fontFamily: "Connection",
-        //         fontSize: 14,
-        //         stroke: "#000",
-        //         strokeThickness: 5,
-        //         fill: "#fff",
-        //     },
-        // )
-        //
-        // this.btnText.setInteractive({
-        //     useHandCursor: true,
-        // })
-        //
-        // this.btnText.on("pointerover", () => {
-        //     rect.setStrokeStyle(3, 0xeb41ff)
-        //     rect.setFillStyle(0xffffff)
-        //     this.btnText.setFill("#000")
-        //     this.btnText.setStroke("#fff", 5)
-        // })
-        //
-        // this.btnText.on("pointerout", () => {
-        //     rect.setStrokeStyle(3, 0xd4d4d4)
-        //     rect.setFillStyle(0x080808)
-        //     this.btnText.setFill("#fff")
-        //     this.btnText.setStroke("#000", 5)
-        // })
-        //
-        // const link = "https://docs.google.com/document/d/" +
-        //     "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
-        //
-        // this.btnText.setPadding(10, 10, 20, 10)
-        // this.btnText.setInteractive().on("pointerdown", () => {
-        //     window.open(link, "_self")
-        // })
-        // this.btnText.setDepth(this.gameHeight + 1)
     }
 
     private createSecondRoom() {
@@ -420,6 +344,68 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.chests)
     }
 
+    private createThirdRoomCCVersion() {
+        const thirdScreenOffsetY = this.rooms.thirdRoom.offsetY
+
+        const titleY = thirdScreenOffsetY + 50
+
+        const title = this.add.text(
+            this.leftTextStartOffsetX,
+            titleY,
+            "Projects",
+            {
+                fontFamily: "Connection",
+                fontSize: 60,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#fff",
+            },
+        )
+
+        title.setDepth(this.gameHeight)
+
+        const subtitleText = this.add.text(
+            this.leftTextStartOffsetX,
+            titleY + title.height,
+            "What have I done...",
+            {
+                fontFamily: "Connection",
+                fontSize: 25,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#bdbdbd",
+            },
+        )
+
+        subtitleText.setDepth(this.gameHeight)
+
+        const comingSoonY = thirdScreenOffsetY + this.screenHeight / 2
+
+        const comingSoon = this.add.text(
+            this.gameWidth / 2,
+            comingSoonY,
+            "coming soon...",
+            {
+                fontFamily: "Connection",
+                fontSize: 40,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#fff",
+            },
+        )
+
+        comingSoon.setX(this.gameWidth / 2 - comingSoon.width / 2)
+        comingSoon.setDepth(this.gameHeight)
+
+        const btn = new GoToTextBtn(
+            this,
+            this.gameWidth / 2,
+            comingSoon.y + comingSoon.height + 20,
+            this.gameHeight,
+            true,
+        )
+    }
+
     private createThirdRoom() {
         const thirdScreenOffsetY = this.rooms.thirdRoom.offsetY
 
@@ -526,7 +512,11 @@ export class GameScene extends Phaser.Scene {
         this.createSecondRoom()
 
         // Third room
-        this.createThirdRoom()
+        if (cuttingCornersVersion) {
+            this.createThirdRoomCCVersion()
+        } else {
+            this.createThirdRoom()
+        }
 
         // Fourth room
 

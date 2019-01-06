@@ -1,16 +1,19 @@
 
-export class GoToTextBtn extends Phaser.GameObjects.Container {
+export default class GoToTextBtn extends Phaser.GameObjects.Container {
     public id: string
     public btnText: Phaser.GameObjects.Text
     public rect: Phaser.GameObjects.Rectangle
 
-    constructor(scene: Phaser.Scene, x: number, y: number, depth: number) {
+    constructor(scene: Phaser.Scene, x: number, y: number, depth: number, center: boolean = false) {
         super(scene, x, y)
 
         this.id = "id" + (new Date()).getTime()
 
         const rectWidth = 170
         const rectHeight = 40
+        if (center) {
+            x = x - rectWidth / 2
+        }
 
         this.rect = scene.add.rectangle(
             x,
@@ -33,8 +36,8 @@ export class GoToTextBtn extends Phaser.GameObjects.Container {
         this.rect.on("pointerout", this.pointerOut)
 
         this.btnText = scene.add.text(
-            x,
-            y,
+            x + 13,
+            y + 10,
             "GO TO TEXT VERSION",
             {
                 fontFamily: "Connection",
@@ -56,7 +59,7 @@ export class GoToTextBtn extends Phaser.GameObjects.Container {
         const link = "https://docs.google.com/document/d/" +
             "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
 
-        this.btnText.setPadding(10, 10, 20, 10)
+        // this.btnText.setPadding(12, 10, 20, 10)
         this.btnText.setInteractive().on("pointerdown", () => {
             window.open(link, "_self")
         })
