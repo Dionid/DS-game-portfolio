@@ -30,6 +30,7 @@ import {EFoldersType, projectsByFoldersType, projectsById} from "game/models/Por
 import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
 import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
 import GoToTextBtn from "game/objects/GoToTextBtn"
+import PhaserOutputContactRoomCreationSystem from "game/systems/PhaserOutputContactRoomCreationSystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -39,6 +40,7 @@ const ECS = new ECSManager([
     // DashSystem,
     WorldBorderCollisionSystem,
     DynamicDepthSystem,
+    PhaserOutputContactRoomCreationSystem,
     PhaserOutputChestSystem,
     PhaserOutputFolderSystem,
     PhaserOutputProjectSystem,
@@ -101,7 +103,7 @@ export class GameScene extends Phaser.Scene {
         })
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.thirdRoom.offsetY + this.screenHeight / 2,
+            y: this.rooms.fourthRoom.offsetY + this.screenHeight / 2,
         }
     }
 
@@ -536,6 +538,9 @@ export class GameScene extends Phaser.Scene {
             deltaTimeScaled: 0,
             projectsById,
             projectsGOGroup: this.projects,
+            rooms: this.rooms,
+            leftTextStartOffsetX: this.leftTextStartOffsetX,
+            screenHeight: this.screenHeight,
         })
     }
 
@@ -600,6 +605,9 @@ export class GameScene extends Phaser.Scene {
             deltaTimeScaled: delta * this.timeSpeedScale.value,
             projectsById,
             projectsGOGroup: this.projects,
+            rooms: this.rooms,
+            leftTextStartOffsetX: this.leftTextStartOffsetX,
+            screenHeight: this.screenHeight,
         })
     }
 }
