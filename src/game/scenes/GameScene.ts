@@ -31,6 +31,7 @@ import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
 import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
 import GoToTextBtn from "game/objects/GoToTextBtn"
 import PhaserOutputContactRoomCreationSystem from "game/systems/PhaserOutputContactRoomCreationSystem"
+import RoomTrigger from "game/objects/RoomTrigger"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -63,6 +64,7 @@ export class GameScene extends Phaser.Scene {
     private gameWidth: number = 0
     private spawnPosition: {x: number, y: number} = {x: 0, y: 0}
     private screenHeight: number = 0
+    private screenWidth: number = 0
 
     // Rooms
     private rooms: { [key: string]: Room } = {
@@ -95,6 +97,7 @@ export class GameScene extends Phaser.Scene {
     private calculateRooms() {
         this.gameWidth = this.sys.canvas.width
         this.screenHeight = this.sys.canvas.height
+        this.screenWidth = this.sys.canvas.width
         Object.keys(this.rooms).forEach((roomName: string) => {
             const room = this.rooms[roomName]
             room.offsetY = this.roomScreensTotalNumber * this.screenHeight
@@ -103,7 +106,7 @@ export class GameScene extends Phaser.Scene {
         })
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.fourthRoom.offsetY + this.screenHeight / 2,
+            y: this.rooms.firstRoom.offsetY + this.screenHeight / 2,
         }
     }
 
@@ -113,29 +116,80 @@ export class GameScene extends Phaser.Scene {
     }
 
     private createSecondRoomTriggerArea() {
-        const triggerWidth = this.sys.canvas.width - 20
-        const triggerHeight = 1
-        const triggerX = 0
-        const triggerY = this.sys.canvas.height - 20
-
-        const trigger = this.add.rectangle(
-            triggerX,
-            triggerY,
-            triggerWidth,
-            triggerHeight,
-            0x080808,
+        const firstAndSecondRoomTrigger = new RoomTrigger(
+            this,
+            () => {
+                console.log("activeFirstRoom")
+            },
+            () => {
+                console.log("activeSecRoom")
+            },
+            this.player,
+            this.gameWidth,
+            20,
+            0,
+            this.screenHeight - 20,
+            true,
         )
 
-        trigger.setStrokeStyle(3, 0xd4d4d4)
-        trigger.setOrigin(0, 0)
-
-        this.physics.world.enable(trigger, Phaser.Physics.Arcade.STATIC_BODY)
-        this.physics.add.overlap(this.player, trigger, () => {
-            // if (!this.secondPageCamera) {
-            //     console.log("Triggered")
-            //     this.setSecondPageCamera()
-            // }
-        }, undefined, this)
+        // let triggerActive = false
+        // let triggerSecActive = false
+        //
+        // const triggerWidth = this.gameWidth
+        // const triggerHeight = 1
+        // const triggerX = 0
+        // const triggerY = this.screenHeight - 20
+        //
+        // const trigger = this.add.rectangle(
+        //     triggerX,
+        //     triggerY,
+        //     triggerWidth,
+        //     triggerHeight,
+        //     0x080808,
+        // )
+        //
+        // trigger.setStrokeStyle(3, 0xd4d4d4)
+        // trigger.setOrigin(0, 0)
+        //
+        // this.physics.world.enable(trigger, Phaser.Physics.Arcade.STATIC_BODY)
+        // this.physics.add.overlap(this.player, trigger, () => {
+        //     if (triggerSecActive) {
+        //         // activate first room
+        //     }
+        //
+        //     if (triggerActive) {
+        //         return
+        //     }
+        //
+        //     triggerActive = true
+        // }, undefined, this)
+        //
+        // const triggerSecX = 0
+        // const triggerSecY = this.screenHeight - 18
+        //
+        // const triggerSec = this.add.rectangle(
+        //     triggerSecX,
+        //     triggerSecY,
+        //     triggerWidth,
+        //     triggerHeight,
+        //     0x080808,
+        // )
+        //
+        // triggerSec.setStrokeStyle(3, 0xd4d4d4)
+        // triggerSec.setOrigin(0, 0)
+        //
+        // this.physics.world.enable(triggerSec, Phaser.Physics.Arcade.STATIC_BODY)
+        // this.physics.add.overlap(this.player, triggerSec, () => {
+        //     if (triggerActive) {
+        //         // activate second room
+        //     }
+        //
+        //     if (triggerSecActive) {
+        //         return
+        //     }
+        //
+        //     triggerSecActive = true
+        // }, undefined, this)
     }
 
     private createPlayer() {
@@ -525,6 +579,8 @@ export class GameScene extends Phaser.Scene {
         // Main camera
         this.createMainCamera()
 
+        this.createSecondRoomTriggerArea()
+
         ECS.onInit({
             time: 0,
             delta: 0,
@@ -591,6 +647,11 @@ export class GameScene extends Phaser.Scene {
     public update(time: number, delta: number): void {
 
         this.cameraMousePointerFollorSystem()
+
+        // if (this.player.y > this.rooms[prevRoom].offsetY && !this.rooms[nextRoom].active) {
+        //     this.rooms[activeRoom].active = false
+        //     this.rooms.secondRoom.active = true
+        // }
 
         ECS.exec({
             time,
