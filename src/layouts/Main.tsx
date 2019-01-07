@@ -7,11 +7,14 @@ import classnamesBind from "classnames/bind"
 import TopMenu from "components/TopMenu/TopMenu"
 import PhaserGame from "components/PhaserGame/PhaserGame"
 import ProjectModal from "components/ProjectModal/ProjectModal"
+import {IRoomsState} from "models/rooms"
+import {E_ROOMS_NAMES} from "../common/RoomsNames"
 
 const cx = classnamesBind.bind(styles)
 
 interface IProps {
     dispatch: Dispatch<Action>,
+    rooms: IRoomsState,
 }
 
 interface IState {}
@@ -30,6 +33,7 @@ class MainLayout extends React.Component<IProps, IState> {
 
     public render() {
         const { projectModalIsOpened } = this.state
+        const { activeRoom } = this.props.rooms
 
         return (
             <div className={ cx("wrapper") }>
@@ -50,13 +54,13 @@ class MainLayout extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <nav className={ cx("nav") }>
-                                    <div className={ cx("item") }>
+                                    <div className={ cx("item", activeRoom === E_ROOMS_NAMES.Contacts && "active") }>
                                         Contacts
                                     </div>
-                                    <div className={ cx("item") }>
+                                    <div className={ cx("item", activeRoom === E_ROOMS_NAMES.Portfolio && "active") }>
                                         Projects
                                     </div>
-                                    <div className={ cx("item", "active") }>
+                                    <div className={ cx("item", activeRoom === E_ROOMS_NAMES.Services && "active") }>
                                         Services
                                     </div>
                                 </nav>
@@ -85,8 +89,8 @@ class MainLayout extends React.Component<IProps, IState> {
     }
 }
 
-export default connect(({}: IAppState) => {
+export default connect(({ rooms }: IAppState) => {
     return {
-
+        rooms,
     }
 })(MainLayout)

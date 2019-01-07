@@ -22,7 +22,6 @@ import PhaserInputBodySystem from "game/systems/PhaserInputBodySystem"
 import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
 import ChestComponentFactory from "game/components/ChestComponent"
 import PhaserOutputChestSystem from "game/systems/PhaserOutputChestSystem"
-import DashSystem from "game/systems/DashSystem"
 import FolderComponentFactory from "game/components/FolderComponent"
 import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
 import {Project} from "game/objects/Project"
@@ -32,6 +31,8 @@ import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
 import GoToTextBtn from "game/objects/GoToTextBtn"
 import PhaserOutputContactRoomCreationSystem from "game/systems/PhaserOutputContactRoomCreationSystem"
 import RoomTrigger from "game/objects/RoomTrigger"
+import {E_ROOMS_NAMES} from "../../common/RoomsNames"
+import dvaApp from "dvaApp"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -52,6 +53,10 @@ const ECS = new ECSManager([
 
 const cuttingCornersVersion = true
 
+type IRoomsObj = {
+    [name in E_ROOMS_NAMES]: Room
+}
+
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
     private fullstackText?: Phaser.GameObjects.Text = undefined
@@ -67,20 +72,20 @@ export class GameScene extends Phaser.Scene {
     private screenWidth: number = 0
 
     // Rooms
-    private rooms: { [key: string]: Room } = {
-        firstRoom: {
+    private rooms: IRoomsObj = {
+        [E_ROOMS_NAMES.Intro]: {
             numberOfScreens: 1,
             offsetY: 0,
         },
-        secondRoom: {
+        [E_ROOMS_NAMES.Services]: {
             numberOfScreens: 1,
             offsetY: 0,
         },
-        thirdRoom: {
+        [E_ROOMS_NAMES.Portfolio]: {
             numberOfScreens: cuttingCornersVersion ? 1 : 3,
             offsetY: 0,
         },
-        fourthRoom: {
+        [E_ROOMS_NAMES.Contacts]: {
             numberOfScreens: 1,
             offsetY: 0,
         },
@@ -99,15 +104,24 @@ export class GameScene extends Phaser.Scene {
         this.screenHeight = this.sys.canvas.height
         this.screenWidth = this.sys.canvas.width
         Object.keys(this.rooms).forEach((roomName: string) => {
-            const room = this.rooms[roomName]
+            const room: Room = this.rooms[roomName as E_ROOMS_NAMES]
             room.offsetY = this.roomScreensTotalNumber * this.screenHeight
             this.roomScreensTotalNumber += room.numberOfScreens
             this.gameHeight += room.numberOfScreens * this.screenHeight
         })
+        const activeRoomName = E_ROOMS_NAMES.Services
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.firstRoom.offsetY + this.screenHeight / 2,
+            y: this.rooms[activeRoomName].offsetY + this.screenHeight / 2,
         }
+        this.setActiveRoom(activeRoomName)
+    }
+
+    public setActiveRoom = (activeRoomName: E_ROOMS_NAMES) => {
+        dvaApp._store.dispatch({
+            type: "rooms/setActiveRoom",
+            payload: activeRoomName,
+        })
     }
 
     private createBackground() {
@@ -116,19 +130,54 @@ export class GameScene extends Phaser.Scene {
     }
 
     private createSecondRoomTriggerArea() {
-        const firstAndSecondRoomTrigger = new RoomTrigger(
+        const trigger1 = new RoomTrigger(
             this,
             () => {
                 console.log("activeFirstRoom")
+                this.setActiveRoom(E_ROOMS_NAMES.Intro)
             },
             () => {
-                console.log("activeSecRoom")
+                this.setActiveRoom(E_ROOMS_NAMES.Services)
             },
             this.player,
             this.gameWidth,
             20,
             0,
-            this.screenHeight - 20,
+            this.rooms.Services.offsetY - 20,
+            true,
+        )
+
+        const trigger2 = new RoomTrigger(
+            this,
+            () => {
+                console.log("activeFirstRoom")
+                this.setActiveRoom(E_ROOMS_NAMES.Services)
+            },
+            () => {
+                this.setActiveRoom(E_ROOMS_NAMES.Portfolio)
+            },
+            this.player,
+            this.gameWidth,
+            20,
+            0,
+            this.rooms.Portfolio.offsetY - 20,
+            true,
+        )
+
+        const trigger3 = new RoomTrigger(
+            this,
+            () => {
+                console.log("activeFirstRoom")
+                this.setActiveRoom(E_ROOMS_NAMES.Portfolio)
+            },
+            () => {
+                this.setActiveRoom(E_ROOMS_NAMES.Contacts)
+            },
+            this.player,
+            this.gameWidth,
+            20,
+            0,
+            this.rooms.Contacts.offsetY - 20,
             true,
         )
 
@@ -292,7 +341,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     private createSecondRoom() {
-        const secondScreenOffsetY = this.rooms.secondRoom.offsetY
+        const secondScreenOffsetY = this.rooms[E_ROOMS_NAMES.Services].offsetY
 
         const titleY = secondScreenOffsetY + 50
 
@@ -401,7 +450,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     private createThirdRoomCCVersion() {
-        const thirdScreenOffsetY = this.rooms.thirdRoom.offsetY
+        const thirdScreenOffsetY = this.rooms[E_ROOMS_NAMES.Portfolio].offsetY
 
         const titleY = thirdScreenOffsetY + 50
 
@@ -463,7 +512,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     private createThirdRoom() {
-        const thirdScreenOffsetY = this.rooms.thirdRoom.offsetY
+        const thirdScreenOffsetY = this.rooms[E_ROOMS_NAMES.Portfolio].offsetY
 
         const titleY = thirdScreenOffsetY + 50
 

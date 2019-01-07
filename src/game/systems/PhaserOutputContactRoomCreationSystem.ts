@@ -1,6 +1,7 @@
 import System from "game/ECS/system"
 import {ISystemAdditional, ISystemPhaserInjectable} from "game/systems/index"
 import EntitiesManager from "game/ECS/entitiesmanager"
+import {E_ROOMS_NAMES} from "../../common/RoomsNames"
 
 const PhaserOutputContactRoomCreationSystemName = "PhaserOutputContactRoomCreationSystem"
 
@@ -11,7 +12,7 @@ class PhaserOutputContactRoomCreationSystem extends System<ISystemAdditional, IS
         inj: ISystemPhaserInjectable,
     ): undefined {
 
-        const thirdScreenOffsetY = inj.rooms.fourthRoom.offsetY
+        const thirdScreenOffsetY = inj.rooms[E_ROOMS_NAMES.Contacts].offsetY
 
         const titleY = thirdScreenOffsetY + 50
 

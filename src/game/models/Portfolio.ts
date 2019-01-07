@@ -39,8 +39,8 @@ const projectsByFoldersType: { [key: string]: string[] } = Object.keys(EFoldersT
         return acc
     }, {})
 
-console.log(projectsById)
-console.log(projectsByFoldersType)
+// console.log(projectsById)
+// console.log(projectsByFoldersType)
 
 export {
     EFoldersType,
