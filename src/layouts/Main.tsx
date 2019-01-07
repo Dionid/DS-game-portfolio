@@ -43,7 +43,12 @@ class MainLayout extends React.Component<IProps, IState> {
                         <div className={ cx("leftMenu") }>
                             <div className={ cx("leftMenuContent") }>
                                 <div className={ cx("contacts") }>
-                                    <a href={ "https://vk.com/david_shekunts" } target={ "_blank" } id={ "contactEmailId" } className={ cx("item") }>
+                                    <a
+                                        href={ "https://vk.com/david_shekunts" }
+                                        target={ "_blank" }
+                                        id={ "contactEmailId" }
+                                        className={ cx("item") }
+                                    >
                                         C
                                     </a>
                                     <div className={ cx("item") }>

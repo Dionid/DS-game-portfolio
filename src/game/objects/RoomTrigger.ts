@@ -24,10 +24,13 @@ export default class RoomTrigger {
             triggerY,
             triggerWidth,
             triggerHeight,
-            debug ? 0x080808 : 0,
+            0x080808,
+            debug ? 1 : 0,
         )
 
-        trigger.setStrokeStyle(3, 0xd4d4d4)
+        if (debug) {
+            trigger.setStrokeStyle(3, 0xd4d4d4)
+        }
         trigger.setOrigin(0, 0)
 
         let triggerActiveFromTop = false
@@ -36,7 +39,7 @@ export default class RoomTrigger {
         let timeoutId: NodeJS.Timeout
 
         const timeoutFn = () => {
-            console.log("CLEAR")
+            // console.log("CLEAR")
             if (triggerActiveFromTop) {
                 if (playerGO.body.y > triggerBottomY) {
                     activeSecRoom()
@@ -57,11 +60,11 @@ export default class RoomTrigger {
         scene.physics.add.overlap(playerGO, trigger, () => {
             if (!triggerActive) {
                 if (Math.abs(triggerY - playerGO.body.y) < Math.abs(triggerBottomY - playerGO.body.y)) {
-                    console.log("TOP")
+                    // console.log("TOP")
                     triggerActiveFromTop = true
                     triggerActive = true
                 } else {
-                    console.log("BOTTOM")
+                    // console.log("BOTTOM")
                     triggerActiveFromBottom = true
                     triggerActive = true
                 }

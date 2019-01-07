@@ -133,7 +133,6 @@ export class GameScene extends Phaser.Scene {
         const trigger1 = new RoomTrigger(
             this,
             () => {
-                console.log("activeFirstRoom")
                 this.setActiveRoom(E_ROOMS_NAMES.Intro)
             },
             () => {
@@ -143,14 +142,13 @@ export class GameScene extends Phaser.Scene {
             this.gameWidth,
             20,
             0,
-            this.rooms.Services.offsetY - 20,
-            true,
+            this.rooms.Services.offsetY - 10,
+            false,
         )
 
         const trigger2 = new RoomTrigger(
             this,
             () => {
-                console.log("activeFirstRoom")
                 this.setActiveRoom(E_ROOMS_NAMES.Services)
             },
             () => {
@@ -160,14 +158,13 @@ export class GameScene extends Phaser.Scene {
             this.gameWidth,
             20,
             0,
-            this.rooms.Portfolio.offsetY - 20,
-            true,
+            this.rooms.Portfolio.offsetY - 10,
+            false,
         )
 
         const trigger3 = new RoomTrigger(
             this,
             () => {
-                console.log("activeFirstRoom")
                 this.setActiveRoom(E_ROOMS_NAMES.Portfolio)
             },
             () => {
@@ -177,8 +174,8 @@ export class GameScene extends Phaser.Scene {
             this.gameWidth,
             20,
             0,
-            this.rooms.Contacts.offsetY - 20,
-            true,
+            this.rooms.Contacts.offsetY - 10,
+            false,
         )
 
         // let triggerActive = false
