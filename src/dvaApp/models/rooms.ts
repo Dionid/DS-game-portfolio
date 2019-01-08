@@ -1,7 +1,7 @@
 import { Model } from "dva"
 import { AnyAction} from "redux"
 import { delay } from "dva/saga"
-import {E_ROOMS_NAMES} from "../common/RoomsNames"
+import {E_ROOMS_NAMES} from "../../common/RoomsNames"
 
 export interface IRoomsState {
     hasChanged: boolean,

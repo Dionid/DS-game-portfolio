@@ -7,15 +7,18 @@ import classnamesBind from "classnames/bind"
 import TopMenu from "components/TopMenu/TopMenu"
 import PhaserGame from "components/PhaserGame/PhaserGame"
 import ProjectModal from "components/ProjectModal/ProjectModal"
-import {IRoomsState} from "models/rooms"
+import {IRoomsState} from "dvaApp/models/rooms"
 import {E_ROOMS_NAMES} from "../common/RoomsNames"
 import GameOverlay from "components/GameOverlayComponent/GameOverlay"
+import {IConfigState} from "dvaApp/models/config"
+import MainMobile from "./MainMobile"
 
 const cx = classnamesBind.bind(styles)
 
 interface IProps {
     dispatch: Dispatch<Action>,
     rooms: IRoomsState,
+    config: IConfigState,
 }
 
 interface IState {
@@ -36,7 +39,12 @@ class MainLayout extends React.Component<IProps, IState> {
 
     public render() {
         const { projectModalIsOpened } = this.state
+        const { isMobile } = this.props.config
         const { activeRoom } = this.props.rooms
+
+        if (isMobile) {
+            return <MainMobile/>
+        }
 
         return (
             <div className={ cx("wrapper") }>
@@ -98,8 +106,9 @@ class MainLayout extends React.Component<IProps, IState> {
     }
 }
 
-export default connect(({ rooms }: IAppState) => {
+export default connect(({ rooms, config }: IAppState) => {
     return {
+        config,
         rooms,
     }
 })(MainLayout)

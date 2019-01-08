@@ -1,0 +1,63 @@
+:global{
+  background-color: #292929;
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  &.first{
+    padding: 150px 15px 30px 15px;
+  }
+  &.second{
+    padding: 30px 15px;
+  }
+}
+
+.title{
+  font-size: 36px;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.subtitle{
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.5;
+}
+
+.subtitle2{
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.5;
+}
+
+.bordered{
+  text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+}
+
+.tooltip-wr{
+  position: fixed;
+  width: 100%;
+  padding: 15px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  transition: 0.5s;
+  bottom: 0px;
+  &.shown{
+    transform: translateX(-50%) translateY(0%);
+  }
+}
+
+.tooltip {
+  background-color: #080808;
+  border: 5px solid #ffba4d;
+  display: flex;
+  padding: 15px;
+  justify-content: center;
+  align-items: flex-end;
+}

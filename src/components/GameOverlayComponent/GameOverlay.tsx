@@ -4,7 +4,7 @@ import {connect} from "dva"
 import IAppState from "models"
 import styles from "./GameOverlay.scss"
 import classnamesBind from "classnames/bind"
-import {IRoomsState} from "models/rooms"
+import {IRoomsState} from "dvaApp/models/rooms"
 import {E_ROOMS_NAMES} from "../../common/RoomsNames"
 import keysImg from "assets/images/keys.png"
 import actionKey from "assets/images/actionKey.png"
@@ -39,10 +39,15 @@ class GameOverlay extends React.Component<IProps, IState> {
     }
 
     public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
-        if (nextProps.rooms.hasChanged) {
+        if (nextProps.rooms.hasChanged && this.state.mainTooltipMustBeShown) {
             this.setState({
-                mainTooltipMustBeShown: false,
+                mainTooltipIsShown: false,
             })
+            setTimeout(() => {
+                this.setState({
+                    mainTooltipMustBeShown: false,
+                })
+            }, 1000)
         } else {
             if (nextProps.rooms.activeRoom === E_ROOMS_NAMES.Intro) {
                 this.setState({
@@ -60,7 +65,7 @@ class GameOverlay extends React.Component<IProps, IState> {
                 {
                     mainTooltipMustBeShown
                     && <div className={ cx("tooltip-wr", mainTooltipIsShown && "shown") }>
-                    	<div className={ cx("tooltip", "main") }>
+                      <div className={ cx("tooltip", "main") }>
                             <div className={ cx("item") }>
                               <img style={{width: 96}} src={ keysImg } alt=""/>
                                 <div className={ cx("text") }>
@@ -73,7 +78,7 @@ class GameOverlay extends React.Component<IProps, IState> {
                               Action
                             </div>
                           </div>
-                    	</div>
+                        </div>
                     </div>
                 }
             </div>
