@@ -120,5 +120,7 @@
   .gameContainer{
     width: 1024px;
     background-color: #292929;
+    position: relative;
+    overflow: hidden;
   }
 }

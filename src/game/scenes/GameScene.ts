@@ -294,19 +294,22 @@ export class GameScene extends Phaser.Scene {
 
         const triangle = this.add.triangle(
             continueText.x + continueText.width / 2 - 12,
-            continueText.y + 30,
+            continueText.y + 25,
             0,
             0,
+            10,
             12,
-            12,
-            24,
+            20,
             0,
             0xffffff,
         )
         triangle.setAlpha(0.7)
-        triangle.setStrokeStyle(2, 0x000000)
+        triangle.setStrokeStyle(1, 0x000000)
         triangle.setOrigin(0, 0)
         triangle.setDepth(this.gameHeight)
+
+        // ToDo: make animation for triangle
+        // ToDO: delete continue on Player pass by
     }
 
     private createSecondRoom() {

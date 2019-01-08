@@ -9,6 +9,7 @@ import PhaserGame from "components/PhaserGame/PhaserGame"
 import ProjectModal from "components/ProjectModal/ProjectModal"
 import {IRoomsState} from "models/rooms"
 import {E_ROOMS_NAMES} from "../common/RoomsNames"
+import GameOverlay from "components/GameOverlayComponent/GameOverlay"
 
 const cx = classnamesBind.bind(styles)
 
@@ -17,7 +18,9 @@ interface IProps {
     rooms: IRoomsState,
 }
 
-interface IState {}
+interface IState {
+    projectModalIsOpened: boolean,
+}
 
 class MainLayout extends React.Component<IProps, IState> {
 
@@ -73,6 +76,7 @@ class MainLayout extends React.Component<IProps, IState> {
                         </div>
                         <div className={ cx("gameContainer") }>
                             <PhaserGame />
+                            <GameOverlay />
                         </div>
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>

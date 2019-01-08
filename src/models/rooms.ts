@@ -4,6 +4,7 @@ import { delay } from "dva/saga"
 import {E_ROOMS_NAMES} from "../common/RoomsNames"
 
 export interface IRoomsState {
+    hasChanged: boolean,
     activeRoom: E_ROOMS_NAMES,
 }
 
@@ -18,14 +19,18 @@ interface ISetActiveRoomAction extends AnyAction {
 const model: IRoomsModel = {
     namespace: "rooms",
     state: {
+        hasChanged: false,
         activeRoom: E_ROOMS_NAMES.Intro,
     },
     reducers: {
         setActiveRoom(state: IRoomsState, action: AnyAction) {
-            return {
-                ...state,
-                activeRoom: action.payload,
+            if (action.payload !== state.activeRoom) {
+                return {
+                    hasChanged: true,
+                    activeRoom: action.payload,
+                }
             }
+            return state
         },
     },
     effects: {},
