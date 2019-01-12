@@ -1,6 +1,4 @@
-:global{
-  background-color: #292929;
-}
+@import "styles/mixins.scss";
 
 .wrapper{
   display: flex;
@@ -11,7 +9,7 @@
   display: flex;
   flex-direction: column;
   &.first{
-    padding: 150px 15px 30px 15px;
+    padding: 120px 15px 30px 15px;
   }
   &.second{
     padding: 30px 15px;
@@ -19,7 +17,7 @@
 }
 
 .title{
-  font-size: 36px;
+  font-size: 33px;
   color: #fff;
   line-height: 1.3;
 }
@@ -60,4 +58,100 @@
   padding: 15px;
   justify-content: center;
   align-items: flex-end;
+  position: relative;
+  z-index: 100;
+  .close-btn{
+    background-color: #d24a43;
+    width: 15px;
+    height: 15px;
+    border: 2px solid #3b3b3b;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.button{
+  border: 3px solid #fff;
+  background-color: #080808;
+  padding: 15px;
+  color: #ffffff;
+  display: inline-block;
+}
+
+.services{
+  padding: 30px;
+  .item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    .image{
+      z-index: 10;
+    }
+    .desc-wr{
+      margin-top: -15px;
+      border: 3px solid #fff;
+      background-color: #080808;
+      padding: 30px 15px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      .name{
+        font-size: 22px;
+        margin-bottom: 10px;
+        line-height: 1.2;
+      }
+      .subname{
+        font-size: 18px;
+        margin-bottom: 10px;
+        line-height: 1.2;
+      }
+      .info{
+        font-size: 14px;
+        line-height: 1.2;
+        opacity: 0.7;
+      }
+    }
+    &.backend{
+      .subname{
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+
+.projects{
+  padding: 60px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.contacts{
+  padding: 30px 0;
+  .item{
+    display: flex;
+    color: #ffffff;
+    align-items: center;
+    margin-bottom: 15px;
+    .image{
+      margin-right: 15px;
+    }
+    .name{
+      margin-right: 15px;
+    }
+    .link{
+      color: #e4910f;
+    }
+  }
 }

@@ -4,11 +4,13 @@ import {connect} from "dva"
 import IAppState from "models"
 import styles from "./TopMenu.scss"
 import classnamesBind from "classnames/bind"
+import {IConfigState} from "../../dvaApp/models/config"
 
 const cx = classnamesBind.bind(styles)
 
 interface IProps {
     dispatch: Dispatch<Action>,
+    config: IConfigState,
 }
 
 interface IState {
@@ -17,6 +19,7 @@ interface IState {
 
 class TopMenu extends React.Component<IProps, IState> {
     public render() {
+        const { isCuttingCornersVersion } = this.props.config
         return (
             <div className={ cx("topMenu") }>
                 <div className={ cx("logo") }>
@@ -28,8 +31,10 @@ class TopMenu extends React.Component<IProps, IState> {
                     </h1>
                 </div>
                 <div className={ cx("stats") }>
-                    <div className={ cx("inventory") }>
-                        <div className={ cx("row") }>
+                    {
+                        !isCuttingCornersVersion &&
+                        <div className={ cx("inventory") }>
+                          <div className={ cx("row") }>
                             <div className={ cx("item") }>
 
                             </div>
@@ -39,19 +44,20 @@ class TopMenu extends React.Component<IProps, IState> {
                             <div className={ cx("item") }>
 
                             </div>
+                          </div>
+                          <div className={ cx("row") }>
+                            <div className={ cx("item") }>
+
+                            </div>
+                            <div className={ cx("item") }>
+
+                            </div>
+                            <div className={ cx("item") }>
+
+                            </div>
+                          </div>
                         </div>
-                        <div className={ cx("row") }>
-                            <div className={ cx("item") }>
-
-                            </div>
-                            <div className={ cx("item") }>
-
-                            </div>
-                            <div className={ cx("item") }>
-
-                            </div>
-                        </div>
-                    </div>
+                    }
                     <div className={ cx("bars") }>
                         <div className={ cx("health-wr") }>
                             <div className={ cx("health-bar") }>
@@ -91,6 +97,8 @@ class TopMenu extends React.Component<IProps, IState> {
     }
 }
 
-export default connect(({}: IAppState) => {
-    return {}
+export default connect(({ config }: IAppState) => {
+    return {
+        config,
+    }
 })(TopMenu)

@@ -3,3 +3,16 @@
 $color-gold-main: #ffba4d;
 $color-gray-light: #828282;
 $color-gray-light-border: #484848;
+
+$breakpoints: (xs, sm, md, lg);
+$breakpointsObj: (
+        xs: 320px,
+        sm: 320px,
+        md: 320px,
+        lg: 320px,
+);
+
+$mobile-width: 320px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+$big-desktop-width: 1500px;

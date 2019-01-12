@@ -1,0 +1,60 @@
+@import "./variables";
+
+
+@mixin bpmin($screen) {
+  $value: map-get($breakpoints, $screen);
+
+  @media (min-width: $value) {
+    @content;
+  }
+}
+
+@mixin bpmax($screen) {
+  $value: map-get($breakpoints, $screen);
+
+  @media (min-width: $value) {
+    @content;
+  }
+}
+
+@mixin xs {
+  @media (max-width: #{$tablet-width - 1}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width}-1) {
+    @content;
+  }
+}
+
+@mixin smallertablet {
+  @media (max-width: #{$desktop-width - 1}) {
+    @content;
+  }
+}
+
+@mixin smallerdesktop {
+  @media (max-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: #{$big-desktop-width}) {
+    @content;
+  }
+}

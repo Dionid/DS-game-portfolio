@@ -115,7 +115,7 @@ const config = {
         namedModules: true,
     },
     resolve: {
-        extensions: [ ".tsx", ".ts", ".js" ],
+        extensions: [ ".tsx", ".ts", ".js", ".scss" ],
         alias: {
             src: path.resolve(__dirname, "../src/"),
             dvaApp: path.resolve(__dirname, "../src/dvaApp/index.ts"),
