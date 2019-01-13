@@ -61,7 +61,7 @@ class PhaserOutputChestSystem extends System<ISystemAdditional, ISystemPhaserInj
                     }
                 }
                 if (chestChestComp.isTouched) {
-                    if (inj.cursors.action.isDown) {
+                    if (inj.cursors.action.isDown || inj.scene.input.mousePointer.isDown) {
                         chestChestComp.isOpened = true
                         chestGO.setFrame("objects/chests/chestOpened.psd")
                         const lootData = chestChestComp.loot

@@ -30,7 +30,7 @@ class Icon extends Component<IProps, {}> {
             ? { width: size[0], height: size[1], lineHeight: size[1] }
             : {}
 
-        const i = require(`assets/icons/${name}.svg`).default
+        const i = require(`src/assets/icons/${name}.svg`).default
         const baseUrl = window.location.href.replace(window.location.hash, "")
 
         return (
