@@ -5,6 +5,7 @@ import IAppState from "models"
 import styles from "./MainMobile.scss"
 import classnamesBind from "classnames/bind"
 import chest from "assets/images/playerAvatar.png"
+import ProjectModal from "components/ProjectModal/ProjectModal"
 
 const cx = classnamesBind.bind(styles)
 
@@ -54,20 +55,20 @@ class MainMobile extends React.Component<IProps, IState> {
                     <h1 className={ cx("title", "bordered") }>Services</h1>
                     <h2 className={ cx("subtitle", "bordered") }>I offer you</h2>
                     <div className={ cx("services") }>
-                    	<div className={ cx("item") }>
+                        <div className={ cx("item") }>
                             <img className={ cx("image") } src={ chest } alt=""/>
                             <div className={ cx("desc-wr") }>
-                            	<div className={ cx("name") }>
-                            		Frontend
-                            	</div>
+                                <div className={ cx("name") }>
+                                    Frontend
+                                </div>
                                 <div className={ cx("subname") }>
-                                	React, Redux
+                                    React, Redux
                                 </div>
                                 <div className={ cx("info") }>
                                     and  everything including modern stack
                                 </div>
                             </div>
-                    	</div>
+                        </div>
                         <div className={ cx("item", "backend") }>
                             <img className={ cx("image") } src={ chest } alt=""/>
                             <div className={ cx("desc-wr") }>
@@ -115,30 +116,36 @@ class MainMobile extends React.Component<IProps, IState> {
                     <div className={ cx("contacts") }>
                         <div className={ cx("item") }>
                             <img className={ cx("image") } src={ chest } alt=""/>
-                            <div className={ cx("name") }>
-                            	Facebook
+                            <div className={ cx("desc") }>
+                                <div className={ cx("name") }>
+                                    Email
+                                </div>
+                                <a className={ cx("link") }>
+                                    ditreyw@gmail.com
+                                </a>
                             </div>
-                            <a className={ cx("link") }>
-                            	ditreyw@gmail.com
-                            </a>
                         </div>
                         <div className={ cx("item") }>
                             <img className={ cx("image") } src={ chest } alt=""/>
-                            <div className={ cx("name") }>
-                                Facebook
+                            <div className={ cx("desc") }>
+                                <div className={ cx("name") }>
+                                    Facebook
+                                </div>
+                                <a className={ cx("link") }>
+                                    @davidshekunts
+                                </a>
                             </div>
-                            <a className={ cx("link") }>
-                                ditreyw@gmail.com
-                            </a>
                         </div>
                         <div className={ cx("item") }>
                             <img className={ cx("image") } src={ chest } alt=""/>
-                            <div className={ cx("name") }>
-                                Facebook
+                            <div className={ cx("desc") }>
+                                <div className={ cx("name") }>
+                                    LinkedIn
+                                </div>
+                                <a className={ cx("link") }>
+                                    @davidshekunts
+                                </a>
                             </div>
-                            <a className={ cx("link") }>
-                                ditreyw@gmail.com
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -153,6 +160,7 @@ class MainMobile extends React.Component<IProps, IState> {
                         </h2>
                     </div>
                 </div>
+                {/*<ProjectModal closeModal={ () => {} }/>*/}
             </div>
         )
     }
