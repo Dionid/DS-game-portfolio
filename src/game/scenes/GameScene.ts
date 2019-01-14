@@ -20,7 +20,7 @@ import GOManager from "game/GOManager"
 import BodyComponentFactory from "game/components/BodyComponent"
 import PhaserInputBodySystem from "game/systems/PhaserInputBodySystem"
 import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
-import ChestComponentFactory from "game/components/ChestComponent"
+import ChestComponentFactory, {IChestLootData} from "game/components/ChestComponent"
 import PhaserOutputChestSystem from "game/systems/PhaserOutputChestSystem"
 import FolderComponentFactory from "game/components/FolderComponent"
 import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
@@ -33,6 +33,7 @@ import PhaserOutputContactRoomCreationSystem from "game/systems/PhaserOutputCont
 import RoomTrigger from "game/objects/RoomTrigger"
 import {E_ROOMS_NAMES} from "../../common/RoomsNames"
 import dvaApp from "dvaApp"
+import {E_CHEST_LOOT_TYPES} from "game/models/ChestLoot"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -618,6 +619,7 @@ export class GameScene extends Phaser.Scene {
             rooms: this.rooms,
             leftTextStartOffsetX: this.leftTextStartOffsetX,
             screenHeight: this.screenHeight,
+            reduxStore: dvaApp._store,
         })
     }
 
@@ -635,29 +637,29 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    private chestLoot = [
+    private chestLoot: IChestLootData[] = [
         {
+            type: E_CHEST_LOOT_TYPES.WEAPON,
             title: "Frontend",
             subtitle: "React, Redux",
             desc: "and  everything\nincluding modern stack",
             img: "objects/chests/katana.psd",
-            opened: false,
         },
         {
+            type: E_CHEST_LOOT_TYPES.ENERGY,
             title: "Backend",
             subtitle: "NodeJS /Golang\nAPI's, microservices",
             desc: "everything needed\nfor SPA backend",
             img: "objects/chests/energy.psd",
-            opened: false,
         },
         {
+            type: E_CHEST_LOOT_TYPES.SIDEKICK,
             title: "Outsource PM",
             subtitle: "Write TechSpec\n" +
                 "Assemble Team\n" +
                 "Lead the Project",
             desc: "like outsource CTO",
             img: "objects/chests/katana.psd",
-            opened: false,
         },
     ]
 
@@ -690,6 +692,7 @@ export class GameScene extends Phaser.Scene {
             rooms: this.rooms,
             leftTextStartOffsetX: this.leftTextStartOffsetX,
             screenHeight: this.screenHeight,
+            reduxStore: dvaApp._store,
         })
     }
 }

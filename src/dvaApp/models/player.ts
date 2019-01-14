@@ -36,6 +36,10 @@ const model: IPlayerModel = {
         },
     },
     effects: {
+        *fulfillStats(action, opts) {
+            yield opts.put({ type: "changeHealth", payload: 5 })
+            yield opts.put({ type: "changeMeds", payload: 4 })
+        },
     },
 }
 

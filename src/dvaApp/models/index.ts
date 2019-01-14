@@ -1,6 +1,7 @@
 import {ICountState} from "./count"
 import {IRoomsState} from "models/rooms"
 import {IConfigState} from "models/config"
+import {IPlayerState} from "src/dvaApp/models/player"
 
 export interface IAppStateLoading {
     global: boolean,
@@ -20,4 +21,5 @@ export default interface IAppState {
     count: ICountState,
     loading: IAppStateLoading,
     config: IConfigState,
+    player: IPlayerState,
 }

@@ -5,6 +5,7 @@ import {E_ROOMS_NAMES} from "../common/ConfigNames"
 
 export interface IConfigState {
     isMobile: boolean,
+    isGame: boolean,
     isCuttingCornersVersion: boolean,
 }
 
@@ -22,9 +23,17 @@ const model: IConfigModel = {
     namespace: "config",
     state: {
         isMobile: mobilecheck(),
+        isGame: false,
         isCuttingCornersVersion: true,
     },
-    reducers: {},
+    reducers: {
+        setIsGame: (state: IConfigState, action: AnyAction) => {
+            return {
+                ...state,
+                isGame: action.payload,
+            }
+        },
+    },
     effects: {},
 }
 

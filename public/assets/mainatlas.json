@@ -4,8 +4,8 @@
 			"image": "mainatlas.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 512,
-				"h": 428
+				"w": 755,
+				"h": 262
 			},
 			"scale": 1,
 			"frames": [
@@ -14,120 +14,20 @@
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 512,
-						"h": 257
+						"w": 520,
+						"h": 260
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 512,
-						"h": 257
+						"w": 520,
+						"h": 260
 					},
 					"frame": {
-						"x": 0,
-						"y": 0,
-						"w": 512,
-						"h": 257
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/chests/chestDefault.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 52,
-						"h": 43
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 52,
-						"h": 43
-					},
-					"frame": {
-						"x": 0,
-						"y": 257,
-						"w": 52,
-						"h": 43
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/chests/chestOpened.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 52,
-						"h": 43
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 52,
-						"h": 43
-					},
-					"frame": {
-						"x": 52,
-						"y": 257,
-						"w": 52,
-						"h": 43
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/chests/chestTouched.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 52,
-						"h": 43
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 52,
-						"h": 43
-					},
-					"frame": {
-						"x": 104,
-						"y": 257,
-						"w": 52,
-						"h": 43
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/chests/energy.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 39,
-						"h": 52
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 39,
-						"h": 52
-					},
-					"frame": {
-						"x": 156,
-						"y": 257,
-						"w": 39,
-						"h": 52
+						"x": 1,
+						"y": 1,
+						"w": 520,
+						"h": 260
 					},
 					"anchor": {
 						"x": 0.5,
@@ -149,85 +49,10 @@
 						"h": 17
 					},
 					"frame": {
-						"x": 195,
-						"y": 257,
+						"x": 523,
+						"y": 1,
 						"w": 110,
 						"h": 17
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/contacts/EmailIcon.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 45,
-						"h": 30
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 45,
-						"h": 30
-					},
-					"frame": {
-						"x": 305,
-						"y": 257,
-						"w": 45,
-						"h": 30
-					},
-					"anchor": {
-						"x": 0,
-						"y": 0
-					}
-				},
-				{
-					"filename": "objects/projects/folderClosed.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 50
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 50
-					},
-					"frame": {
-						"x": 350,
-						"y": 257,
-						"w": 64,
-						"h": 50
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/folderClosedTouched.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 50
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 50
-					},
-					"frame": {
-						"x": 414,
-						"y": 257,
-						"w": 64,
-						"h": 50
 					},
 					"anchor": {
 						"x": 0.5,
@@ -249,10 +74,60 @@
 						"h": 54
 					},
 					"frame": {
-						"x": 0,
-						"y": 309,
+						"x": 635,
+						"y": 1,
 						"w": 81,
 						"h": 54
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "player/player.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 36,
+						"h": 120
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 36,
+						"h": 120
+					},
+					"frame": {
+						"x": 718,
+						"y": 1,
+						"w": 36,
+						"h": 120
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "player/playerDown.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 36,
+						"h": 120
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 36,
+						"h": 120
+					},
+					"frame": {
+						"x": 523,
+						"y": 123,
+						"w": 36,
+						"h": 120
 					},
 					"anchor": {
 						"x": 0.5,
@@ -274,10 +149,135 @@
 						"h": 99
 					},
 					"frame": {
-						"x": 81,
-						"y": 309,
+						"x": 523,
+						"y": 20,
 						"w": 47,
 						"h": 99
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/chestDefault.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 52,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 52,
+						"h": 43
+					},
+					"frame": {
+						"x": 572,
+						"y": 20,
+						"w": 52,
+						"h": 43
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderClosed.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 50
+					},
+					"frame": {
+						"x": 626,
+						"y": 57,
+						"w": 64,
+						"h": 50
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/chestOpened.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 52,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 52,
+						"h": 43
+					},
+					"frame": {
+						"x": 572,
+						"y": 65,
+						"w": 52,
+						"h": 43
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderClosedTouched.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 50
+					},
+					"frame": {
+						"x": 626,
+						"y": 109,
+						"w": 64,
+						"h": 50
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/chestTouched.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 52,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 52,
+						"h": 43
+					},
+					"frame": {
+						"x": 572,
+						"y": 110,
+						"w": 52,
+						"h": 43
 					},
 					"anchor": {
 						"x": 0.5,
@@ -299,8 +299,8 @@
 						"h": 99
 					},
 					"frame": {
-						"x": 128,
-						"y": 309,
+						"x": 561,
+						"y": 161,
 						"w": 47,
 						"h": 99
 					},
@@ -324,8 +324,8 @@
 						"h": 99
 					},
 					"frame": {
-						"x": 175,
-						"y": 309,
+						"x": 610,
+						"y": 161,
 						"w": 47,
 						"h": 99
 					},
@@ -349,8 +349,8 @@
 						"h": 99
 					},
 					"frame": {
-						"x": 222,
-						"y": 309,
+						"x": 659,
+						"y": 161,
 						"w": 47,
 						"h": 99
 					},
@@ -360,49 +360,49 @@
 					}
 				},
 				{
-					"filename": "player/player.psd",
+					"filename": "objects/contacts/EmailIcon.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 36,
-						"h": 119
+						"w": 45,
+						"h": 30
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 36,
-						"h": 119
+						"w": 45,
+						"h": 30
 					},
 					"frame": {
-						"x": 269,
-						"y": 309,
-						"w": 36,
-						"h": 119
+						"x": 708,
+						"y": 123,
+						"w": 45,
+						"h": 30
 					},
 					"anchor": {
-						"x": 0.5,
-						"y": 0.5
+						"x": 0,
+						"y": 0
 					}
 				},
 				{
-					"filename": "player/playerDown.psd",
+					"filename": "objects/chests/energy.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 36,
-						"h": 119
+						"w": 39,
+						"h": 52
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 36,
-						"h": 119
+						"w": 39,
+						"h": 52
 					},
 					"frame": {
-						"x": 305,
-						"y": 309,
-						"w": 36,
-						"h": 119
+						"x": 708,
+						"y": 155,
+						"w": 39,
+						"h": 52
 					},
 					"anchor": {
 						"x": 0.5,
@@ -415,6 +415,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:f8fed6ece241e212ea242d320fef2b32:f94f9fda64b4d779ca5948f433d5d7d3:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:ccd5dd609b4d9137a3a50d6d98efd418:e5fcac534c211cfad5706666f1dd0a09:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

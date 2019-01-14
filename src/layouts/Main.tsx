@@ -12,6 +12,7 @@ import {E_ROOMS_NAMES} from "../common/RoomsNames"
 import GameOverlay from "components/GameOverlayComponent/GameOverlay"
 import {IConfigState} from "dvaApp/models/config"
 import MainMobile from "./MainMobile"
+import MainDesktop from "src/layouts/MainDesktop"
 
 const cx = classnamesBind.bind(styles)
 
@@ -39,7 +40,7 @@ class MainLayout extends React.Component<IProps, IState> {
 
     public render() {
         const { projectModalIsOpened } = this.state
-        const { isMobile } = this.props.config
+        const { isMobile, isGame } = this.props.config
         const { activeRoom } = this.props.rooms
 
         if (isMobile) {
@@ -83,8 +84,14 @@ class MainLayout extends React.Component<IProps, IState> {
                             </div>
                         </div>
                         <div className={ cx("gameContainer") }>
-                            <PhaserGame />
-                            <GameOverlay />
+                            {
+                                isGame
+                                ? [
+                                    <PhaserGame />,
+                                    <GameOverlay />,
+                                ]
+                                : <MainDesktop/>
+                            }
                         </div>
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>

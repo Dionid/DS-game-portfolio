@@ -3,33 +3,37 @@
 .wrapper{
   display: flex;
   flex-direction: column;
+  background-color: #292929;
+  background-image: url("/assets/images/repeatxy.png");
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .container{
   display: flex;
   flex-direction: column;
   &.first{
-    padding: 120px 15px 30px 15px;
+    padding: 120px 30px 30px 100px;
   }
   &.second{
-    padding: 60px 15px;
+    padding: 60px 100px;
   }
 }
 
 .title{
-  font-size: 33px;
+  font-size: 70px;
   color: #fff;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 .subtitle{
-  font-size: 18px;
+  font-size: 26px;
   color: #fff;
   line-height: 1.5;
 }
 
 .subtitle2{
-  font-size: 15px;
+  font-size: 17px;
   color: #fff;
   line-height: 1.5;
 }
@@ -72,6 +76,14 @@
     justify-content: center;
     align-items: center;
   }
+}
+
+.button{
+  border: 3px solid #fff;
+  background-color: #080808;
+  padding: 15px;
+  color: #ffffff;
+  display: inline-block;
 }
 
 .services{

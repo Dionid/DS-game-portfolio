@@ -2,10 +2,10 @@ import {Action, Dispatch} from "redux"
 import React from "react"
 import {connect} from "dva"
 import IAppState from "models"
-import styles from "./MainMobile.scss"
+import styles from "./MainDesktop.scss"
 import classnamesBind from "classnames/bind"
-import chest from "assets/images/playerAvatar.png"
 import Button from "components/Button/Button"
+import chest from "assets/images/playerAvatar.png"
 
 const cx = classnamesBind.bind(styles)
 
@@ -14,23 +14,12 @@ interface IProps {
 }
 
 interface IState {
-    tooltipOpened: boolean
+
 }
 
-class MainMobile extends React.Component<IProps, IState> {
-
-    public state = {
-        tooltipOpened: false,
-    }
-
-    private closeTooltip = () => {
-        this.setState({
-            tooltipOpened: false,
-        })
-    }
-
+class MainDesktop extends React.Component<IProps, IState> {
     public render() {
-        const { tooltipOpened } = this.state
+        // const { tooltipOpened } = this.state
 
         return (
             <div className={ cx("wrapper") }>
@@ -141,17 +130,6 @@ class MainMobile extends React.Component<IProps, IState> {
                         </div>
                     </div>
                 </div>
-                <div className={ cx("tooltip-wr", tooltipOpened && "shown") }>
-                    <div className={ cx("tooltip") }>
-                        <div className={ cx("close-btn") } onClick={ this.closeTooltip }>
-                            x
-                        </div>
-                        <h2 className={ cx("subtitle2", "bordered") }>
-                            To get full experience from this site visit desktop version
-                            (because it's not just portfolio, it's a online game)
-                        </h2>
-                    </div>
-                </div>
                 {/*<ProjectModal closeModal={ () => {} }/>*/}
             </div>
         )
@@ -160,4 +138,4 @@ class MainMobile extends React.Component<IProps, IState> {
 
 export default connect(({}: IAppState) => {
     return {}
-})(MainMobile)
+})(MainDesktop)

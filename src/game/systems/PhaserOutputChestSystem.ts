@@ -9,6 +9,8 @@ import {BODY_COMPONENT_NAME, IBodyComponentState} from "game/components/BodyComp
 import {GO_COMPONENT_NAME, IGOComponentState} from "game/components/GOComponent"
 import {GOSprite} from "game/GOManager"
 import {DEPTH_COMPONENT_NAME, IDepthComponentComponentState} from "game/components/DepthComponent"
+import {E_CHEST_LOOT_TYPES} from "game/models/ChestLoot"
+
 const Vector2 = Phaser.Math.Vector2
 
 const PhaserOutputChestSystemName = "PhaserOutputChestSystem"
@@ -65,6 +67,11 @@ class PhaserOutputChestSystem extends System<ISystemAdditional, ISystemPhaserInj
                         chestChestComp.isOpened = true
                         chestGO.setFrame("objects/chests/chestOpened.psd")
                         const lootData = chestChestComp.loot
+                        if (lootData.type === E_CHEST_LOOT_TYPES.ENERGY) {
+                            inj.reduxStore.dispatch({
+                                type: "player/fulfillStats",
+                            })
+                        }
                         if (lootData) {
                             const loot = new Loot(
                                 inj.scene,
