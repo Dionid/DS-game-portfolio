@@ -1,22 +1,51 @@
 @import "styles/mixins.scss";
 
+.outer{
+  width: 1024px;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
 .wrapper{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 1040px;
+}
+
+.content{
   display: flex;
   flex-direction: column;
   background-color: #292929;
   background-image: url("/assets/images/repeatxy.png");
-  overflow-y: scroll;
-  overflow-x: hidden;
+  //overflow-y: scroll;
+  //overflow-x: hidden;
+  //height: 100%;
 }
 
 .container{
   display: flex;
   flex-direction: column;
+  min-height: 100%;
+  flex-shrink: 0;
+  flex-grow: 1;
+  justify-content: center;
+  padding-left: 100px;
+  position: relative;
   &.first{
-    padding: 120px 30px 30px 100px;
+    padding: 30px 30px 30px 100px;
+  }
+  &.servicesContainer{
+    padding-top:  45px;
+    justify-content: flex-start;
+    min-height: 550px;
   }
   &.second{
     padding: 60px 100px;
+  }
+  &.portfolio{
+    padding: 60px 100px;
+    justify-content: flex-start;
   }
 }
 
@@ -32,6 +61,12 @@
   line-height: 1.5;
 }
 
+.title2{
+  font-size: 60px;
+  color: #fff;
+  line-height: 1.2;
+}
+
 .subtitle2{
   font-size: 17px;
   color: #fff;
@@ -39,7 +74,7 @@
 }
 
 .bordered{
-  text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+  text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 2px 2px #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
 }
 
 .tooltip-wr{
@@ -78,20 +113,15 @@
   }
 }
 
-.button{
-  border: 3px solid #fff;
-  background-color: #080808;
-  padding: 15px;
-  color: #ffffff;
-  display: inline-block;
-}
-
 .services{
   padding: 45px 30px 0;
+  //position: relative;
   .item{
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: absolute;
+    width: 250px;
     &:not(:last-child){
       margin-bottom: 45px;
     }
@@ -125,10 +155,20 @@
         opacity: 0.7;
       }
     }
+    &.frontend{
+      right: 260px;
+      top: 15%;
+    }
     &.backend{
+      left: 100px;
+      top: 40%;
       .subname{
         font-size: 16px;
       }
+    }
+    &.outsource{
+      top: 53%;
+      right: 100px;
     }
   }
 }
@@ -137,6 +177,7 @@
 .projects{
   padding: 60px 30px 30px;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -144,7 +185,7 @@
 
 
 .contacts{
-  padding: 30px 0;
+  padding: 45px 0;
   .item{
     display: flex;
     color: #ffffff;
@@ -155,12 +196,14 @@
     }
     .desc{
       display: flex;
-      flex-direction: column;
+      //flex-direction: column;
     }
     .name{
+      font-size: 20px;
       margin-bottom: 5px;
     }
     .link{
+      font-size: 20px;
       color: #e4910f;
     }
   }

@@ -13,8 +13,10 @@ interface IProps {
 
 const Button = (props: IProps) => {
     return (
-        <div className={ cx("button") }>
-            { props.text }
+        <div className={ cx("button", "pulse") }>
+            <div className={ cx("text") }>
+                { props.text }
+            </div>
         </div>
     )
 }

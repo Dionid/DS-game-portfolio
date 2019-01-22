@@ -38,6 +38,15 @@ class MainLayout extends React.Component<IProps, IState> {
         })
     }
 
+    private onMenuClick = (roomName: E_ROOMS_NAMES) => {
+        if (!this.props.config.isGame && !this.props.config.isMobile) {
+            this.props.dispatch({
+                type: "rooms/setActiveRoom",
+                payload: roomName,
+            })
+        }
+    }
+
     public render() {
         const { projectModalIsOpened } = this.state
         const { isMobile, isGame } = this.props.config
@@ -71,28 +80,26 @@ class MainLayout extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <nav className={ cx("nav") }>
-                                    <div className={ cx("item", activeRoom === E_ROOMS_NAMES.Contacts && "active") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Contacts) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Contacts && "active") }>
                                         Contacts
                                     </div>
-                                    <div className={ cx("item", activeRoom === E_ROOMS_NAMES.Portfolio && "active") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Portfolio) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Portfolio && "active") }>
                                         Projects
                                     </div>
-                                    <div className={ cx("item", activeRoom === E_ROOMS_NAMES.Services && "active") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Services) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Services && "active") }>
                                         Services
                                     </div>
                                 </nav>
                             </div>
                         </div>
-                        <div className={ cx("gameContainer") }>
-                            {
-                                isGame
-                                ? [
-                                    <PhaserGame />,
-                                    <GameOverlay />,
-                                ]
-                                : <MainDesktop/>
-                            }
-                        </div>
+                        {
+                            isGame
+                            ? <div className={ cx("gameContainer") }>
+                                <PhaserGame />,
+                                <GameOverlay />,
+                                </div>
+                            : <MainDesktop/>
+                        }
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>
                                 <a href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn" target="_blank" className={ cx("textVersionLink") }>

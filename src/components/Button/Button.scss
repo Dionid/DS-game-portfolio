@@ -1,8 +1,42 @@
 
 .button{
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   background-color: #080808;
-  padding: 15px;
+  padding: 14px 17px 12px;
+  font-size: 14px;
   color: #ffffff;
   display: inline-block;
+  cursor: pointer;
+  transition: 0.2s;
+  position: relative;
+  .text{
+    position: relative;
+  }
+  &:before{
+    content: '';
+    height: 100%;
+    width: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    transition: 0.2s;
+  }
+  &:hover{
+    color: #000;
+    border-color: #f000ff;
+    &:before{
+      width: 100%;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 #f000ff; }
+}
+
+.pulse:hover,
+.pulse:focus {
+  animation: pulse 1s;
+  box-shadow: 0 0 0 1.2em rgba(#fff,0);
 }

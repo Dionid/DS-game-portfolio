@@ -41,6 +41,7 @@
           font-size: 20px;
           margin-right: 45px;
           position: relative;
+          cursor: pointer;
           &.active{
             &:before{
               width: 10px;
