@@ -1,7 +1,6 @@
 import { Model } from "dva"
 import { AnyAction} from "redux"
 import { delay } from "dva/saga"
-import {E_ROOMS_NAMES} from "../common/ConfigNames"
 
 export interface IConfigState {
     isMobile: boolean,

@@ -1,5 +1,5 @@
 import {Action, Dispatch} from "redux"
-import React, {Ref, RefObject} from "react"
+import React from "react"
 import {connect} from "dva"
 import IAppState from "models"
 import styles from "./MainDesktop.scss"
@@ -16,8 +16,15 @@ interface IProps {
     rooms: IRoomsState,
 }
 
+enum E_CHESTS_TYPES {
+    FRONTEND = "FRONTEND",
+    BACKEND = "BACKEND",
+    OUTPM = "OUTPM",
+}
+
 interface IState {
     contentHeight: number,
+    chestsOpened: {[key in E_CHESTS_TYPES]: boolean}
 }
 
 const IntroElName = Symbol(E_ROOMS_NAMES.Intro)
@@ -36,6 +43,11 @@ class MainDesktop extends React.Component<IProps, IState> {
 
     public state = {
         contentHeight: 0,
+        chestsOpened: {
+            [E_CHESTS_TYPES.FRONTEND]: false,
+            [E_CHESTS_TYPES.BACKEND]: false,
+            [E_CHESTS_TYPES.OUTPM]: false,
+        },
     }
 
     public componentDidMount(): void {
@@ -46,13 +58,12 @@ class MainDesktop extends React.Component<IProps, IState> {
         }
         if (this.wrapper) {
             const topPadding = this.wrapper.offsetTop
-            let seq = [
+            const seq = [
                 IntroElName,
                 ServicesElName,
                 PortfolioElName,
                 ContactsElName,
             ]
-            console.log(topPadding)
             this.wrapper.addEventListener("scroll", this.onScroll(seq, topPadding))
         }
     }
@@ -60,7 +71,7 @@ class MainDesktop extends React.Component<IProps, IState> {
     private scrolling = false
 
     public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
-        if (nextProps.rooms.activeRoom !== this.props.rooms.activeRoom) {
+        if (nextProps.rooms.activeRoom !== this.props.rooms.activeRoom && this.wrapper) {
             this.scrolling = true
             this.wrapper.style.overflowY = "hidden"
             this.scrollTo(nextProps.rooms.activeRoom)
@@ -75,14 +86,24 @@ class MainDesktop extends React.Component<IProps, IState> {
     }
 
     private scrollTo = (roomName: E_ROOMS_NAMES) => {
+        if (!this.wrapper) {
+            return
+        }
+
         this.wrapper.scrollTo({
             behavior: "smooth",
             left: 0,
             top: this[eq[roomName]].offsetTop - this.wrapper.offsetTop,
         })
-        // setTimeout(() => {
-        //     this.scrolling = false
-        // }, 500)
+    }
+
+    private openChest = (type: E_CHESTS_TYPES) => {
+        this.setState({
+            chestsOpened: {
+                ...this.state.chestsOpened,
+                [type]: true,
+            },
+        })
     }
 
     private scrollStoppedTimeoutId!: NodeJS.Timeout
@@ -92,7 +113,9 @@ class MainDesktop extends React.Component<IProps, IState> {
         if (this.scrolling) {
             if (this.scrollStoppedTimeoutId) clearTimeout(this.scrollStoppedTimeoutId)
             this.scrollStoppedTimeoutId = setTimeout(() => {
-                this.wrapper.style.overflowY = ""
+                if (this.wrapper) {
+                    this.wrapper.style.overflowY = ""
+                }
                 this.scrolling = false
             }, 100)
         } else if (this.wrapper) {
@@ -100,7 +123,7 @@ class MainDesktop extends React.Component<IProps, IState> {
             const scrollTop = this.wrapper.scrollTop
             const scrollTopWithBottom = scrollTop + this.wrapper.clientHeight
             const nextRoomName = seq[activeRoomI + 1]
-            const nextRoom = this[nextRoomName]
+            const nextRoom: HTMLDivElement = this[nextRoomName]
             const prevRoomName = seq[activeRoomI - 1]
             const prevRoom: HTMLDivElement = this[prevRoomName]
             if (
@@ -114,15 +137,6 @@ class MainDesktop extends React.Component<IProps, IState> {
                 this.scrolling = true
 
                 this.setActiveRoom(Object.keys(eq).find((key: E_ROOMS_NAMES) => eq[key] === nextRoomName))
-
-                // this.wrapper.scrollTo({
-                //     behavior: "smooth",
-                //     left: 0,
-                //     top: nextRoom.offsetTop - topPadding,
-                // })
-                // setTimeout(() => {
-                //     scrolling = false
-                // }, 500)
             } else if (
                 this.prevScrollTop > scrollTop
                 &&
@@ -130,21 +144,10 @@ class MainDesktop extends React.Component<IProps, IState> {
                 &&
                 scrollTop < prevRoom.offsetTop - topPadding + prevRoom.clientHeight - 50
             ) {
-                // console.log(prevRoom.clientHeight)
                 this.wrapper.style.overflowY = "hidden"
                 this.scrolling = true
 
                 this.setActiveRoom(Object.keys(eq).find((key: E_ROOMS_NAMES) => eq[key] === prevRoomName))
-
-                // this.wrapper.scrollTo({
-                //     behavior: "smooth",
-                //     left: 0,
-                //     top: prevRoom.offsetTop - topPadding,
-                // })
-
-                // setTimeout(() => {
-                //     scrolling = false
-                // }, 500)
             }
             this.prevScrollTop = scrollTop
         }
@@ -159,7 +162,10 @@ class MainDesktop extends React.Component<IProps, IState> {
     private [ContactsElName]: HTMLDivElement | null = null
 
     public render() {
-        const { contentHeight } = this.state
+        const {
+            contentHeight,
+            chestsOpened,
+        } = this.state
 
         return (
             <div ref={ (ref) => this.outer = ref } className={ cx("outer") }>
@@ -185,48 +191,73 @@ class MainDesktop extends React.Component<IProps, IState> {
                             <h1 className={ cx("title2", "bordered") }>Services</h1>
                             <h2 className={ cx("subtitle", "bordered") }>I offer you</h2>
                             <div className={ cx("services") }>
-                                <div className={ cx("item", "frontend") }>
-                                    <img className={ cx("image") } src={ chest } alt=""/>
+                                <div
+                                    className={ cx("item", "frontend", {
+                                        opened: chestsOpened[E_CHESTS_TYPES.FRONTEND],
+                                    }) }>
+                                    <img
+                                        onClick={ () => this.openChest(E_CHESTS_TYPES.FRONTEND) }
+                                        className={ cx("image") }
+                                        src={ chest }
+                                        alt=""/>
                                     <div className={ cx("desc-wr") }>
-                                        <div className={ cx("name") }>
-                                            Frontend
-                                        </div>
-                                        <div className={ cx("subname") }>
-                                            React, Redux
-                                        </div>
-                                        <div className={ cx("info") }>
-                                            and  everything including modern stack
+                                        <div className={ cx("desc") }>
+                                            <div className={ cx("name") }>
+                                                Frontend
+                                            </div>
+                                            <div className={ cx("subname") }>
+                                                React, Redux
+                                            </div>
+                                            <div className={ cx("info") }>
+                                                and  everything including modern stack
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className={ cx("item", "backend") }>
-                                    <img className={ cx("image") } src={ chest } alt=""/>
+                                <div className={ cx("item", "backend", {
+                                    opened: chestsOpened[E_CHESTS_TYPES.BACKEND],
+                                }) }>
+                                    <img
+                                        onClick={ () => this.openChest(E_CHESTS_TYPES.BACKEND) }
+                                        className={ cx("image") }
+                                        src={ chest }
+                                        alt=""/>
                                     <div className={ cx("desc-wr") }>
-                                        <div className={ cx("name") }>
-                                            Backend
-                                        </div>
-                                        <div className={ cx("subname") }>
-                                            NodeJS /Golang
-                                            API's, microservices
-                                        </div>
-                                        <div className={ cx("info") }>
-                                            everything needed for SPA backend
+                                        <div className={ cx("desc") }>
+                                            <div className={ cx("name") }>
+                                                Backend
+                                            </div>
+                                            <div className={ cx("subname") }>
+                                                NodeJS /Golang
+                                                API's, microservices
+                                            </div>
+                                            <div className={ cx("info") }>
+                                                everything needed for SPA backend
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className={ cx("item", "outsource") }>
-                                    <img className={ cx("image") } src={ chest } alt=""/>
+                                <div className={ cx("item", "outsource", {
+                                    opened: chestsOpened[E_CHESTS_TYPES.OUTPM],
+                                }) }>
+                                    <img
+                                        onClick={ () => this.openChest(E_CHESTS_TYPES.OUTPM) }
+                                        className={ cx("image") }
+                                        src={ chest }
+                                        alt=""/>
                                     <div className={ cx("desc-wr") }>
-                                        <div className={ cx("name") }>
-                                            Outsource PM
-                                        </div>
-                                        <div className={ cx("subname") }>
-                                            Write TechSpec
-                                            Assemble Team
-                                            Lead the Project
-                                        </div>
-                                        <div className={ cx("info") }>
-                                            like outsource CTO
+                                        <div className={ cx("desc") }>
+                                            <div className={ cx("name") }>
+                                                Outsource PM
+                                            </div>
+                                            <div className={ cx("subname") }>
+                                                Write TechSpec
+                                                Assemble Team
+                                                Lead the Project
+                                            </div>
+                                            <div className={ cx("info") }>
+                                                like outsource CTO
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -246,7 +277,10 @@ class MainDesktop extends React.Component<IProps, IState> {
                                 <Button text="GO TO PDF VERSION"/>
                             </div>
                         </div>
-                        <div ref={ (ref) => this[ContactsElName] = ref } style={{minHeight: contentHeight}} className={ cx("container", "second") }>
+                        <div
+                            ref={ (ref) => this[ContactsElName] = ref }
+                            style={{minHeight: contentHeight}}
+                            className={ cx("container", "second") }>
                             <h1 className={ cx("title2", "bordered") }>Contacts</h1>
                             <h2 className={ cx("subtitle", "bordered") }>Just call me maybe</h2>
                             <div className={ cx("contacts") }>
