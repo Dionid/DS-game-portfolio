@@ -34,13 +34,14 @@ import RoomTrigger from "game/objects/RoomTrigger"
 import {E_ROOMS_NAMES} from "../../common/RoomsNames"
 import dvaApp from "dvaApp"
 import {E_CHEST_LOOT_TYPES} from "game/models/ChestLoot"
+import DashSystem from "game/systems/DashSystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
     PhaserInputBodySystem,
     PhaserInputVelocitySystem,
     PlayerMovementSystem,
-    // DashSystem,
+    DashSystem,
     WorldBorderCollisionSystem,
     DynamicDepthSystem,
     PhaserOutputContactRoomCreationSystem,
@@ -670,11 +671,6 @@ export class GameScene extends Phaser.Scene {
     public update(time: number, delta: number): void {
 
         this.cameraMousePointerFollorSystem()
-
-        // if (this.player.y > this.rooms[prevRoom].offsetY && !this.rooms[nextRoom].active) {
-        //     this.rooms[activeRoom].active = false
-        //     this.rooms.secondRoom.active = true
-        // }
 
         ECS.exec({
             time,
