@@ -20,15 +20,21 @@ import GOManager from "game/GOManager"
 import BodyComponentFactory from "game/components/BodyComponent"
 import PhaserInputBodySystem from "game/systems/PhaserInputBodySystem"
 import DynamicDepthSystem from "game/systems/DynamicDepthSystem"
-import ChestComponentFactory from "game/components/ChestComponent"
+import ChestComponentFactory, {IChestLootData} from "game/components/ChestComponent"
 import PhaserOutputChestSystem from "game/systems/PhaserOutputChestSystem"
-import DashSystem from "game/systems/DashSystem"
 import FolderComponentFactory from "game/components/FolderComponent"
 import PhaserOutputFolderSystem from "game/systems/PhaserOutputFolderSystem"
 import {Project} from "game/objects/Project"
 import {EFoldersType, projectsByFoldersType, projectsById} from "game/models/Portfolio"
 import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
 import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
+import GoToTextBtn from "game/objects/GoToTextBtn"
+import PhaserOutputContactRoomCreationSystem from "game/systems/PhaserOutputContactRoomCreationSystem"
+import RoomTrigger from "game/objects/RoomTrigger"
+import {E_ROOMS_NAMES} from "../../common/RoomsNames"
+import dvaApp from "dvaApp"
+import {E_CHEST_LOOT_TYPES} from "game/models/ChestLoot"
+import DashSystem from "game/systems/DashSystem"
 
 const ECS = new ECSManager([
     PhaserInputPositionSystem,
@@ -38,6 +44,7 @@ const ECS = new ECSManager([
     DashSystem,
     WorldBorderCollisionSystem,
     DynamicDepthSystem,
+    PhaserOutputContactRoomCreationSystem,
     PhaserOutputChestSystem,
     PhaserOutputFolderSystem,
     PhaserOutputProjectSystem,
@@ -46,11 +53,16 @@ const ECS = new ECSManager([
     PhaserOutputMovementSystem,
 ])
 
+const cuttingCornersVersion = true
+
+type IRoomsObj = {
+    [name in E_ROOMS_NAMES]: Room
+}
+
 export class GameScene extends Phaser.Scene {
     private helloText?: Phaser.GameObjects.Text = undefined
     private fullstackText?: Phaser.GameObjects.Text = undefined
     private freelancerText?: Phaser.GameObjects.Text = undefined
-    private btnText?: Phaser.GameObjects.Text = undefined
     private cursors!: Cursors
     private player!: Player
 
@@ -59,22 +71,23 @@ export class GameScene extends Phaser.Scene {
     private gameWidth: number = 0
     private spawnPosition: {x: number, y: number} = {x: 0, y: 0}
     private screenHeight: number = 0
+    private screenWidth: number = 0
 
     // Rooms
-    private rooms: { [key: string]: Room } = {
-        firstRoom: {
+    private rooms: IRoomsObj = {
+        [E_ROOMS_NAMES.Intro]: {
             numberOfScreens: 1,
             offsetY: 0,
         },
-        secondRoom: {
+        [E_ROOMS_NAMES.Services]: {
             numberOfScreens: 1,
             offsetY: 0,
         },
-        thirdRoom: {
-            numberOfScreens: 3,
+        [E_ROOMS_NAMES.Portfolio]: {
+            numberOfScreens: cuttingCornersVersion ? 1 : 3,
             offsetY: 0,
         },
-        fourthRoom: {
+        [E_ROOMS_NAMES.Contacts]: {
             numberOfScreens: 1,
             offsetY: 0,
         },
@@ -91,16 +104,26 @@ export class GameScene extends Phaser.Scene {
     private calculateRooms() {
         this.gameWidth = this.sys.canvas.width
         this.screenHeight = this.sys.canvas.height
+        this.screenWidth = this.sys.canvas.width
         Object.keys(this.rooms).forEach((roomName: string) => {
-            const room = this.rooms[roomName]
+            const room: Room = this.rooms[roomName as E_ROOMS_NAMES]
             room.offsetY = this.roomScreensTotalNumber * this.screenHeight
             this.roomScreensTotalNumber += room.numberOfScreens
             this.gameHeight += room.numberOfScreens * this.screenHeight
         })
+        const activeRoomName = E_ROOMS_NAMES.Intro
         this.spawnPosition = {
             x: this.gameWidth - 100,
-            y: this.rooms.thirdRoom.offsetY + this.screenHeight / 2,
+            y: this.rooms[activeRoomName].offsetY + this.screenHeight / 2,
         }
+        this.setActiveRoom(activeRoomName)
+    }
+
+    public setActiveRoom = (activeRoomName: E_ROOMS_NAMES) => {
+        dvaApp._store.dispatch({
+            type: "rooms/setActiveRoom",
+            payload: activeRoomName,
+        })
     }
 
     private createBackground() {
@@ -109,29 +132,53 @@ export class GameScene extends Phaser.Scene {
     }
 
     private createSecondRoomTriggerArea() {
-        const triggerWidth = this.sys.canvas.width - 20
-        const triggerHeight = 1
-        const triggerX = 0
-        const triggerY = this.sys.canvas.height - 20
-
-        const trigger = this.add.rectangle(
-            triggerX,
-            triggerY,
-            triggerWidth,
-            triggerHeight,
-            0x080808,
+        const trigger1 = new RoomTrigger(
+            this,
+            () => {
+                this.setActiveRoom(E_ROOMS_NAMES.Intro)
+            },
+            () => {
+                this.setActiveRoom(E_ROOMS_NAMES.Services)
+            },
+            this.player,
+            this.gameWidth,
+            20,
+            0,
+            this.rooms.Services.offsetY - 10,
+            false,
         )
 
-        trigger.setStrokeStyle(3, 0xd4d4d4)
-        trigger.setOrigin(0, 0)
+        const trigger2 = new RoomTrigger(
+            this,
+            () => {
+                this.setActiveRoom(E_ROOMS_NAMES.Services)
+            },
+            () => {
+                this.setActiveRoom(E_ROOMS_NAMES.Portfolio)
+            },
+            this.player,
+            this.gameWidth,
+            20,
+            0,
+            this.rooms.Portfolio.offsetY - 10,
+            false,
+        )
 
-        this.physics.world.enable(trigger, Phaser.Physics.Arcade.STATIC_BODY)
-        this.physics.add.overlap(this.player, trigger, () => {
-            // if (!this.secondPageCamera) {
-            //     console.log("Triggered")
-            //     this.setSecondPageCamera()
-            // }
-        }, undefined, this)
+        const trigger3 = new RoomTrigger(
+            this,
+            () => {
+                this.setActiveRoom(E_ROOMS_NAMES.Portfolio)
+            },
+            () => {
+                this.setActiveRoom(E_ROOMS_NAMES.Contacts)
+            },
+            this.player,
+            this.gameWidth,
+            20,
+            0,
+            this.rooms.Contacts.offsetY - 10,
+            false,
+        )
     }
 
     private createPlayer() {
@@ -225,50 +272,50 @@ export class GameScene extends Phaser.Scene {
 
         this.freelancerText.setDepth(this.gameHeight)
 
-        const rectWidth = 170
-        const rectHeight = 40
-        const rectX = this.leftTextStartOffsetX
-        const rectY = freelancerTextY + this.freelancerText.height + 20
-
-        const rect = this.add.rectangle(
-            rectX,
-            rectY,
-            rectWidth,
-            rectHeight,
-            0x080808,
+        const btn = new GoToTextBtn(
+            this,
+            this.leftTextStartOffsetX,
+            freelancerTextY + this.freelancerText.height + 20,
+            this.gameHeight,
         )
 
-        rect.setStrokeStyle(3, 0xd4d4d4)
-        rect.setOrigin(0, 0)
-        rect.setDepth(this.gameHeight)
-
-        const btnTextY = freelancerTextY + this.freelancerText.height + 20
-
-        this.btnText = this.add.text(
-            this.leftTextStartOffsetX,
-            btnTextY,
-            "GO TO TEXT VERSION",
+        const continueText = this.add.text(
+            this.gameWidth - 200,
+            this.screenHeight - 60,
+            "continue your journey",
             {
                 fontFamily: "Connection",
-                fontSize: 14,
+                fontSize: 12,
                 stroke: "#000",
-                strokeThickness: 5,
+                strokeThickness: 2,
                 fill: "#fff",
             },
         )
+        continueText.setAlpha(0.7)
+        continueText.setDepth(this.gameHeight)
 
-        const link = "https://docs.google.com/document/d/" +
-            "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
+        const triangle = this.add.triangle(
+            continueText.x + continueText.width / 2 - 12,
+            continueText.y + 25,
+            0,
+            0,
+            10,
+            12,
+            20,
+            0,
+            0xffffff,
+        )
+        triangle.setAlpha(0.7)
+        triangle.setStrokeStyle(1, 0x000000)
+        triangle.setOrigin(0, 0)
+        triangle.setDepth(this.gameHeight)
 
-        this.btnText.setPadding(10, 10, 20, 10)
-        this.btnText.setInteractive().on("pointerdown", () => {
-            window.open(link, "_self")
-        })
-        this.btnText.setDepth(this.gameHeight + 1)
+        // ToDo: make animation for triangle
+        // ToDO: delete continue on Player pass by
     }
 
     private createSecondRoom() {
-        const secondScreenOffsetY = this.rooms.secondRoom.offsetY
+        const secondScreenOffsetY = this.rooms[E_ROOMS_NAMES.Services].offsetY
 
         const titleY = secondScreenOffsetY + 50
 
@@ -376,8 +423,70 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.chests)
     }
 
+    private createThirdRoomCCVersion() {
+        const thirdScreenOffsetY = this.rooms[E_ROOMS_NAMES.Portfolio].offsetY
+
+        const titleY = thirdScreenOffsetY + 50
+
+        const title = this.add.text(
+            this.leftTextStartOffsetX,
+            titleY,
+            "Projects",
+            {
+                fontFamily: "Connection",
+                fontSize: 60,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#fff",
+            },
+        )
+
+        title.setDepth(this.gameHeight)
+
+        const subtitleText = this.add.text(
+            this.leftTextStartOffsetX,
+            titleY + title.height,
+            "What have I done...",
+            {
+                fontFamily: "Connection",
+                fontSize: 25,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#bdbdbd",
+            },
+        )
+
+        subtitleText.setDepth(this.gameHeight)
+
+        const comingSoonY = thirdScreenOffsetY + this.screenHeight / 2
+
+        const comingSoon = this.add.text(
+            this.gameWidth / 2,
+            comingSoonY,
+            "coming soon...",
+            {
+                fontFamily: "Connection",
+                fontSize: 40,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#fff",
+            },
+        )
+
+        comingSoon.setX(this.gameWidth / 2 - comingSoon.width / 2)
+        comingSoon.setDepth(this.gameHeight)
+
+        const btn = new GoToTextBtn(
+            this,
+            this.gameWidth / 2,
+            comingSoon.y + comingSoon.height + 20,
+            this.gameHeight,
+            true,
+        )
+    }
+
     private createThirdRoom() {
-        const thirdScreenOffsetY = this.rooms.thirdRoom.offsetY
+        const thirdScreenOffsetY = this.rooms[E_ROOMS_NAMES.Portfolio].offsetY
 
         const titleY = thirdScreenOffsetY + 50
 
@@ -482,12 +591,18 @@ export class GameScene extends Phaser.Scene {
         this.createSecondRoom()
 
         // Third room
-        this.createThirdRoom()
+        if (cuttingCornersVersion) {
+            this.createThirdRoomCCVersion()
+        } else {
+            this.createThirdRoom()
+        }
 
         // Fourth room
 
         // Main camera
         this.createMainCamera()
+
+        this.createSecondRoomTriggerArea()
 
         ECS.onInit({
             time: 0,
@@ -502,6 +617,10 @@ export class GameScene extends Phaser.Scene {
             deltaTimeScaled: 0,
             projectsById,
             projectsGOGroup: this.projects,
+            rooms: this.rooms,
+            leftTextStartOffsetX: this.leftTextStartOffsetX,
+            screenHeight: this.screenHeight,
+            reduxStore: dvaApp._store,
         })
     }
 
@@ -519,29 +638,29 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    private chestLoot = [
+    private chestLoot: IChestLootData[] = [
         {
+            type: E_CHEST_LOOT_TYPES.WEAPON,
             title: "Frontend",
             subtitle: "React, Redux",
             desc: "and  everything\nincluding modern stack",
             img: "objects/chests/katana.psd",
-            opened: false,
         },
         {
+            type: E_CHEST_LOOT_TYPES.ENERGY,
             title: "Backend",
             subtitle: "NodeJS /Golang\nAPI's, microservices",
             desc: "everything needed\nfor SPA backend",
             img: "objects/chests/energy.psd",
-            opened: false,
         },
         {
+            type: E_CHEST_LOOT_TYPES.SIDEKICK,
             title: "Outsource PM",
             subtitle: "Write TechSpec\n" +
                 "Assemble Team\n" +
                 "Lead the Project",
             desc: "like outsource CTO",
             img: "objects/chests/katana.psd",
-            opened: false,
         },
     ]
 
@@ -566,6 +685,10 @@ export class GameScene extends Phaser.Scene {
             deltaTimeScaled: delta * this.timeSpeedScale.value,
             projectsById,
             projectsGOGroup: this.projects,
+            rooms: this.rooms,
+            leftTextStartOffsetX: this.leftTextStartOffsetX,
+            screenHeight: this.screenHeight,
+            reduxStore: dvaApp._store,
         })
     }
 }

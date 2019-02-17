@@ -13,39 +13,37 @@ interface IProps {
 }
 
 interface IState {
-
+    something: boolean
 }
 
 class ProjectModal extends React.Component<IProps, IState> {
     public render() {
         return (
             <div className={ cx("wrapper") }>
-            	<div className={ cx("panel-wr") }>
-            		<div className={ cx("panel") }>
-            			<div className={ cx("panel-body") }>
+                <div className={ cx("panel-wr") }>
+                    <div className={ cx("panel") }>
+                        <div className={ cx("panel-body") }>
                             <div className={ cx("window-wr") }>
-                            	<div className={ cx("window") }>
-                            		<div className={ cx("head") }>
+                                <div className={ cx("window") }>
+                                    <div className={ cx("head") }>
                                         Prostor.exe
                                         <div className={ cx("close-btn") }>
 
                                         </div>
-                            		</div>
+                                    </div>
                                     <div className={ cx("body") }>
 
                                     </div>
-                            	</div>
+                                </div>
                             </div>
                             <div onClick={ this.props.closeModal } className={ cx("close-btn-wr") }>
                                 <div className={ cx("text") }>
-                                	Close
+                                    Close
                                 </div>
-                            	<div className={ cx("btn") }>
-
-                            	</div>
+                                <div className={ cx("btn") }></div>
                             </div>
-            				<div className={ cx("content") }>
-            					<div className={ cx("row") }>
+                            <div className={ cx("content") }>
+                                <div className={ cx("row") }>
                                     <div className={ cx("col-6") }>
                                         <div className={ cx("text-wr") }>
                                             <div className={ cx("text") }>
@@ -54,7 +52,7 @@ class ProjectModal extends React.Component<IProps, IState> {
                                                 </div>
                                                 <div className={ cx("paragraph") }>
                                                     <div className={ cx("p") }>
-                                                        Client: <a href="https://ptl.ru" target="_blank">https://ptl.ru</a>
+                                                    Client: <a href="https://ptl.ru" target="_blank">https://ptl.ru</a>
                                                     </div>
                                                     <div className={ cx("p") }>
                                                         Type: personal area SPA
@@ -81,7 +79,7 @@ class ProjectModal extends React.Component<IProps, IState> {
                                         <div className={ cx("image") }
                                              style={{backgroundImage: "url('assets/images/projects/prostor1.png')"}}/>
                                     </div>
-            					</div>
+                                </div>
                                 <div className={ cx("row") }>
                                     <div className={ cx("col-6") }>
                                         <div className={ cx("image") }
@@ -89,12 +87,12 @@ class ProjectModal extends React.Component<IProps, IState> {
                                     </div>
                                     <div className={ cx("col-6", "center") }>
                                         <div className={ cx("list") }>
-                                        	<div className={ cx("item") }>
+                                            <div className={ cx("item") }>
                                                 <div className={ cx("romb") }>
                                                     <div className={ cx("romb-inner") }/>
                                                 </div>
                                                 Money transactions
-                                        	</div>
+                                            </div>
                                             <div className={ cx("item") }>
                                                 <div className={ cx("romb") }>
                                                     <div className={ cx("romb-inner") }/>
@@ -111,7 +109,7 @@ class ProjectModal extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <div className={ cx("row") }>
-                                	<div className={ cx("col-6", "center") }>
+                                    <div className={ cx("col-6", "center") }>
                                         <div className={ cx("list") }>
                                             <div className={ cx("item") }>
                                                 <div className={ cx("romb") }>
@@ -120,7 +118,7 @@ class ProjectModal extends React.Component<IProps, IState> {
                                                 Money transactions
                                             </div>
                                         </div>
-                                	</div>
+                                    </div>
                                     <div className={ cx("col-6", "center") }>
                                         <div className={ cx("list") }>
                                             <div className={ cx("item") }>
@@ -132,10 +130,10 @@ class ProjectModal extends React.Component<IProps, IState> {
                                         </div>
                                     </div>
                                 </div>
-            				</div>
-            			</div>
-            		</div>
-            	</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

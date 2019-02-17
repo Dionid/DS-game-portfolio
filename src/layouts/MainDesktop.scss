@@ -1,0 +1,246 @@
+@import "styles/mixins.scss";
+
+.outer{
+  width: 1024px;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.wrapper{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  //overflow: hidden;
+  width: 1040px;
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  background-color: #292929;
+  background-image: url("/assets/images/repeatxy.png");
+  //overflow-y: scroll;
+  //overflow-x: hidden;
+  //height: 100%;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  flex-shrink: 0;
+  flex-grow: 1;
+  justify-content: center;
+  padding-left: 100px;
+  position: relative;
+  &.first{
+    padding: 30px 30px 30px 100px;
+  }
+  &.servicesContainer{
+    padding-top:  60px;
+    justify-content: flex-start;
+    min-height: 550px;
+  }
+  &.second{
+    padding: 60px 100px;
+  }
+  &.portfolio{
+    padding: 60px 100px;
+    justify-content: flex-start;
+  }
+}
+
+.title{
+  font-size: 70px;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.subtitle{
+  font-size: 26px;
+  color: #fff;
+  line-height: 1.5;
+}
+
+.title2{
+  font-size: 60px;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.subtitle2{
+  font-size: 17px;
+  color: #fff;
+  line-height: 1.5;
+}
+
+.bordered{
+  text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 2px 2px #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+}
+
+.tooltip-wr{
+  position: fixed;
+  width: 100%;
+  padding: 15px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  transition: 0.5s;
+  bottom: 0px;
+  &.shown{
+    transform: translateX(-50%) translateY(0%);
+  }
+}
+
+.tooltip {
+  background-color: #080808;
+  border: 5px solid #ffba4d;
+  display: flex;
+  padding: 15px;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  z-index: 100;
+  .close-btn{
+    background-color: #d24a43;
+    width: 15px;
+    height: 15px;
+    border: 2px solid #3b3b3b;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.services{
+  padding: 45px 30px 0;
+  //position: relative;
+  .item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 250px;
+    &:not(:last-child){
+      margin-bottom: 45px;
+    }
+    .image{
+      z-index: 10;
+    }
+    .desc-wr{
+      margin-top: -15px;
+      border: 3px solid #fff;
+      background-color: #080808;
+      //padding: 30px 15px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      width: 0;
+      height: 0;
+      transition: 0.2s;
+      .desc{
+        padding: 30px 15px;
+      }
+      .name{
+        font-size: 22px;
+        margin-bottom: 10px;
+        line-height: 1.2;
+      }
+      .subname{
+        font-size: 18px;
+        margin-bottom: 10px;
+        line-height: 1.2;
+      }
+      .info{
+        font-size: 14px;
+        line-height: 1.2;
+        opacity: 0.7;
+      }
+    }
+    &.frontend{
+      right: 290px;
+      top: 18%;
+      height: 198px;
+    }
+    &.backend{
+      left: 130px;
+      top: 49%;
+      height: 215px;
+      .subname{
+        font-size: 16px;
+      }
+    }
+    &.outsource{
+      top: 57%;
+      right: 100px;
+      height: 223px;
+    }
+    &.opened {
+      .desc-wr{
+        //width: 100%;
+        //height: 100%;
+        animation-name: chestOpenAnimation;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+        animation-timing-function: ease-in-out;
+        //animation: chestOpenAnimationWidth 1s ease-in-out 0s, chestOpenAnimationHeight 1s ease-in-out 1s;
+      }
+    }
+  }
+}
+
+@keyframes chestOpenAnimation {
+  //0%   {width: 100%}
+  50%  {width: 100%; height: 0}
+  100% {width: 100%; height: 100%}
+}
+
+@keyframes chestOpenAnimationWidth {
+  //0%   {width: 100%}
+  100% {width: 100%}
+}
+@keyframes chestOpenAnimationHeight {
+  //0%   {width: 100%}
+  100% {height: 100%}
+}
+
+.projects{
+  padding: 60px 30px 30px;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.contacts{
+  padding: 45px 0;
+  .item{
+    display: flex;
+    color: #ffffff;
+    align-items: center;
+    margin-bottom: 15px;
+    .image{
+      margin-right: 30px;
+    }
+    .desc{
+      display: flex;
+      //flex-direction: column;
+    }
+    .name{
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    .link{
+      font-size: 20px;
+      color: #e4910f;
+    }
+  }
+}

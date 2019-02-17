@@ -2,7 +2,7 @@ import {Action, Dispatch} from "redux"
 import React from "react"
 import {connect} from "dva"
 import IAppState from "models"
-import {ICountState} from "models/count"
+import {ICountState} from "dvaApp/models/count"
 
 interface IProps {
     compiler: string,

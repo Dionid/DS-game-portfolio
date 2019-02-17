@@ -9,7 +9,7 @@ import "./index.scss"
 // import dvaApp from "dvaApp"
 
 // @ts-ignore
-const modelsReq = require.context("./models", true, /\.ts$/)
+const modelsReq = require.context("./dvaApp/models", true, /\.ts$/)
 
 // const dvaApp = dva()
 

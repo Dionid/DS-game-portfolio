@@ -1,3 +1,6 @@
+@import "styles/variables";
+@import "styles/mixins";
+@import "./assets/fonts/index";
 
 
 :global{
@@ -19,5 +22,19 @@
   a{
     color: #ffffff;
     text-decoration: none;
+  }
+  @include xs {
+    body{
+      background-color: #292929;
+      font-size: 14px;
+      //overflow: auto;
+    }
+    #root{
+      border: 15px solid #1b1b1b;
+      background-color: #292929;
+      background-image: url("/assets/images/repeatxy.png");
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
   }
 }

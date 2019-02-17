@@ -7,19 +7,29 @@ import classnamesBind from "classnames/bind"
 import TopMenu from "components/TopMenu/TopMenu"
 import PhaserGame from "components/PhaserGame/PhaserGame"
 import ProjectModal from "components/ProjectModal/ProjectModal"
+import {IRoomsState} from "dvaApp/models/rooms"
+import {E_ROOMS_NAMES} from "../common/RoomsNames"
+import GameOverlay from "components/GameOverlayComponent/GameOverlay"
+import {IConfigState} from "dvaApp/models/config"
+import MainMobile from "./MainMobile"
+import MainDesktop from "src/layouts/MainDesktop"
 
 const cx = classnamesBind.bind(styles)
 
 interface IProps {
     dispatch: Dispatch<Action>,
+    rooms: IRoomsState,
+    config: IConfigState,
 }
 
-interface IState {}
+interface IState {
+    projectModalIsOpened: boolean,
+}
 
 class MainLayout extends React.Component<IProps, IState> {
 
     public state = {
-        projectModalIsOpened: true,
+        projectModalIsOpened: false,
     }
 
     private closeModal = () => {
@@ -28,8 +38,23 @@ class MainLayout extends React.Component<IProps, IState> {
         })
     }
 
+    private onMenuClick = (roomName: E_ROOMS_NAMES) => {
+        if (!this.props.config.isGame && !this.props.config.isMobile) {
+            this.props.dispatch({
+                type: "rooms/setActiveRoom",
+                payload: roomName,
+            })
+        }
+    }
+
     public render() {
         const { projectModalIsOpened } = this.state
+        const { isMobile, isGame } = this.props.config
+        const { activeRoom } = this.props.rooms
+
+        if (isMobile) {
+            return <MainMobile/>
+        }
 
         return (
             <div className={ cx("wrapper") }>
@@ -39,9 +64,14 @@ class MainLayout extends React.Component<IProps, IState> {
                         <div className={ cx("leftMenu") }>
                             <div className={ cx("leftMenuContent") }>
                                 <div className={ cx("contacts") }>
-                                    <div className={ cx("item") }>
+                                    <a
+                                        href={ "https://vk.com/david_shekunts" }
+                                        target={ "_blank" }
+                                        id={ "contactEmailId" }
+                                        className={ cx("item") }
+                                    >
                                         C
-                                    </div>
+                                    </a>
                                     <div className={ cx("item") }>
                                         C
                                     </div>
@@ -50,21 +80,26 @@ class MainLayout extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <nav className={ cx("nav") }>
-                                    <div className={ cx("item") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Contacts) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Contacts && "active") }>
                                         Contacts
                                     </div>
-                                    <div className={ cx("item") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Portfolio) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Portfolio && "active") }>
                                         Projects
                                     </div>
-                                    <div className={ cx("item", "active") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Services) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Services && "active") }>
                                         Services
                                     </div>
                                 </nav>
                             </div>
                         </div>
-                        <div className={ cx("gameContainer") }>
-                            <PhaserGame />
-                        </div>
+                        {
+                            isGame
+                            ? <div className={ cx("gameContainer") }>
+                                <PhaserGame />,
+                                <GameOverlay />,
+                                </div>
+                            : <MainDesktop/>
+                        }
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>
                                 <a href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn" target="_blank" className={ cx("textVersionLink") }>
@@ -85,8 +120,9 @@ class MainLayout extends React.Component<IProps, IState> {
     }
 }
 
-export default connect(({}: IAppState) => {
+export default connect(({ rooms, config }: IAppState) => {
     return {
-
+        config,
+        rooms,
     }
 })(MainLayout)

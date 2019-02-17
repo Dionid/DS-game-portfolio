@@ -7,7 +7,6 @@
 .wrapper{
   display: flex;
   justify-content: center;
-  //align-items: center;
   height: 100%;
 }
 
@@ -22,7 +21,7 @@
 .content{
   display: flex;
   flex-grow: 1;
-  max-height: 650px;
+  max-height: 600px;
   .leftMenu{
     width: 84px;
     padding-left: 20px;
@@ -31,7 +30,7 @@
       transform: rotate(-90deg);
       position: absolute;
       top: 45%;
-      left: -240px;
+      left: -227px;
       //right: 0;
       display: flex;
       .nav{
@@ -42,29 +41,42 @@
           font-size: 20px;
           margin-right: 45px;
           position: relative;
+          cursor: pointer;
           &.active{
             &:before{
               width: 10px;
               height: 10px;
               background-color: $color-gold-main;
+              left: -20px;
+              top: 5px;
+            }
+          }
+          &:hover{
+            &:before{
+              width: 10px;
+              height: 10px;
+              //background-color: $color-gold-main;
+              left: -20px;
+              top: 5px;
             }
           }
           &:before{
             content: '';
-            width: 7px;
-            height: 7px;
+            transition: 0.1s;
+            width: 6px;
+            height: 6px;
             transform: rotate(-45deg);
             background-color: $color-gray-light;
             display: block;
             position: absolute;
-            left: -20px;
-            top: 5px;
+            left: -18px;
+            top: 6px;
           }
         }
       }
       .contacts{
         display: flex;
-        margin-right: 90px;
+        margin-right: 60px;
         justify-content: center;
         align-items: center;
         .item{
@@ -117,5 +129,7 @@
   .gameContainer{
     width: 1024px;
     background-color: #292929;
+    position: relative;
+    overflow: hidden;
   }
 }

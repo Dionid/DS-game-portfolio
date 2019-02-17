@@ -4,11 +4,16 @@ import {connect} from "dva"
 import IAppState from "models"
 import styles from "./TopMenu.scss"
 import classnamesBind from "classnames/bind"
+import {IConfigState} from "../../dvaApp/models/config"
+import {IPlayerState} from "src/dvaApp/models/player"
+import Icon from "components/Icon/Icon"
 
 const cx = classnamesBind.bind(styles)
 
 interface IProps {
     dispatch: Dispatch<Action>,
+    config: IConfigState,
+    player: IPlayerState,
 }
 
 interface IState {
@@ -16,7 +21,42 @@ interface IState {
 }
 
 class TopMenu extends React.Component<IProps, IState> {
+
+    private renderHealthItems() {
+        const { currentHealth, maxHealth } = this.props.player
+        const res = []
+
+        for (let i = 0; i < maxHealth; i++) {
+            res.push(
+                <div key={ i } className={ cx("item", currentHealth >= maxHealth - i && "full") }>
+                    {
+                        i === maxHealth - 1 && <p className={cx("number")}>{ currentHealth }</p>
+                    }
+                </div>,
+            )
+        }
+
+        return res
+    }
+
+    private renderMedsItems() {
+        const { currentMeds, maxMeds } = this.props.player
+        const res = []
+
+        for (let i = 0; i < maxMeds; i++) {
+            res.push(
+                <div key={ i } className={ cx("item", currentMeds >= maxMeds - i && "full") }>
+                    <Icon name="flash" size={ [10, 10] }/>
+                </div>,
+            )
+        }
+
+        return res
+    }
+
     public render() {
+        const { isCuttingCornersVersion } = this.props.config
+        const { currentHealth, maxHealth, currentMeds } = this.props.player
         return (
             <div className={ cx("topMenu") }>
                 <div className={ cx("logo") }>
@@ -28,8 +68,10 @@ class TopMenu extends React.Component<IProps, IState> {
                     </h1>
                 </div>
                 <div className={ cx("stats") }>
-                    <div className={ cx("inventory") }>
-                        <div className={ cx("row") }>
+                    {
+                        !isCuttingCornersVersion &&
+                        <div className={ cx("inventory") }>
+                          <div className={ cx("row") }>
                             <div className={ cx("item") }>
 
                             </div>
@@ -39,41 +81,52 @@ class TopMenu extends React.Component<IProps, IState> {
                             <div className={ cx("item") }>
 
                             </div>
+                          </div>
+                          <div className={ cx("row") }>
+                            <div className={ cx("item") }>
+
+                            </div>
+                            <div className={ cx("item") }>
+
+                            </div>
+                            <div className={ cx("item") }>
+
+                            </div>
+                          </div>
                         </div>
-                        <div className={ cx("row") }>
-                            <div className={ cx("item") }>
-
-                            </div>
-                            <div className={ cx("item") }>
-
-                            </div>
-                            <div className={ cx("item") }>
-
-                            </div>
-                        </div>
-                    </div>
+                    }
                     <div className={ cx("bars") }>
                         <div className={ cx("health-wr") }>
                             <div className={ cx("health-bar") }>
-                                <div className={ cx("health-text") }>
-                                    100%
-                                </div>
+                                {
+                                    this.renderHealthItems()
+                                }
+                                {/*<div className={ cx("item") }/>*/}
+                                {/*<div className={ cx("item") }/>*/}
+                                {/*<div className={ cx("item") }/>*/}
+                                {/*<div className={ cx("item") }/>*/}
+                                {/*<div className={ cx("item") }>*/}
+                                    {/*{ currentHealth }*/}
+                                {/*</div>*/}
                             </div>
                         </div>
                         <div className={ cx("energy-wr") }>
                             <div className={ cx("energy-bar") }>
-                                <div className={ cx("energy-item") }>
+                                {
+                                    this.renderMedsItems()
+                                }
+                                {/*<div className={ cx("energy-item") }>*/}
 
-                                </div>
-                                <div className={ cx("energy-item") }>
+                                {/*</div>*/}
+                                {/*<div className={ cx("energy-item") }>*/}
 
-                                </div>
-                                <div className={ cx("energy-item") }>
+                                {/*</div>*/}
+                                {/*<div className={ cx("energy-item") }>*/}
 
-                                </div>
-                                <div className={ cx("energy-item") }>
+                                {/*</div>*/}
+                                {/*<div className={ cx("energy-item") }>*/}
 
-                                </div>
+                                {/*</div>*/}
                             </div>
                         </div>
                     </div>
@@ -91,6 +144,9 @@ class TopMenu extends React.Component<IProps, IState> {
     }
 }
 
-export default connect(({}: IAppState) => {
-    return {}
+export default connect(({ config, player }: IAppState) => {
+    return {
+        config,
+        player,
+    }
 })(TopMenu)
