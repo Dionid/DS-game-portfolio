@@ -32,7 +32,6 @@ const config = {
                 test: /\.(eot|ttf|woff2?|otf)$/,
                 use: "file-loader",
             },
-
             {
                 test: /\.svg$/,
                 exclude: /(node_modules|colored)/,

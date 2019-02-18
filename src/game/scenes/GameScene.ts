@@ -35,23 +35,7 @@ import {E_ROOMS_NAMES} from "../../common/RoomsNames"
 import dvaApp from "dvaApp"
 import {E_CHEST_LOOT_TYPES} from "game/models/ChestLoot"
 import DashSystem from "game/systems/DashSystem"
-
-const ECS = new ECSManager([
-    PhaserInputPositionSystem,
-    PhaserInputBodySystem,
-    PhaserInputVelocitySystem,
-    PlayerMovementSystem,
-    DashSystem,
-    WorldBorderCollisionSystem,
-    DynamicDepthSystem,
-    PhaserOutputContactRoomCreationSystem,
-    PhaserOutputChestSystem,
-    PhaserOutputFolderSystem,
-    PhaserOutputProjectSystem,
-    PhaserOutputPlayerAnimationSystem,
-    PhaserOutputDynamicDepthSystem,
-    PhaserOutputMovementSystem,
-])
+import {ISystemAdditional, ISystemPhaserInjectable} from "game/systems"
 
 const cuttingCornersVersion = true
 
@@ -95,10 +79,28 @@ export class GameScene extends Phaser.Scene {
     private roomScreensTotalNumber: number = 0
     private goManager = new GOManager()
 
+    private ECS: ECSManager<ISystemAdditional, ISystemPhaserInjectable>
+
     constructor() {
         super({
             key: "GameScene",
         })
+        this.ECS = new ECSManager([
+            PhaserInputPositionSystem,
+            PhaserInputBodySystem,
+            PhaserInputVelocitySystem,
+            PlayerMovementSystem,
+            DashSystem,
+            WorldBorderCollisionSystem,
+            DynamicDepthSystem,
+            PhaserOutputContactRoomCreationSystem,
+            PhaserOutputChestSystem,
+            PhaserOutputFolderSystem,
+            PhaserOutputProjectSystem,
+            PhaserOutputPlayerAnimationSystem,
+            PhaserOutputDynamicDepthSystem,
+            PhaserOutputMovementSystem,
+        ])
     }
 
     private calculateRooms() {
@@ -189,7 +191,7 @@ export class GameScene extends Phaser.Scene {
         )
         this.add.existing(this.player)
         this.goManager.addGO(this.player)
-        ECS.entitiesManager.createEntity([
+        this.ECS.entitiesManager.createEntity([
             PlayerComponentFactory(),
             DashComponentFactory(),
             GOComponentFactory(this.player.id),
@@ -293,14 +295,14 @@ export class GameScene extends Phaser.Scene {
             this.gameHeight,
         )
 
-        const desktopButton = new Button(
-            this,
-            "GO TO DESKTOP VERSION",
-            this.onGoToDesktopVersionBtnClicked,
-            this.leftTextStartOffsetX + btn.rect.width + 15,
-            btn.y,
-            this.gameHeight,
-        )
+        // const desktopButton = new Button(
+        //     this,
+        //     "GO TO DESKTOP VERSION",
+        //     this.onGoToDesktopVersionBtnClicked,
+        //     this.leftTextStartOffsetX + btn.rect.width + 15,
+        //     btn.y,
+        //     this.gameHeight,
+        // )
 
         const continueText = this.add.text(
             this.gameWidth - 200,
@@ -375,7 +377,7 @@ export class GameScene extends Phaser.Scene {
         // const chests = this.add.group()
 
         const fChest = new Chest(this, this.gameWidth - 330, secondScreenOffsetY + this.screenHeight / 3 )
-        ECS.entitiesManager.createEntity([
+        this.ECS.entitiesManager.createEntity([
             ChestComponentFactory(
                 this.chestLoot[0],
             ),
@@ -395,7 +397,7 @@ export class GameScene extends Phaser.Scene {
             DepthComponentFactory(fChest.depth),
         ])
         const sChest = new Chest(this, 200, secondScreenOffsetY + this.screenHeight / 3 * 2)
-        ECS.entitiesManager.createEntity([
+        this.ECS.entitiesManager.createEntity([
             ChestComponentFactory(
                 this.chestLoot[1],
             ),
@@ -415,7 +417,7 @@ export class GameScene extends Phaser.Scene {
             DepthComponentFactory(sChest.depth),
         ])
         const thChest = new Chest(this, this.gameWidth - 200, secondScreenOffsetY + this.screenHeight / 3 * 2.3)
-        ECS.entitiesManager.createEntity([
+        this.ECS.entitiesManager.createEntity([
             ChestComponentFactory(
                 this.chestLoot[2],
             ),
@@ -547,7 +549,7 @@ export class GameScene extends Phaser.Scene {
 
         const fFolder = new Folder(this, "SPA", this.gameWidth / 2, thirdScreenOffsetY + this.screenHeight / 2 )
         this.goManager.addGO(fFolder)
-        ECS.entitiesManager.createEntity([
+        this.ECS.entitiesManager.createEntity([
             GOComponentFactory(fFolder.id),
             FolderComponentFactory(
                 EFoldersType.SPA,
@@ -629,7 +631,7 @@ export class GameScene extends Phaser.Scene {
 
         this.createSecondRoomTriggerArea()
 
-        ECS.onInit({
+        this.ECS.onInit({
             time: 0,
             delta: 0,
         }, {
@@ -697,7 +699,7 @@ export class GameScene extends Phaser.Scene {
 
         this.cameraMousePointerFollorSystem()
 
-        ECS.exec({
+        this.ECS.exec({
             time,
             delta,
         }, {

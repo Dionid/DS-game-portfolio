@@ -35,7 +35,7 @@ class PhaserGame extends React.Component<IProps, {}> {
     }
 
     public componentDidMount(): void {
-        setTimeout(this.createGame, 1000)
+        setTimeout(this.createGame, 200)
     }
 
     public render() {
