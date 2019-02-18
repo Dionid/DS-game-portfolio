@@ -80,13 +80,16 @@ class MainLayout extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <nav className={ cx("nav") }>
-                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Contacts) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Contacts && "active") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Contacts) }
+                                         className={ cx("item", activeRoom === E_ROOMS_NAMES.Contacts && "active") }>
                                         Contacts
                                     </div>
-                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Portfolio) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Portfolio && "active") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Portfolio) }
+                                         className={ cx("item", activeRoom === E_ROOMS_NAMES.Portfolio && "active") }>
                                         Projects
                                     </div>
-                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Services) } className={ cx("item", activeRoom === E_ROOMS_NAMES.Services && "active") }>
+                                    <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Services) }
+                                         className={ cx("item", activeRoom === E_ROOMS_NAMES.Services && "active") }>
                                         Services
                                     </div>
                                 </nav>
@@ -102,7 +105,10 @@ class MainLayout extends React.Component<IProps, IState> {
                         }
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>
-                                <a href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn" target="_blank" className={ cx("textVersionLink") }>
+                                <a
+                                    href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
+                                    target="_blank"
+                                    className={ cx("textVersionLink") }>
                                     LINK to TEXT Version
                                 </a>
                                 <div className={ cx("copyright") }>

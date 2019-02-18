@@ -27,18 +27,6 @@ interface IState {
     chestsOpened: {[key in E_CHESTS_TYPES]: boolean}
 }
 
-const IntroElName = Symbol(E_ROOMS_NAMES.Intro)
-const ServicesElName = Symbol(E_ROOMS_NAMES.Services)
-const PortfolioElName = Symbol(E_ROOMS_NAMES.Portfolio)
-const ContactsElName = Symbol(E_ROOMS_NAMES.Contacts)
-
-const eq = {
-    [E_ROOMS_NAMES.Intro]: IntroElName,
-    [E_ROOMS_NAMES.Services]: ServicesElName,
-    [E_ROOMS_NAMES.Portfolio]: PortfolioElName,
-    [E_ROOMS_NAMES.Contacts]: ContactsElName,
-}
-
 class MainDesktop extends React.Component<IProps, IState> {
 
     public state = {
@@ -50,6 +38,20 @@ class MainDesktop extends React.Component<IProps, IState> {
         },
     }
 
+    private scrolling = false
+    private scrollStoppedTimeoutId!: NodeJS.Timeout
+    private prevScrollTop: number = 0
+
+    private outer: HTMLDivElement | null = null
+    private wrapper: HTMLDivElement | null = null
+
+    private rooms: {[key: string]: HTMLDivElement | null} = {
+        [E_ROOMS_NAMES.Intro]: null,
+        [E_ROOMS_NAMES.Services]: null,
+        [E_ROOMS_NAMES.Portfolio]: null,
+        [E_ROOMS_NAMES.Contacts]: null,
+    }
+
     public componentDidMount(): void {
         if (this.outer && this.state.contentHeight === 0) {
             this.setState({
@@ -59,16 +61,14 @@ class MainDesktop extends React.Component<IProps, IState> {
         if (this.wrapper) {
             const topPadding = this.wrapper.offsetTop
             const seq = [
-                IntroElName,
-                ServicesElName,
-                PortfolioElName,
-                ContactsElName,
+                E_ROOMS_NAMES.Intro,
+                E_ROOMS_NAMES.Services,
+                E_ROOMS_NAMES.Portfolio,
+                E_ROOMS_NAMES.Contacts,
             ]
             this.wrapper.addEventListener("scroll", this.onScroll(seq, topPadding))
         }
     }
-
-    private scrolling = false
 
     public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
         if (nextProps.rooms.activeRoom !== this.props.rooms.activeRoom && this.wrapper) {
@@ -90,11 +90,15 @@ class MainDesktop extends React.Component<IProps, IState> {
             return
         }
 
-        this.wrapper.scrollTo({
-            behavior: "smooth",
-            left: 0,
-            top: this[eq[roomName]].offsetTop - this.wrapper.offsetTop,
-        })
+        const roomEl = this.rooms[roomName]
+
+        if (roomEl) {
+            this.wrapper.scrollTo({
+                behavior: "smooth",
+                left: 0,
+                top: roomEl.offsetTop - this.wrapper.offsetTop,
+            })
+        }
     }
 
     private openChest = (type: E_CHESTS_TYPES) => {
@@ -106,12 +110,11 @@ class MainDesktop extends React.Component<IProps, IState> {
         })
     }
 
-    private scrollStoppedTimeoutId!: NodeJS.Timeout
-    private prevScrollTop: number = 0
-
-    private onScroll = (seq: symbol[], topPadding: number) => () => {
+    private onScroll = (seq: string[], topPadding: number) => () => {
         if (this.scrolling) {
-            if (this.scrollStoppedTimeoutId) clearTimeout(this.scrollStoppedTimeoutId)
+            if (this.scrollStoppedTimeoutId) {
+                clearTimeout(this.scrollStoppedTimeoutId)
+            }
             this.scrollStoppedTimeoutId = setTimeout(() => {
                 if (this.wrapper) {
                     this.wrapper.style.overflowY = ""
@@ -119,13 +122,13 @@ class MainDesktop extends React.Component<IProps, IState> {
                 this.scrolling = false
             }, 100)
         } else if (this.wrapper) {
-            const activeRoomI = seq.indexOf(eq[this.props.rooms.activeRoom])
+            const activeRoomI = seq.indexOf(this.props.rooms.activeRoom)
             const scrollTop = this.wrapper.scrollTop
             const scrollTopWithBottom = scrollTop + this.wrapper.clientHeight
             const nextRoomName = seq[activeRoomI + 1]
-            const nextRoom: HTMLDivElement = this[nextRoomName]
+            const nextRoom: HTMLDivElement | null = this.rooms[nextRoomName]
             const prevRoomName = seq[activeRoomI - 1]
-            const prevRoom: HTMLDivElement = this[prevRoomName]
+            const prevRoom: HTMLDivElement | null = this.rooms[prevRoomName]
             if (
                 this.prevScrollTop < scrollTop
                 &&
@@ -136,7 +139,7 @@ class MainDesktop extends React.Component<IProps, IState> {
                 this.wrapper.style.overflowY = "hidden"
                 this.scrolling = true
 
-                this.setActiveRoom(Object.keys(eq).find((key: E_ROOMS_NAMES) => eq[key] === nextRoomName))
+                this.setActiveRoom(nextRoomName)
             } else if (
                 this.prevScrollTop > scrollTop
                 &&
@@ -147,19 +150,18 @@ class MainDesktop extends React.Component<IProps, IState> {
                 this.wrapper.style.overflowY = "hidden"
                 this.scrolling = true
 
-                this.setActiveRoom(Object.keys(eq).find((key: E_ROOMS_NAMES) => eq[key] === prevRoomName))
+                this.setActiveRoom(prevRoomName)
             }
             this.prevScrollTop = scrollTop
         }
     }
 
-    private outer: HTMLDivElement | null = null
-    private wrapper: HTMLDivElement | null = null
-
-    private [IntroElName]: HTMLDivElement | null = null
-    private [ServicesElName]: HTMLDivElement | null = null
-    private [PortfolioElName]: HTMLDivElement | null = null
-    private [ContactsElName]: HTMLDivElement | null = null
+    private setIsGame = () => {
+        this.props.dispatch({
+            type: "config/setIsGame",
+            payload: true,
+        })
+    }
 
     public render() {
         const {
@@ -173,23 +175,28 @@ class MainDesktop extends React.Component<IProps, IState> {
                     <div className={ cx("content") }>
                         <div
                             style={{minHeight: contentHeight}}
-                            ref={ (ref) => this[IntroElName] = ref }
-                            className={ cx("container", "first") }
+                            ref={ (ref) => this.rooms[E_ROOMS_NAMES.Intro] = ref }
+                            className={ cx("container", "first", "introContainer") }
                         >
                             <h1 className={ cx("title", "bordered") }>Hi, my name is</h1>
                             <h1 className={ cx("title", "bordered") }>David Shekunts</h1>
                             <h2 className={ cx("subtitle", "bordered") }>I'm fullstack web developer</h2>
                             <h3 className={ cx("subtitle2", "bordered") }>(Freelancer)</h3>
-                            <div style={{marginTop: 15}}>
-                                <Button text="GO TO PDF VERSION"/>
+                            <div className={ cx("ctrl") }>
+                                <a
+                                    target="_blank"
+                                    href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn">
+                                    <Button style={{marginRight: 15}} text="GO TO TEXT VERSION"/>
+                                </a>
+                                <Button text="GO TO GAME VERSION" onClick={ this.setIsGame }/>
                             </div>
                         </div>
                         <div
-                            ref={ (ref) => this[ServicesElName] = ref }
+                            ref={ (ref) => this.rooms[E_ROOMS_NAMES.Services] = ref }
                             className={ cx("container", "servicesContainer") }
                         >
                             <h1 className={ cx("title2", "bordered") }>Services</h1>
-                            <h2 className={ cx("subtitle", "bordered") }>I offer you</h2>
+                            <h2 className={ cx("subtitle", "bordered") }>I can offer you</h2>
                             <div className={ cx("services") }>
                                 <div
                                     className={ cx("item", "frontend", {
@@ -264,7 +271,7 @@ class MainDesktop extends React.Component<IProps, IState> {
                             </div>
                         </div>
                         <div
-                            ref={ (ref) => this[PortfolioElName] = ref }
+                            ref={ (ref) => this.rooms[E_ROOMS_NAMES.Portfolio] = ref }
                             style={{minHeight: contentHeight * 2}}
                             className={ cx("container", "portfolio") }
                         >
@@ -274,11 +281,15 @@ class MainDesktop extends React.Component<IProps, IState> {
                                 <h1 style={{marginBottom: 15}} className={ cx("subtitle", "bordered") }>
                                     comming soon
                                 </h1>
-                                <Button text="GO TO PDF VERSION"/>
+                                <a
+                                    target="_blank"
+                                    href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn">
+                                    <Button text="GO TO TEXT VERSION"/>
+                                </a>
                             </div>
                         </div>
                         <div
-                            ref={ (ref) => this[ContactsElName] = ref }
+                            ref={ (ref) => this.rooms[E_ROOMS_NAMES.Contacts] = ref }
                             style={{minHeight: contentHeight}}
                             className={ cx("container", "second") }>
                             <h1 className={ cx("title2", "bordered") }>Contacts</h1>

@@ -660,7 +660,7 @@ export class GameScene extends Phaser.Scene {
                 "Assemble Team\n" +
                 "Lead the Project",
             desc: "like outsource CTO",
-            img: "objects/chests/katana.psd",
+            img: "objects/chests/opm.psd",
         },
     ]
 

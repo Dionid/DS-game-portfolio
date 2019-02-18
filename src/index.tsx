@@ -11,8 +11,6 @@ import "./index.scss"
 // @ts-ignore
 const modelsReq = require.context("./dvaApp/models", true, /\.ts$/)
 
-// const dvaApp = dva()
-
 modelsReq.keys().forEach((filename: string) => {
     const model = modelsReq(filename).default
     if (model) {

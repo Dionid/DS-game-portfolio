@@ -114,6 +114,13 @@
   }
 }
 
+.introContainer{
+  .ctrl{
+    margin-top: 15px;
+    display: flex;
+  }
+}
+
 .services{
   padding: 45px 30px 0;
   //position: relative;
@@ -128,6 +135,7 @@
     }
     .image{
       z-index: 10;
+      cursor: pointer;
     }
     .desc-wr{
       margin-top: -15px;
@@ -183,13 +191,10 @@
     }
     &.opened {
       .desc-wr{
-        //width: 100%;
-        //height: 100%;
         animation-name: chestOpenAnimation;
         animation-duration: 1s;
         animation-fill-mode: forwards;
         animation-timing-function: ease-in-out;
-        //animation: chestOpenAnimationWidth 1s ease-in-out 0s, chestOpenAnimationHeight 1s ease-in-out 1s;
       }
     }
   }

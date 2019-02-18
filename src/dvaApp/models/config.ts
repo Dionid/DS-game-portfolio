@@ -17,7 +17,7 @@ const model: IConfigModel = {
     namespace: "config",
     state: {
         isMobile: mobilecheck(),
-        isGame: true,
+        isGame: false,
         isCuttingCornersVersion: true,
     },
     reducers: {
