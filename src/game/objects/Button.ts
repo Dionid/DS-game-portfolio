@@ -1,11 +1,19 @@
 
-export default class GoToTextBtn extends Phaser.GameObjects.Container {
+export default class Button extends Phaser.GameObjects.Container {
     public id: string
     public btnText: Phaser.GameObjects.Text
     public rect: Phaser.GameObjects.Rectangle
     private btnClicked: boolean = false
 
-    constructor(scene: Phaser.Scene, x: number, y: number, depth: number, center: boolean = false) {
+    constructor(
+        scene: Phaser.Scene,
+        text: string,
+        cb: () => void,
+        x: number,
+        y: number,
+        depth: number,
+        center: boolean = false,
+    ) {
         super(scene, x, y)
 
         this.id = "id" + (new Date()).getTime()
@@ -16,10 +24,23 @@ export default class GoToTextBtn extends Phaser.GameObjects.Container {
             x = x - rectWidth / 2
         }
 
+        this.btnText = scene.add.text(
+            x + 13,
+            y + 10,
+            text,
+            {
+                fontFamily: "Connection",
+                fontSize: 14,
+                stroke: "#000",
+                strokeThickness: 5,
+                fill: "#fff",
+            },
+        )
+
         this.rect = scene.add.rectangle(
             x,
             y,
-            rectWidth,
+            this.btnText.width + 30,
             rectHeight,
             0x080808,
         )
@@ -40,19 +61,6 @@ export default class GoToTextBtn extends Phaser.GameObjects.Container {
             this.btnClicked = true
         })
 
-        this.btnText = scene.add.text(
-            x + 13,
-            y + 10,
-            "GO TO TEXT VERSION",
-            {
-                fontFamily: "Connection",
-                fontSize: 14,
-                stroke: "#000",
-                strokeThickness: 5,
-                fill: "#fff",
-            },
-        )
-
         this.btnText.setInteractive({
             useHandCursor: true,
         })
@@ -61,16 +69,13 @@ export default class GoToTextBtn extends Phaser.GameObjects.Container {
 
         this.btnText.on("pointerout", this.pointerOut)
 
-        const link = "https://docs.google.com/document/d/" +
-            "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
-
         this.btnText.on("pointerdown", () => {
             this.btnClicked = true
         })
 
         scene.input.addUpCallback(() => {
             if (this.btnClicked) {
-                window.open(link, "_blank")
+                cb()
                 this.btnClicked = false
             }
         }, false)

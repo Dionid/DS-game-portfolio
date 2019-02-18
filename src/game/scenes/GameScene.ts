@@ -28,7 +28,7 @@ import {Project} from "game/objects/Project"
 import {EFoldersType, projectsByFoldersType, projectsById} from "game/models/Portfolio"
 import PhaserInputVelocitySystem from "game/systems/PhaserInputVelocitySystem"
 import PhaserOutputProjectSystem from "game/systems/PhaserOutputProjectSystem"
-import GoToTextBtn from "game/objects/GoToTextBtn"
+import Button from "game/objects/Button"
 import PhaserOutputContactRoomCreationSystem from "game/systems/PhaserOutputContactRoomCreationSystem"
 import RoomTrigger from "game/objects/RoomTrigger"
 import {E_ROOMS_NAMES} from "../../common/RoomsNames"
@@ -215,6 +215,18 @@ export class GameScene extends Phaser.Scene {
         this.cursors = new Cursors(this)
     }
 
+    private onGoToTextVersionBtnClicked = () => {
+        window.open("https://docs.google.com/document/d/" +
+            "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn", "_blank")
+    }
+
+    private onGoToDesktopVersionBtnClicked = () => {
+        dvaApp._store.dispatch({
+            type: "config/setIsGame",
+            payload: false,
+        })
+    }
+
     private leftTextStartOffsetX: number = 100
     private firstScreenOffsetY: number = 0
 
@@ -272,10 +284,21 @@ export class GameScene extends Phaser.Scene {
 
         this.freelancerText.setDepth(this.gameHeight)
 
-        const btn = new GoToTextBtn(
+        const btn = new Button(
             this,
+            "GO TO TEXT VERSION",
+            this.onGoToTextVersionBtnClicked,
             this.leftTextStartOffsetX,
             freelancerTextY + this.freelancerText.height + 20,
+            this.gameHeight,
+        )
+
+        const desktopButton = new Button(
+            this,
+            "GO TO DESKTOP VERSION",
+            this.onGoToDesktopVersionBtnClicked,
+            this.leftTextStartOffsetX + btn.rect.width + 15,
+            btn.y,
             this.gameHeight,
         )
 
@@ -476,8 +499,10 @@ export class GameScene extends Phaser.Scene {
         comingSoon.setX(this.gameWidth / 2 - comingSoon.width / 2)
         comingSoon.setDepth(this.gameHeight)
 
-        const btn = new GoToTextBtn(
+        const btn = new Button(
             this,
+            "GO TO TEXT VERSION",
+            this.onGoToTextVersionBtnClicked,
             this.gameWidth / 2,
             comingSoon.y + comingSoon.height + 20,
             this.gameHeight,
