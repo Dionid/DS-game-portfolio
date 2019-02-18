@@ -3,13 +3,9 @@ import path from "path"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 // @ts-ignore
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
-import { env } from "process"
 import CopyWebpackPlugin from "copy-webpack-plugin"
-
-// import webpack from "webpack"
-
-// const webpack = require("webpack");
-// const HtmlWebpackPlugin = require("html-webpack-plugin");
+// @ts-ignore
+import WriteFilePlugin from "write-file-webpack-plugin"
 
 const config = {
     context: path.resolve(__dirname, "../"),
@@ -44,13 +40,6 @@ const config = {
         use: [
             {
                 loader: MiniCssExtractPlugin.loader,
-                // options: {
-                //     // you can specify a publicPath here
-                //     // by default it use publicPath in webpackOptions.output
-                //     // publicPath: "../",
-                //     filename: "[name].[hash].css",
-                //     chunkFilename: "[id].[hash].css",
-                // },
             },
             {
                 loader: "css-loader",
@@ -99,15 +88,12 @@ const config = {
           xhtml: false,
       }),
         new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
             filename: "[name].[hash].css",
             chunkFilename: "[id].[hash].css",
         }),
-        // new WriteFilePlugin(),
+        new WriteFilePlugin(),
         new CopyWebpackPlugin([{
             from: "public",
-            // to: "dist/public",
         }]),
     ],
     optimization: {
@@ -116,12 +102,14 @@ const config = {
     resolve: {
         extensions: [ ".tsx", ".ts", ".js" ],
         alias: {
+            src: path.resolve(__dirname, "../src/"),
             dvaApp: path.resolve(__dirname, "../src/dvaApp/index.ts"),
             models: path.resolve(__dirname, "../src/models/"),
             components: path.resolve(__dirname, "../src/components/"),
             styles: path.resolve(__dirname, "../src/styles/"),
             variables: path.resolve(__dirname, "../src/styles/variables.scss"),
             game: path.resolve(__dirname, "../src/game/"),
+            assets: path.resolve(__dirname, "../public/assets"),
         },
     },
     externals: {

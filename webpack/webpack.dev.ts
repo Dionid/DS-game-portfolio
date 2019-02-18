@@ -6,19 +6,10 @@ import CopyWebpackPlugin from "copy-webpack-plugin"
 // @ts-ignore
 import WriteFilePlugin from "write-file-webpack-plugin"
 
-// import webpack from "webpack"
-
-// const webpack = require("webpack");
-// const HtmlWebpackPlugin = require("html-webpack-plugin");
-
 const config = {
     context: path.resolve(__dirname, "../"),
     entry: "./src/index.tsx",
     mode: "development",
-    // output: {
-    //   filename: "[name].bundle.js",
-    //   path: "/dist",
-    // },
     devtool: "inline-source-map",
     module: {
         rules: [
@@ -122,7 +113,6 @@ const config = {
         new WriteFilePlugin(),
         new CopyWebpackPlugin([{
             from: "public",
-            // to: "dist/public",
         }]),
     ],
     optimization: {
