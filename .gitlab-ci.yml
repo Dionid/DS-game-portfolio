@@ -11,7 +11,7 @@ pages:
   script:
     - ls
     - npm i
-    - npm run prod:build
+    - npm run prod:buildGitlab
     - rm -rf public
     - mv prod public
     - cd public

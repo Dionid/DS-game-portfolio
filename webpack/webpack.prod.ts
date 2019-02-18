@@ -3,6 +3,7 @@ import path from "path"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 // @ts-ignore
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import {env} from "process"
 import CopyWebpackPlugin from "copy-webpack-plugin"
 // @ts-ignore
 import WriteFilePlugin from "write-file-webpack-plugin"
@@ -111,6 +112,7 @@ const config = {
             excludeChunks: [],
             title: "Webpack App",
             xhtml: false,
+            baseUrl: env.GITLAB ? "/dsportfolio/" : "/",
         }),
         new MiniCssExtractPlugin({
             filename: "[name].[hash].css",
