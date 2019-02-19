@@ -11,6 +11,8 @@ import WriteFilePlugin from "write-file-webpack-plugin"
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin"
 // @ts-ignore
 import UglifyJsPlugin from "uglifyjs-webpack-plugin"
+// @ts-ignore
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import webpack = require("webpack")
 
 const config = {
@@ -30,18 +32,18 @@ const config = {
                 use: "babel-loader",
                 exclude: /node_modules/,
             },
+            // {
+            //     test: /\.(jpe?g|png|gif)$/,
+            //     use: [{
+            //         loader: "url-loader",
+            //         options: {
+            //             limit: 10000,
+            //             publicPath: env.GITLAB ? "/dsportfolio/" : "/",
+            //         },
+            //     }],
+            // },
             {
-                test: /\.(jpe?g|png|gif)$/,
-                use: [{
-                    loader: "url-loader",
-                    options: {
-                        limit: 10000,
-                        publicPath: env.GITLAB ? "/dsportfolio/" : "/",
-                    },
-                }],
-            },
-            {
-                test: /\.(eot|ttf|woff2?|otf)$/,
+                test: /\.(png|jpg|gif|eot|ttf|woff2?|otf)$/,
                 use: "file-loader",
             },
             {
@@ -50,8 +52,6 @@ const config = {
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            // you can specify a publicPath here
-                            // by default it use publicPath in webpackOptions.output
                             publicPath: env.GITLAB ? "/dsportfolio/" : "/",
                         },
                     },
@@ -121,6 +121,7 @@ const config = {
         ],
     },
     plugins: [
+        // new BundleAnalyzerPlugin(),
         new HtmlWebpackPlugin({
             template: "./src/index.html",
             filename: "index.html",
@@ -145,11 +146,6 @@ const config = {
         new CopyWebpackPlugin([{
             from: "public",
         }]),
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: "production",
-            },
-        }),
     ],
     optimization: {
         namedModules: true,
@@ -157,11 +153,15 @@ const config = {
             new UglifyJsPlugin({
                 parallel: true,
                 sourceMap: false,
+                uglifyOptions: {
+                    output: {
+                        comments: false,
+                    },
+                },
             }),
             new OptimizeCSSAssetsPlugin({}),
         ],
         splitChunks: {
-            chunks: "async",
             cacheGroups: {
                 commons: {
                     test: /[\\/]node_modules[\\/]/,
