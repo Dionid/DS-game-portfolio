@@ -11,6 +11,7 @@ import WriteFilePlugin from "write-file-webpack-plugin"
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin"
 // @ts-ignore
 import UglifyJsPlugin from "uglifyjs-webpack-plugin"
+import webpack = require("webpack")
 
 const config = {
     context: path.resolve(__dirname, "../"),
@@ -21,6 +22,7 @@ const config = {
     },
     entry: "./src/index.tsx",
     mode: "production",
+    devtool: "",
     module: {
         rules: [
             {
@@ -143,16 +145,31 @@ const config = {
         new CopyWebpackPlugin([{
             from: "public",
         }]),
+        new webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: "production",
+            },
+        }),
     ],
     optimization: {
         namedModules: true,
         minimizer: [
             new UglifyJsPlugin({
                 parallel: true,
-                sourceMap: true,
+                sourceMap: false,
             }),
             new OptimizeCSSAssetsPlugin({}),
         ],
+        splitChunks: {
+            chunks: "async",
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendors",
+                    chunks: "all",
+                },
+            },
+        },
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".scss"],
