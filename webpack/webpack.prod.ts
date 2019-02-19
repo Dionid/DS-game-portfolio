@@ -30,6 +30,7 @@ const config = {
                     loader: "url-loader",
                     options: {
                         limit: 10000,
+                        publicPath: env.GITLAB ? "/dsportfolio/" : "/",
                     },
                 }],
             },
