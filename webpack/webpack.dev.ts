@@ -24,8 +24,8 @@ const config = {
                     /* inline if smaller than 10 KB, otherwise load as a file */
                     loader: "url-loader",
                     options: {
-                        // limit: 10000,
-                        publicPath: "/dsportfolio/",
+                        limit: 10000,
+                        // publicPath: "/dsportfolio/",
                     },
                 }],
             },
@@ -67,11 +67,12 @@ const config = {
                         options: {
                             importLoaders: 1,
                             modules: true,
-                            localIdentName: env.NODE_ENV === "production"
-                                ? "[hash:base64:8]"
-                                : "[folder]_[name]__[local]___[hash:base64:5]",
+                            localIdentName: "[folder]_[name]__[local]___[hash:base64:5]",
                         },
                     },
+                    // {
+                    //     loader: "resolve-url-loader",
+                    // },
                     {
                         loader: "sass-loader",
                         options:
@@ -134,7 +135,6 @@ const config = {
     },
     devServer: {
         contentBase: "./dist",
-        // publicPath: "./dist/public",
         compress: true,
         open: true,
         historyApiFallback: true,

@@ -7,6 +7,10 @@ import {env} from "process"
 import CopyWebpackPlugin from "copy-webpack-plugin"
 // @ts-ignore
 import WriteFilePlugin from "write-file-webpack-plugin"
+// @ts-ignore
+import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin"
+// @ts-ignore
+import UglifyJsPlugin from "uglifyjs-webpack-plugin"
 
 const config = {
     context: path.resolve(__dirname, "../"),
@@ -43,6 +47,11 @@ const config = {
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            // you can specify a publicPath here
+                            // by default it use publicPath in webpackOptions.output
+                            publicPath: env.GITLAB ? "/dsportfolio/" : "/",
+                        },
                     },
                     {
                         loader: "css-loader",
@@ -52,6 +61,16 @@ const config = {
                             localIdentName: "[hash:base64:8]",
                         },
                     },
+                    // {
+                    //     loader: "resolve-url-loader",
+                    //     options: {
+                    //         join(uri: string, options: string) {
+                    //             // console.log(uri);
+                    //             // console.log(options);
+                    //             return compose(path.normalize, path.join)(uri, options)
+                    //         },
+                    //     },
+                    // },
                     {
                         loader: "sass-loader",
                         options:
@@ -127,9 +146,16 @@ const config = {
     ],
     optimization: {
         namedModules: true,
+        minimizer: [
+            new UglifyJsPlugin({
+                parallel: true,
+                sourceMap: true,
+            }),
+            new OptimizeCSSAssetsPlugin({}),
+        ],
     },
     resolve: {
-        extensions: [".tsx", ".ts", ".js"],
+        extensions: [".tsx", ".ts", ".js", ".scss"],
         alias: {
             src: path.resolve(__dirname, "../src/"),
             dvaApp: path.resolve(__dirname, "../src/dvaApp/index.ts"),
