@@ -24,7 +24,8 @@ const config = {
                     /* inline if smaller than 10 KB, otherwise load as a file */
                     loader: "url-loader",
                     options: {
-                        limit: 10000,
+                        // limit: 10000,
+                        publicPath: "/dsportfolio/",
                     },
                 }],
             },
@@ -108,6 +109,7 @@ const config = {
             excludeChunks: [],
             title: "Webpack App",
             xhtml: false,
+            baseUrl: "/",
         }),
         new WriteFilePlugin(),
         new CopyWebpackPlugin([{

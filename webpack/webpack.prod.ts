@@ -13,6 +13,7 @@ const config = {
     output: {
         path: path.resolve(__dirname, "../prod"),
         filename: "[name].[chunkhash].js",
+        publicPath: env.GITLAB ? "/dsportfolio/" : "/",
     },
     entry: "./src/index.tsx",
     mode: "production",
