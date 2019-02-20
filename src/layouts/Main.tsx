@@ -63,7 +63,7 @@ class MainLayout extends React.Component<IProps, IState> {
                     <div className={ cx("content") }>
                         <div className={ cx("leftMenu") }>
                             <div className={ cx("leftMenuContent") }>
-                                <div className={ cx("contacts") }>
+                                {/*<div className={ cx("contacts") }>
                                     <a
                                         href={ "https://vk.com/david_shekunts" }
                                         target={ "_blank" }
@@ -78,7 +78,7 @@ class MainLayout extends React.Component<IProps, IState> {
                                     <div className={ cx("item") }>
                                         C
                                     </div>
-                                </div>
+                                </div>*/}
                                 <nav className={ cx("nav") }>
                                     <div onClick={ () => this.onMenuClick(E_ROOMS_NAMES.Contacts) }
                                          className={ cx("item", activeRoom === E_ROOMS_NAMES.Contacts && "active") }>

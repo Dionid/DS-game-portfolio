@@ -1,17 +1,10 @@
-import {Action, Dispatch} from "redux"
 import React from "react"
-import {connect} from "dva"
-import IAppState from "models"
-// import styles from "./PhaserImage.scss"
-import classnamesBind from "classnames/bind"
 import mainAtlasConfig from "assets/mainatlas.json"
 import mainAtlasImage from "assets/mainatlas.png"
 
-// const cx = classnamesBind.bind(styles)
-
 interface IProps {
     filename: string,
-    onClick: () => void,
+    onClick?: () => void,
 }
 
 interface IFrame {

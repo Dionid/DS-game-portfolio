@@ -5,10 +5,10 @@ import IAppState from "models"
 import styles from "./MainDesktop.scss"
 import classnamesBind from "classnames/bind"
 import Button from "components/Button/Button"
-import chest from "assets/images/playerAvatar.png"
 import {E_ROOMS_NAMES} from "src/common/RoomsNames"
 import {IRoomsState} from "src/dvaApp/models/rooms"
 import ChestImg from "components/ChestImg/ChestImg"
+import PhaserImage from "components/PhaserImage/PhaserImage"
 
 const cx = classnamesBind.bind(styles)
 
@@ -17,26 +17,14 @@ interface IProps {
     rooms: IRoomsState,
 }
 
-enum E_CHESTS_TYPES {
-    FRONTEND = "FRONTEND",
-    BACKEND = "BACKEND",
-    OUTPM = "OUTPM",
-}
-
 interface IState {
     contentHeight: number,
-    chestsOpened: {[key in E_CHESTS_TYPES]: boolean}
 }
 
 class MainDesktop extends React.Component<IProps, IState> {
 
     public state = {
         contentHeight: 0,
-        chestsOpened: {
-            [E_CHESTS_TYPES.FRONTEND]: false,
-            [E_CHESTS_TYPES.BACKEND]: false,
-            [E_CHESTS_TYPES.OUTPM]: false,
-        },
     }
 
     private scrolling = false
@@ -102,15 +90,6 @@ class MainDesktop extends React.Component<IProps, IState> {
         }
     }
 
-    private openChest = (type: E_CHESTS_TYPES) => {
-        this.setState({
-            chestsOpened: {
-                ...this.state.chestsOpened,
-                [type]: true,
-            },
-        })
-    }
-
     private onScroll = (seq: string[], topPadding: number) => () => {
         if (this.scrolling) {
             if (this.scrollStoppedTimeoutId) {
@@ -167,8 +146,10 @@ class MainDesktop extends React.Component<IProps, IState> {
     public render() {
         const {
             contentHeight,
-            chestsOpened,
         } = this.state
+        const {
+            CVLink
+        } = this.props
 
         return (
             <div ref={ (ref) => this.outer = ref } className={ cx("outer") }>
@@ -182,12 +163,11 @@ class MainDesktop extends React.Component<IProps, IState> {
                             <h1 className={ cx("title", "bordered") }>Hi, my name is</h1>
                             <h1 className={ cx("title", "bordered") }>David Shekunts</h1>
                             <h2 className={ cx("subtitle", "bordered") }>I'm fullstack web developer</h2>
-                            {/*<h3 className={ cx("subtitle2", "bordered") }>(Freelancer)</h3>*/}
+                            <h3 className={ cx("subtitle2", "bordered") }>(Freelance / Outsource)</h3>
                             <div className={ cx("ctrl") }>
                                 <a
                                     target="_blank"
-                                    href="https://docs.google.com/document/d/
-                                    1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn">
+                                    href={ CVLink }>
                                     <Button style={{marginRight: 15}} text="GO TO TEXT VERSION"/>
                                 </a>
                                 <Button text="GO TO GAME VERSION" onClick={ this.setIsGame }/>
@@ -230,75 +210,6 @@ class MainDesktop extends React.Component<IProps, IState> {
                                         itemClassName={ "outsource" }
                                     />
                                 </div>
-                                {/*<div
-                                    className={ cx("item", "frontend", {
-                                        opened: chestsOpened[E_CHESTS_TYPES.FRONTEND],
-                                    }) }>
-                                    <ChestImg
-                                        onClick={ () => this.openChest(E_CHESTS_TYPES.FRONTEND) }
-                                        className={ cx("image") }
-                                    />
-                                    <div className={ cx("desc-wr") }>
-                                        <div className={ cx("desc") }>
-                                            <div className={ cx("name") }>
-                                                Frontend
-                                            </div>
-                                            <div className={ cx("subname") }>
-                                                React, Redux
-                                            </div>
-                                            <div className={ cx("info") }>
-                                                and everything including modern stack
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>*/}
-                                {/*<div className={ cx("item", "backend", {
-                                    opened: chestsOpened[E_CHESTS_TYPES.BACKEND],
-                                }) }>
-                                    <img
-                                        onClick={ () => this.openChest(E_CHESTS_TYPES.BACKEND) }
-                                        className={ cx("image") }
-                                        src={ chest }
-                                        alt=""/>
-                                    <div className={ cx("desc-wr") }>
-                                        <div className={ cx("desc") }>
-                                            <div className={ cx("name") }>
-                                                Backend
-                                            </div>
-                                            <div className={ cx("subname") }>
-                                                NodeJS /Golang
-                                                API's, microservices
-                                            </div>
-                                            <div className={ cx("info") }>
-                                                everything needed for SPA backend
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={ cx("item", "outsource", {
-                                    opened: chestsOpened[E_CHESTS_TYPES.OUTPM],
-                                }) }>
-                                    <img
-                                        onClick={ () => this.openChest(E_CHESTS_TYPES.OUTPM) }
-                                        className={ cx("image") }
-                                        src={ chest }
-                                        alt=""/>
-                                    <div className={ cx("desc-wr") }>
-                                        <div className={ cx("desc") }>
-                                            <div className={ cx("name") }>
-                                                Outsource PM
-                                            </div>
-                                            <div className={ cx("subname") }>
-                                                Write TechSpec
-                                                Assemble Team
-                                                Lead the Project
-                                            </div>
-                                            <div className={ cx("info") }>
-                                                like outsource CTO
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>*/}
                             </div>
                         </div>
                         <div
@@ -314,7 +225,7 @@ class MainDesktop extends React.Component<IProps, IState> {
                                 </h1>
                                 <a
                                     target="_blank"
-                                    href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn">
+                                    href={ CVLink }>
                                     <Button text="GO TO TEXT VERSION"/>
                                 </a>
                             </div>
@@ -327,7 +238,10 @@ class MainDesktop extends React.Component<IProps, IState> {
                             <h2 className={ cx("subtitle", "bordered") }>Just call me maybe</h2>
                             <div className={ cx("contacts") }>
                                 <div className={ cx("item") }>
-                                    <img className={ cx("image") } src={ chest } alt=""/>
+                                    <div className={ cx("image") }>
+                                        <PhaserImage
+                                            filename={ "objects/contacts/EmailIcon.psd" }/>
+                                    </div>
                                     <div className={ cx("desc") }>
                                         <div style={{marginRight: 71}} className={ cx("name") }>
                                             Email
@@ -338,7 +252,10 @@ class MainDesktop extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <div className={ cx("item") }>
-                                    <img className={ cx("image") } src={ chest } alt=""/>
+                                    <div className={ cx("image") }>
+                                        <PhaserImage
+                                            filename={ "objects/contacts/EmailIcon.psd" }/>
+                                    </div>
                                     <div className={ cx("desc") }>
                                         <div style={{marginRight: 30}} className={ cx("name") }>
                                             Facebook
@@ -353,7 +270,10 @@ class MainDesktop extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <div className={ cx("item") }>
-                                    <img className={ cx("image") } src={ chest } alt=""/>
+                                    <div className={ cx("image") }>
+                                        <PhaserImage
+                                            filename={ "objects/contacts/EmailIcon.psd" }/>
+                                    </div>
                                     <div className={ cx("desc") }>
                                         <div style={{marginRight: 49}} className={ cx("name") }>
                                             LinkedIn
@@ -373,8 +293,9 @@ class MainDesktop extends React.Component<IProps, IState> {
     }
 }
 
-export default connect(({ rooms }: IAppState) => {
+export default connect(({ rooms, config }: IAppState) => {
     return {
+        CVLink: config.CVLink,
         rooms,
     }
 })(MainDesktop)

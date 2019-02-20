@@ -101,13 +101,6 @@ class TopMenu extends React.Component<IProps, IState> {
                                 {
                                     this.renderHealthItems()
                                 }
-                                {/*<div className={ cx("item") }/>*/}
-                                {/*<div className={ cx("item") }/>*/}
-                                {/*<div className={ cx("item") }/>*/}
-                                {/*<div className={ cx("item") }/>*/}
-                                {/*<div className={ cx("item") }>*/}
-                                    {/*{ currentHealth }*/}
-                                {/*</div>*/}
                             </div>
                         </div>
                         <div className={ cx("energy-wr") }>
@@ -115,24 +108,12 @@ class TopMenu extends React.Component<IProps, IState> {
                                 {
                                     this.renderMedsItems()
                                 }
-                                {/*<div className={ cx("energy-item") }>*/}
-
-                                {/*</div>*/}
-                                {/*<div className={ cx("energy-item") }>*/}
-
-                                {/*</div>*/}
-                                {/*<div className={ cx("energy-item") }>*/}
-
-                                {/*</div>*/}
-                                {/*<div className={ cx("energy-item") }>*/}
-
-                                {/*</div>*/}
                             </div>
                         </div>
                     </div>
                     <div className={ cx("avatar-wr") }>
                         <div className={ cx("avatar-container") }>
-                            <img className={ cx("avatar-img") } src={ require("assets/images/playerAvatar.png") } alt=""/>
+                            <img className={ cx("avatar-img") } src={ require("assets/images/playerAvatar.png") }/>
                         </div>
                         <div className={ cx("avatar-nickname") }>
                             Player 1
