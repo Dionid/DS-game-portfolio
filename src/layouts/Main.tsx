@@ -49,7 +49,7 @@ class MainLayout extends React.Component<IProps, IState> {
 
     public render() {
         const { projectModalIsOpened } = this.state
-        const { isMobile, isGame } = this.props.config
+        const { isMobile, isGame, CVLink } = this.props.config
         const { activeRoom } = this.props.rooms
 
         if (isMobile) {
@@ -106,7 +106,7 @@ class MainLayout extends React.Component<IProps, IState> {
                         <div className={ cx("rightMenu") }>
                             <div className={ cx("rightMenuContent") }>
                                 <a
-                                    href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn"
+                                    href={ CVLink }
                                     target="_blank"
                                     className={ cx("textVersionLink") }>
                                     LINK to TEXT Version
