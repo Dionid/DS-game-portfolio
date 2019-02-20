@@ -16,6 +16,7 @@ button on main screen will launch game version.
 - Game logic in `src/game` folder.
 - React components in `src/layout` and `src/components`
 - Dva models in `src/dvaApp/models`
+- ECS lib in `src/game/ECS`
 
 ## Cool features
 
