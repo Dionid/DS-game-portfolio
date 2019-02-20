@@ -40,7 +40,7 @@ class PhaserGame extends React.Component<IProps, {}> {
 
     public render() {
         return (
-            <div ref={ this.gameEl } id="game"></div>
+            <div ref={ this.gameEl } id="game"/>
         )
     }
 }

@@ -40,7 +40,7 @@ class ProjectModal extends React.Component<IProps, IState> {
                                 <div className={ cx("text") }>
                                     Close
                                 </div>
-                                <div className={ cx("btn") }></div>
+                                <div className={ cx("btn") }/>
                             </div>
                             <div className={ cx("content") }>
                                 <div className={ cx("row") }>

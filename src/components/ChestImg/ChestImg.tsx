@@ -1,7 +1,5 @@
 import {Action, Dispatch} from "redux"
 import React from "react"
-import {connect} from "dva"
-import IAppState from "models"
 import styles from "./ChestImg.scss"
 import classnamesBind from "classnames/bind"
 import PhaserImage from "components/PhaserImage/PhaserImage"
@@ -23,7 +21,7 @@ interface IState {
     opened: boolean,
 }
 
-class ChestImg extends React.Component<IProps, IState> {
+export default class ChestImg extends React.Component<IProps, IState> {
 
     public static defaultProps = {
         opened: false,
@@ -31,7 +29,7 @@ class ChestImg extends React.Component<IProps, IState> {
 
     public state = {
         hovered: false,
-        opened: this.props.opened,
+        opened: this.props.opened || false,
     }
 
     private onMouseEnter = () => {
@@ -102,7 +100,3 @@ class ChestImg extends React.Component<IProps, IState> {
         )
     }
 }
-
-export default connect(({}: IAppState) => {
-    return {}
-})(ChestImg)

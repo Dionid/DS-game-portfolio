@@ -148,7 +148,7 @@ class MainDesktop extends React.Component<IProps, IState> {
             contentHeight,
         } = this.state
         const {
-            CVLink
+            CVLink,
         } = this.props
 
         return (

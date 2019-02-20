@@ -16,7 +16,6 @@ const model: ICountModel = {
     },
     reducers: {
         add(count: ICountState) {
-            console.log("ADD RED")
             console.log(count)
             return { value: count.value + 1 }
         },

@@ -1,7 +1,4 @@
-import {Action, Dispatch} from "redux"
 import React from "react"
-import {connect} from "dva"
-import IAppState from "models"
 import styles from "./Button.scss"
 import classnamesBind from "classnames/bind"
 
