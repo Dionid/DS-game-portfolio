@@ -6,6 +6,7 @@ import styles from "./MainMobile.scss"
 import classnamesBind from "classnames/bind"
 import chest from "assets/images/playerAvatar.png"
 import Button from "components/Button/Button"
+import ChestImg from "components/ChestImg/ChestImg"
 
 const cx = classnamesBind.bind(styles)
 
@@ -34,12 +35,12 @@ class MainMobile extends React.Component<IProps, IState> {
 
         return (
             <div className={ cx("wrapper") }>
-                <div className={ cx("container", "first") }>
+                <div className={ cx("container", "first", "mainSec") }>
                     <h1 className={ cx("title", "bordered") }>Hi, my name is</h1>
                     <h1 className={ cx("title", "bordered") }>David Shekunts</h1>
                     <h2 className={ cx("subtitle", "bordered") }>I'm fullstack web developer</h2>
-                    <h3 className={ cx("subtitle2", "bordered") }>(Freelancer)</h3>
-                    <div style={{marginTop: 15}}>
+                    {/*<h3 className={ cx("subtitle2", "bordered") }>(Freelancer)</h3>*/}
+                    <div className={ cx("ctrl") }>
                         <Button text="GO TO PDF VERSION"/>
                     </div>
                 </div>
@@ -47,7 +48,40 @@ class MainMobile extends React.Component<IProps, IState> {
                     <h1 className={ cx("title", "bordered") }>Services</h1>
                     <h2 className={ cx("subtitle", "bordered") }>I offer you</h2>
                     <div className={ cx("services") }>
-                        <div className={ cx("item") }>
+                        <div className={ cx("item", "frontend") }>
+                            <ChestImg
+                                opened={ true }
+                                weaponImg={ "katana" }
+                                name={ "Frontend" }
+                                subname={ "React, Redux" }
+                                info={ "and everything including modern stack" }
+                                itemClassName={ "frontend" }
+                            />
+                        </div>
+                        <div className={ cx("item", "backend") }>
+                            <ChestImg
+                                opened={ true }
+                                weaponImg={ "energy" }
+                                name={ "Backend" }
+                                subname={ "NodeJS /Golang\n" +
+                                "API's, microservices" }
+                                info={ "everything needed for SPA backend" }
+                                itemClassName={ "backend" }
+                            />
+                        </div>
+                        <div className={ cx("item", "outsource") }>
+                            <ChestImg
+                                opened={ true }
+                                weaponImg={ "opm" }
+                                name={ "Outsource PM" }
+                                subname={ "Write TechSpec\n" +
+                                "Assemble Team\n" +
+                                "Lead the Project" }
+                                info={ "like outsource CTO" }
+                                itemClassName={ "outsource" }
+                            />
+                        </div>
+                        {/*<div className={ cx("item") }>
                             <img className={ cx("image") } src={ chest } alt=""/>
                             <div className={ cx("desc-wr") }>
                                 <div className={ cx("name") }>
@@ -91,7 +125,7 @@ class MainMobile extends React.Component<IProps, IState> {
                                     like outsource CTO
                                 </div>
                             </div>
-                        </div>
+                        </div>*/}
                     </div>
                 </div>
                 <div className={ cx("container", "second") }>

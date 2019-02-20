@@ -10,7 +10,6 @@
 .wrapper{
   overflow-y: scroll;
   overflow-x: hidden;
-  //overflow: hidden;
   width: 1040px;
 }
 
@@ -19,9 +18,6 @@
   flex-direction: column;
   background-color: #292929;
   background-image: url(../assets/images/repeatxy.png);
-  //overflow-y: scroll;
-  //overflow-x: hidden;
-  //height: 100%;
 }
 
 .container{
@@ -123,7 +119,6 @@
 
 .services{
   padding: 45px 30px 0;
-  //position: relative;
   .item{
     display: flex;
     flex-direction: column;
@@ -132,44 +127,6 @@
     width: 250px;
     &:not(:last-child){
       margin-bottom: 45px;
-    }
-    .image{
-      z-index: 10;
-      cursor: pointer;
-    }
-    .desc-wr{
-      margin-top: -15px;
-      border: 3px solid #fff;
-      background-color: #080808;
-      //padding: 30px 15px;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
-      width: 0;
-      height: 0;
-      transition: 0.2s;
-      .desc{
-        padding: 30px 15px;
-      }
-      .name{
-        font-size: 22px;
-        margin-bottom: 10px;
-        line-height: 1.2;
-      }
-      .subname{
-        font-size: 18px;
-        margin-bottom: 10px;
-        line-height: 1.2;
-      }
-      .info{
-        font-size: 14px;
-        line-height: 1.2;
-        opacity: 0.7;
-      }
     }
     &.frontend{
       right: 290px;
@@ -188,14 +145,6 @@
       top: 57%;
       right: 100px;
       height: 223px;
-    }
-    &.opened {
-      .desc-wr{
-        animation-name: chestOpenAnimation;
-        animation-duration: 1s;
-        animation-fill-mode: forwards;
-        animation-timing-function: ease-in-out;
-      }
     }
   }
 }

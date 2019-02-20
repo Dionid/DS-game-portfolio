@@ -15,6 +15,7 @@ interface IProps {
     subname: string,
     info: string,
     weaponImg: string,
+    opened?: boolean,
 }
 
 interface IState {
@@ -24,9 +25,13 @@ interface IState {
 
 class ChestImg extends React.Component<IProps, IState> {
 
+    public static defaultProps = {
+        opened: false,
+    }
+
     public state = {
         hovered: false,
-        opened: false,
+        opened: this.props.opened,
     }
 
     private onMouseEnter = () => {

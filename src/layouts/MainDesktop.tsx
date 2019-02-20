@@ -182,7 +182,7 @@ class MainDesktop extends React.Component<IProps, IState> {
                             <h1 className={ cx("title", "bordered") }>Hi, my name is</h1>
                             <h1 className={ cx("title", "bordered") }>David Shekunts</h1>
                             <h2 className={ cx("subtitle", "bordered") }>I'm fullstack web developer</h2>
-                            <h3 className={ cx("subtitle2", "bordered") }>(Freelancer)</h3>
+                            {/*<h3 className={ cx("subtitle2", "bordered") }>(Freelancer)</h3>*/}
                             <div className={ cx("ctrl") }>
                                 <a
                                     target="_blank"
@@ -200,30 +200,36 @@ class MainDesktop extends React.Component<IProps, IState> {
                             <h1 className={ cx("title2", "bordered") }>Services</h1>
                             <h2 className={ cx("subtitle", "bordered") }>I can offer you</h2>
                             <div className={ cx("services") }>
-                                <ChestImg
-                                    weaponImg={ "katana" }
-                                    name={ "Frontend" }
-                                    subname={ "React, Redux" }
-                                    info={ "and everything including modern stack" }
-                                    itemClassName={ "frontend" }
-                                />
-                                <ChestImg
-                                    weaponImg={ "energy" }
-                                    name={ "Backend" }
-                                    subname={ "NodeJS /Golang\n" +
-                                    "API's, microservices" }
-                                    info={ "everything needed for SPA backend" }
-                                    itemClassName={ "backend" }
-                                />
-                                <ChestImg
-                                    weaponImg={ "opm" }
-                                    name={ "Outsource PM" }
-                                    subname={ "Write TechSpec\n" +
-                                    "Assemble Team\n" +
-                                    "Lead the Project" }
-                                    info={ "like outsource CTO" }
-                                    itemClassName={ "outsource" }
-                                />
+                                <div className={ cx("item", "frontend") }>
+                                    <ChestImg
+                                        weaponImg={ "katana" }
+                                        name={ "Frontend" }
+                                        subname={ "React, Redux" }
+                                        info={ "and everything including modern stack" }
+                                        itemClassName={ "frontend" }
+                                    />
+                                </div>
+                                <div className={ cx("item", "backend") }>
+                                    <ChestImg
+                                        weaponImg={ "energy" }
+                                        name={ "Backend" }
+                                        subname={ "NodeJS /Golang\n" +
+                                        "API's, microservices" }
+                                        info={ "everything needed for SPA backend" }
+                                        itemClassName={ "backend" }
+                                    />
+                                </div>
+                                <div className={ cx("item", "outsource") }>
+                                    <ChestImg
+                                        weaponImg={ "opm" }
+                                        name={ "Outsource PM" }
+                                        subname={ "Write TechSpec\n" +
+                                        "Assemble Team\n" +
+                                        "Lead the Project" }
+                                        info={ "like outsource CTO" }
+                                        itemClassName={ "outsource" }
+                                    />
+                                </div>
                                 {/*<div
                                     className={ cx("item", "frontend", {
                                         opened: chestsOpened[E_CHESTS_TYPES.FRONTEND],
