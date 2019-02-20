@@ -31,4 +31,3 @@ export default class System<T, I> {
         return
     }
 }
-

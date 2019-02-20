@@ -11,7 +11,10 @@ interface IHealthComponentState {
 
 const HEALTH_COMPONENT_NAME = "HealthComponent"
 
-const HealthComponentFactory: IComponentFactory<IHealthComponentState> = (totalHealth?: number, currentHealth?: number) => {
+const HealthComponentFactory: IComponentFactory<IHealthComponentState> = (
+    totalHealth?: number,
+    currentHealth?: number,
+) => {
     return {
         name: HEALTH_COMPONENT_NAME,
         state: {
@@ -304,11 +307,8 @@ interface ISystemAdditional {
 }
 
 // TODO: Add PhaserToInputsSystem
-
 interface ISystemPhaserInjectable {
     cursors: Cursors,
-    // playerGO:
-    // enemiesArrGO:
 }
 
 // TODO: Understand how to Inject Phaser into SOME Systems

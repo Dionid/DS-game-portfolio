@@ -12,6 +12,7 @@ export default class EntitiesManager {
 
     public createEntity(components: Array<IComponent<any>>, id?: string): IEntity {
         if (!id) {
+            // ToDo: change to uuid
             id = Math.random() + ""
         }
         const ent = {
