@@ -4,48 +4,26 @@ import HtmlWebpackPlugin from "html-webpack-plugin"
 // @ts-ignore
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import {env} from "process"
-import CopyWebpackPlugin from "copy-webpack-plugin"
-// @ts-ignore
-import WriteFilePlugin from "write-file-webpack-plugin"
 // @ts-ignore
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin"
 // @ts-ignore
 import UglifyJsPlugin from "uglifyjs-webpack-plugin"
 // @ts-ignore
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
-import webpack = require("webpack")
+// @ts-ignore
+import merge from "webpack-merge"
+import commonConfig from "./webpack.common"
 
-const config = {
-    context: path.resolve(__dirname, "../"),
+const config = merge(commonConfig, {
     output: {
         path: path.resolve(__dirname, "../prod"),
         filename: "[name].[chunkhash].js",
         publicPath: env.GITLAB ? "/dsportfolio/" : "/",
     },
-    entry: "./src/index.tsx",
     mode: "production",
     devtool: "",
     module: {
         rules: [
-            {
-                test: /\.(tsx|ts)?$/,
-                use: "babel-loader",
-                exclude: /node_modules/,
-            },
-            // {
-            //     test: /\.(jpe?g|png|gif)$/,
-            //     use: [{
-            //         loader: "url-loader",
-            //         options: {
-            //             limit: 10000,
-            //             publicPath: env.GITLAB ? "/dsportfolio/" : "/",
-            //         },
-            //     }],
-            // },
-            {
-                test: /\.(png|jpg|gif|eot|ttf|woff2?|otf)$/,
-                use: "file-loader",
-            },
             {
                 test: /\.(s*)css$/,
                 use: [
@@ -63,16 +41,6 @@ const config = {
                             localIdentName: "[hash:base64:8]",
                         },
                     },
-                    // {
-                    //     loader: "resolve-url-loader",
-                    //     options: {
-                    //         join(uri: string, options: string) {
-                    //             // console.log(uri);
-                    //             // console.log(options);
-                    //             return compose(path.normalize, path.join)(uri, options)
-                    //         },
-                    //     },
-                    // },
                     {
                         loader: "sass-loader",
                         options:
@@ -80,41 +48,6 @@ const config = {
                                 sourceMap: true,
                                 modules: true,
                             },
-                    },
-                ],
-            },
-            {
-                test: /\.svg$/,
-                exclude: /(node_modules|colored)/,
-                use: [
-                    "svg-sprite-loader",
-                    {
-                        loader: "svgo-loader",
-                        options: {
-                            plugins: [
-                                {removeTitle: true},
-                                {
-                                    removeAttrs: {attrs: ["fill", "fill-rule"]},
-                                },
-                            ],
-                        },
-                    },
-                ],
-            },
-            {
-                test: /\.svg$/,
-                include: /colored/,
-                use: [
-                    "svg-sprite-loader",
-                ],
-            },
-            {
-                test: /\.(tsx|ts)$/,
-                enforce: "pre",
-                use: [
-                    {
-                        loader: "tslint-loader",
-                        options: { /* Loader options go here */},
                     },
                 ],
             },
@@ -142,10 +75,6 @@ const config = {
             filename: "[name].[hash].css",
             chunkFilename: "[id].[hash].css",
         }),
-        new WriteFilePlugin(),
-        new CopyWebpackPlugin([{
-            from: "public",
-        }]),
     ],
     optimization: {
         namedModules: true,
@@ -171,21 +100,6 @@ const config = {
             },
         },
     },
-    resolve: {
-        extensions: [".tsx", ".ts", ".js", ".scss"],
-        alias: {
-            src: path.resolve(__dirname, "../src/"),
-            dvaApp: path.resolve(__dirname, "../src/dvaApp/index.ts"),
-            models: path.resolve(__dirname, "../src/models/"),
-            components: path.resolve(__dirname, "../src/components/"),
-            styles: path.resolve(__dirname, "../src/styles/"),
-            variables: path.resolve(__dirname, "../src/styles/variables.scss"),
-            game: path.resolve(__dirname, "../src/game/"),
-            assets: path.resolve(__dirname, "../public/assets"),
-        },
-    },
-    externals: {},
-}
+})
 
-// export default config;
 module.exports = config
