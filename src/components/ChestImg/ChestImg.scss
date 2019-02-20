@@ -1,0 +1,100 @@
+.item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  width: 250px;
+  &:not(:last-child){
+    margin-bottom: 45px;
+  }
+  .imageWr{
+    z-index: 10;
+    cursor: pointer;
+    position: relative;
+  }
+  .weaponImg{
+    position: absolute;
+    top: -10%;
+    transform: translateX(-50%) translateY(-100%);
+    left: 50%;
+    display: none;
+  }
+  .desc-wr{
+    margin-top: -15px;
+    border: 3px solid #fff;
+    background-color: #080808;
+    //padding: 30px 15px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    width: 0;
+    height: 0;
+    transition: 0.2s;
+    .desc{
+      padding: 30px 15px;
+    }
+    .name{
+      font-size: 22px;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .subname{
+      font-size: 18px;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .info{
+      font-size: 14px;
+      line-height: 1.2;
+      opacity: 0.7;
+    }
+  }
+  &.frontend{
+    right: 290px;
+    top: 18%;
+    height: 198px;
+  }
+  &.backend{
+    left: 130px;
+    top: 49%;
+    height: 215px;
+    .subname{
+      font-size: 16px;
+    }
+  }
+  &.outsource{
+    top: 57%;
+    right: 100px;
+    height: 223px;
+  }
+  &.opened {
+    .desc-wr{
+      animation-name: chestOpenAnimation;
+      animation-duration: 1s;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-in-out;
+    }
+    .weaponImg{
+      display: flex;
+    }
+  }
+}
+
+@keyframes chestOpenAnimation {
+  //0%   {width: 100%}
+  50%  {width: 100%; height: 0}
+  100% {width: 100%; height: 100%}
+}
+
+@keyframes chestOpenAnimationWidth {
+  //0%   {width: 100%}
+  100% {width: 100%}
+}
+@keyframes chestOpenAnimationHeight {
+  //0%   {width: 100%}
+  100% {height: 100%}
+}

@@ -8,6 +8,7 @@ import Button from "components/Button/Button"
 import chest from "assets/images/playerAvatar.png"
 import {E_ROOMS_NAMES} from "src/common/RoomsNames"
 import {IRoomsState} from "src/dvaApp/models/rooms"
+import ChestImg from "components/ChestImg/ChestImg"
 
 const cx = classnamesBind.bind(styles)
 
@@ -185,7 +186,8 @@ class MainDesktop extends React.Component<IProps, IState> {
                             <div className={ cx("ctrl") }>
                                 <a
                                     target="_blank"
-                                    href="https://docs.google.com/document/d/1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn">
+                                    href="https://docs.google.com/document/d/
+                                    1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn">
                                     <Button style={{marginRight: 15}} text="GO TO TEXT VERSION"/>
                                 </a>
                                 <Button text="GO TO GAME VERSION" onClick={ this.setIsGame }/>
@@ -198,15 +200,38 @@ class MainDesktop extends React.Component<IProps, IState> {
                             <h1 className={ cx("title2", "bordered") }>Services</h1>
                             <h2 className={ cx("subtitle", "bordered") }>I can offer you</h2>
                             <div className={ cx("services") }>
-                                <div
+                                <ChestImg
+                                    weaponImg={ "katana" }
+                                    name={ "Frontend" }
+                                    subname={ "React, Redux" }
+                                    info={ "and everything including modern stack" }
+                                    itemClassName={ "frontend" }
+                                />
+                                <ChestImg
+                                    weaponImg={ "energy" }
+                                    name={ "Backend" }
+                                    subname={ "NodeJS /Golang\n" +
+                                    "API's, microservices" }
+                                    info={ "everything needed for SPA backend" }
+                                    itemClassName={ "backend" }
+                                />
+                                <ChestImg
+                                    weaponImg={ "opm" }
+                                    name={ "Outsource PM" }
+                                    subname={ "Write TechSpec\n" +
+                                    "Assemble Team\n" +
+                                    "Lead the Project" }
+                                    info={ "like outsource CTO" }
+                                    itemClassName={ "outsource" }
+                                />
+                                {/*<div
                                     className={ cx("item", "frontend", {
                                         opened: chestsOpened[E_CHESTS_TYPES.FRONTEND],
                                     }) }>
-                                    <img
+                                    <ChestImg
                                         onClick={ () => this.openChest(E_CHESTS_TYPES.FRONTEND) }
                                         className={ cx("image") }
-                                        src={ chest }
-                                        alt=""/>
+                                    />
                                     <div className={ cx("desc-wr") }>
                                         <div className={ cx("desc") }>
                                             <div className={ cx("name") }>
@@ -216,12 +241,12 @@ class MainDesktop extends React.Component<IProps, IState> {
                                                 React, Redux
                                             </div>
                                             <div className={ cx("info") }>
-                                                and  everything including modern stack
+                                                and everything including modern stack
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className={ cx("item", "backend", {
+                                </div>*/}
+                                {/*<div className={ cx("item", "backend", {
                                     opened: chestsOpened[E_CHESTS_TYPES.BACKEND],
                                 }) }>
                                     <img
@@ -267,7 +292,7 @@ class MainDesktop extends React.Component<IProps, IState> {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>*/}
                             </div>
                         </div>
                         <div
