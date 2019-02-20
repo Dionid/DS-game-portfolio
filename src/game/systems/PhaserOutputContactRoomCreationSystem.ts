@@ -99,14 +99,16 @@ class PhaserOutputContactRoomCreationSystem extends System<ISystemAdditional, IS
         })
 
         const facebookIcon = inj.scene.add.sprite(
-            inj.leftTextStartOffsetX,
+            inj.leftTextStartOffsetX + 3,
             emailValueText.y + 50,
             "mainatlas",
-            "objects/contacts/EmailIcon.psd",
+            "objects/contacts/FacebookIcon.psd",
         )
 
+        facebookIcon.setScale(0.85)
+
         const facebookText = inj.scene.add.text(
-            facebookIcon.x + facebookIcon.width + 30,
+            facebookIcon.x + facebookIcon.width + 27,
             facebookIcon.y + 2,
             "Facebook",
             {
@@ -151,14 +153,16 @@ class PhaserOutputContactRoomCreationSystem extends System<ISystemAdditional, IS
         })
 
         const linkedInIcon = inj.scene.add.sprite(
-            inj.leftTextStartOffsetX,
-            facebookValueText.y + 50,
+            inj.leftTextStartOffsetX + 3,
+            facebookValueText.y + 60,
             "mainatlas",
-            "objects/contacts/EmailIcon.psd",
+            "objects/contacts/LinkedInIcon.psd",
         )
 
+        linkedInIcon.setScale(0.85)
+
         const linkedInText = inj.scene.add.text(
-            linkedInIcon.x + linkedInIcon.width + 30,
+            linkedInIcon.x + linkedInIcon.width + 27,
             linkedInIcon.y + 2,
             "LinkedIn",
             {

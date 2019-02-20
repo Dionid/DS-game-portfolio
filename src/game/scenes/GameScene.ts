@@ -218,8 +218,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     private onGoToTextVersionBtnClicked = () => {
-        window.open("https://docs.google.com/document/d/" +
-            "1oRlYkKEH-9g2wk6Aiiu_-K1tYsw7BHF3OeuCPhi_Aes/edit#heading=h.sgsvqiccdupn", "_blank")
+        window.open(dvaApp._store.getState().config.CVLink, "_blank")
     }
 
     private onGoToDesktopVersionBtnClicked = () => {
@@ -274,7 +273,7 @@ export class GameScene extends Phaser.Scene {
         this.freelancerText = this.add.text(
             this.leftTextStartOffsetX,
             freelancerTextY,
-            "(Freelancer)",
+            "(Freelance / Outsource)",
             {
                 fontFamily: "Connection",
                 fontSize: 17,

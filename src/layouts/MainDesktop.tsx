@@ -252,9 +252,9 @@ class MainDesktop extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <div className={ cx("item") }>
-                                    <div className={ cx("image") }>
+                                    <div className={ cx("image") } style={{transform: `scale(0.75)`}}>
                                         <PhaserImage
-                                            filename={ "objects/contacts/EmailIcon.psd" }/>
+                                            filename={ "objects/contacts/FacebookIcon.psd" }/>
                                     </div>
                                     <div className={ cx("desc") }>
                                         <div style={{marginRight: 30}} className={ cx("name") }>
@@ -270,9 +270,9 @@ class MainDesktop extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <div className={ cx("item") }>
-                                    <div className={ cx("image") }>
+                                    <div className={ cx("image") } style={{transform: `scale(0.75)`}}>
                                         <PhaserImage
-                                            filename={ "objects/contacts/EmailIcon.psd" }/>
+                                            filename={ "objects/contacts/LinkedInIcon.psd" }/>
                                     </div>
                                     <div className={ cx("desc") }>
                                         <div style={{marginRight: 49}} className={ cx("name") }>

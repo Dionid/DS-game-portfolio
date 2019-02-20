@@ -4,8 +4,8 @@
 			"image": "mainatlas.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 766,
-				"h": 262
+				"w": 776,
+				"h": 263
 			},
 			"scale": 1,
 			"frames": [
@@ -35,156 +35,6 @@
 					}
 				},
 				{
-					"filename": "objects/projects/logoProstor.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 47,
-						"h": 99
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 47,
-						"h": 99
-					},
-					"frame": {
-						"x": 523,
-						"y": 1,
-						"w": 47,
-						"h": 99
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/logoProstorTouched.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 47,
-						"h": 99
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 47,
-						"h": 99
-					},
-					"frame": {
-						"x": 523,
-						"y": 102,
-						"w": 47,
-						"h": 99
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/folderOpened.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 81,
-						"h": 54
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 81,
-						"h": 54
-					},
-					"frame": {
-						"x": 523,
-						"y": 203,
-						"w": 81,
-						"h": 54
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/logoRuCont.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 47,
-						"h": 99
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 47,
-						"h": 99
-					},
-					"frame": {
-						"x": 572,
-						"y": 1,
-						"w": 47,
-						"h": 99
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/logoRuContTouched.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 47,
-						"h": 99
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 47,
-						"h": 99
-					},
-					"frame": {
-						"x": 572,
-						"y": 102,
-						"w": 47,
-						"h": 99
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/folderClosed.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 50
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 50
-					},
-					"frame": {
-						"x": 606,
-						"y": 203,
-						"w": 64,
-						"h": 50
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
 					"filename": "player/player.psd",
 					"rotated": false,
 					"trimmed": false,
@@ -199,7 +49,7 @@
 						"h": 120
 					},
 					"frame": {
-						"x": 672,
+						"x": 523,
 						"y": 1,
 						"w": 36,
 						"h": 120
@@ -224,35 +74,10 @@
 						"h": 120
 					},
 					"frame": {
-						"x": 621,
-						"y": 1,
+						"x": 523,
+						"y": 123,
 						"w": 36,
 						"h": 120
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/projects/folderClosedTouched.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 50
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 50
-					},
-					"frame": {
-						"x": 621,
-						"y": 123,
-						"w": 64,
-						"h": 50
 					},
 					"anchor": {
 						"x": 0.5,
@@ -274,10 +99,185 @@
 						"h": 17
 					},
 					"frame": {
-						"x": 621,
-						"y": 175,
+						"x": 523,
+						"y": 245,
 						"w": 110,
 						"h": 17
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/logoProstor.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 47,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 47,
+						"h": 99
+					},
+					"frame": {
+						"x": 561,
+						"y": 1,
+						"w": 47,
+						"h": 99
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/logoProstorTouched.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 47,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 47,
+						"h": 99
+					},
+					"frame": {
+						"x": 561,
+						"y": 102,
+						"w": 47,
+						"h": 99
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/logoRuCont.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 47,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 47,
+						"h": 99
+					},
+					"frame": {
+						"x": 610,
+						"y": 1,
+						"w": 47,
+						"h": 99
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/logoRuContTouched.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 47,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 47,
+						"h": 99
+					},
+					"frame": {
+						"x": 659,
+						"y": 1,
+						"w": 47,
+						"h": 99
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderOpened.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 81,
+						"h": 54
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 81,
+						"h": 54
+					},
+					"frame": {
+						"x": 610,
+						"y": 102,
+						"w": 81,
+						"h": 54
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderClosed.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 50
+					},
+					"frame": {
+						"x": 708,
+						"y": 1,
+						"w": 64,
+						"h": 50
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/projects/folderClosedTouched.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 50
+					},
+					"frame": {
+						"x": 708,
+						"y": 53,
+						"w": 64,
+						"h": 50
 					},
 					"anchor": {
 						"x": 0.5,
@@ -299,35 +299,10 @@
 						"h": 50
 					},
 					"frame": {
-						"x": 687,
-						"y": 123,
+						"x": 610,
+						"y": 158,
 						"w": 60,
 						"h": 50
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/chests/chestDefault.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 52,
-						"h": 43
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 52,
-						"h": 43
-					},
-					"frame": {
-						"x": 672,
-						"y": 194,
-						"w": 52,
-						"h": 43
 					},
 					"anchor": {
 						"x": 0.5,
@@ -349,8 +324,8 @@
 						"h": 52
 					},
 					"frame": {
-						"x": 726,
-						"y": 194,
+						"x": 635,
+						"y": 210,
 						"w": 39,
 						"h": 52
 					},
@@ -360,7 +335,7 @@
 					}
 				},
 				{
-					"filename": "objects/chests/chestOpened.psd",
+					"filename": "objects/chests/chestDefault.psd",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -374,33 +349,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 710,
-						"y": 1,
-						"w": 52,
-						"h": 43
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
-				},
-				{
-					"filename": "objects/chests/chestTouched.psd",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 52,
-						"h": 43
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 52,
-						"h": 43
-					},
-					"frame": {
-						"x": 710,
-						"y": 46,
+						"x": 693,
+						"y": 105,
 						"w": 52,
 						"h": 43
 					},
@@ -424,14 +374,114 @@
 						"h": 30
 					},
 					"frame": {
-						"x": 710,
-						"y": 91,
+						"x": 561,
+						"y": 203,
 						"w": 45,
 						"h": 30
 					},
 					"anchor": {
 						"x": 0,
 						"y": 0
+					}
+				},
+				{
+					"filename": "objects/contacts/FacebookIcon.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 45,
+						"h": 45
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 45,
+						"h": 45
+					},
+					"frame": {
+						"x": 672,
+						"y": 158,
+						"w": 45,
+						"h": 45
+					},
+					"anchor": {
+						"x": 0,
+						"y": 0
+					}
+				},
+				{
+					"filename": "objects/contacts/LinkedInIcon.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 45,
+						"h": 45
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 45,
+						"h": 45
+					},
+					"frame": {
+						"x": 676,
+						"y": 205,
+						"w": 45,
+						"h": 45
+					},
+					"anchor": {
+						"x": 0,
+						"y": 0
+					}
+				},
+				{
+					"filename": "objects/chests/chestOpened.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 52,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 52,
+						"h": 43
+					},
+					"frame": {
+						"x": 719,
+						"y": 150,
+						"w": 52,
+						"h": 43
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "objects/chests/chestTouched.psd",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 52,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 52,
+						"h": 43
+					},
+					"frame": {
+						"x": 723,
+						"y": 195,
+						"w": 52,
+						"h": 43
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
 					}
 				}
 			]
@@ -440,6 +490,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:50f03c0d23702f85da24ff815a4d4d32:c8eb519fafeac4d1ca2dbef3c37f7055:9b2a4530a0a88d46c7c406cc86ad22f4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:82bbcbddeb9a076e8a223f95adbeb0bf:bde7bdf4c3296aa65c1b724ddadcfe5f:9b2a4530a0a88d46c7c406cc86ad22f4$"
 	}
 }

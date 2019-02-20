@@ -4,6 +4,8 @@ import mainAtlasImage from "assets/mainatlas.png"
 
 interface IProps {
     filename: string,
+    width?: number,
+    height?: number,
     onClick?: () => void,
 }
 
@@ -21,16 +23,23 @@ const PhaserImage = (props: IProps) => {
         return null
     }
 
+    const { width, height, onClick } = props
     const { frame } = data
+    const style = {
+        width: frame.w,
+        height: frame.h,
+        background: `url(${mainAtlasImage}) -${frame.x}px -${frame.y}px no-repeat`,
+        transform: "",
+    }
+
+    if (width && height) {
+        style.transform = `scale(${width / frame.w}, ${height / frame.h})`
+    }
 
     return (
         <div
-            onClick={ props.onClick }
-            style={{
-                width: frame.w,
-                height: frame.h,
-                background: `url(${mainAtlasImage}) -${frame.x}px -${frame.y}px no-repeat`,
-            }}/>
+            onClick={ onClick }
+            style={ style }/>
     )
 }
 
