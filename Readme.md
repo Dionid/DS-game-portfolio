@@ -11,6 +11,8 @@ This is experiment of connecting React and Phaser.js (game engine).
 You can walk throw it as site, but hitting “Go to game version”
 button on main screen will launch game version.
 
+[Online demo](https://ditreyw.gitlab.io/dsportfolio/#/)
+
 ## You can find
 
 - Game logic in `src/game` folder.
