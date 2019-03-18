@@ -21,7 +21,7 @@ interface IState {
     contentHeight: number,
 }
 
-class MainDesktop extends React.Component<IProps, IState> {
+class MainDesktop extends React.PureComponent<IProps, IState> {
 
     public state = {
         contentHeight: 0,
@@ -59,11 +59,19 @@ class MainDesktop extends React.Component<IProps, IState> {
         }
     }
 
-    public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
-        if (nextProps.rooms.activeRoom !== this.props.rooms.activeRoom && this.wrapper) {
+    // public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
+    //     if (nextProps.rooms.activeRoom !== this.props.rooms.activeRoom && this.wrapper) {
+    //         this.scrolling = true
+    //         this.wrapper.style.overflowY = "hidden"
+    //         this.scrollTo(nextProps.rooms.activeRoom)
+    //     }
+    // }
+
+    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+        if (prevProps.rooms.activeRoom !== this.props.rooms.activeRoom && this.wrapper) {
             this.scrolling = true
             this.wrapper.style.overflowY = "hidden"
-            this.scrollTo(nextProps.rooms.activeRoom)
+            this.scrollTo(this.props.rooms.activeRoom)
         }
     }
 

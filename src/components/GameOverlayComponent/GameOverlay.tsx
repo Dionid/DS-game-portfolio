@@ -21,37 +21,39 @@ interface IState {
     mainTooltipIsShown: boolean,
 }
 
-class GameOverlay extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
-        super(props)
-        this.state = {
-            mainTooltipMustBeShown: props.rooms.activeRoom === E_ROOMS_NAMES.Intro,
-            mainTooltipIsShown: false,
-        }
+class GameOverlay extends React.PureComponent<IProps, IState> {
+
+    public state = {
+        mainTooltipMustBeShown: this.props.rooms.activeRoom === E_ROOMS_NAMES.Intro,
+        mainTooltipIsShown: false,
     }
 
     public componentDidMount(): void {
         setTimeout(() => {
-            this.setState({
-                mainTooltipIsShown: this.props.rooms.activeRoom === E_ROOMS_NAMES.Intro,
-            })
+            if (this.state.mainTooltipMustBeShown) {
+                this.setState({
+                    mainTooltipIsShown: this.props.rooms.activeRoom === E_ROOMS_NAMES.Intro,
+                })
+            }
         }, 2000)
     }
 
-    public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
-        if (nextProps.rooms.hasChanged && this.state.mainTooltipMustBeShown) {
+    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+        if (!prevProps.rooms.hasChanged
+            && this.props.rooms.hasChanged
+            && prevState.mainTooltipMustBeShown) {
             this.setState({
                 mainTooltipIsShown: false,
             })
-            setTimeout(() => {
+            if (this.state.mainTooltipIsShown) {
+                setTimeout(() => {
+                    this.setState({
+                        mainTooltipMustBeShown: false,
+                    })
+                }, 1000)
+            } else {
                 this.setState({
                     mainTooltipMustBeShown: false,
-                })
-            }, 1000)
-        } else {
-            if (nextProps.rooms.activeRoom === E_ROOMS_NAMES.Intro) {
-                this.setState({
-                    mainTooltipMustBeShown: true,
                 })
             }
         }

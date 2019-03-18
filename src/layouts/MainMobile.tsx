@@ -19,7 +19,7 @@ interface IState {
     tooltipOpened: boolean
 }
 
-class MainMobile extends React.Component<IProps, IState> {
+class MainMobile extends React.PureComponent<IProps, IState> {
 
     public state = {
         tooltipOpened: false,

@@ -20,7 +20,8 @@ interface IState {
 
 }
 
-class TopMenu extends React.Component<IProps, IState> {
+// ToDo: Change to stateless if no actions will be handled here
+class TopMenu extends React.PureComponent<IProps, IState> {
 
     private renderHealthItems() {
         const { currentHealth, maxHealth } = this.props.player
@@ -56,7 +57,6 @@ class TopMenu extends React.Component<IProps, IState> {
 
     public render() {
         const { isCuttingCornersVersion } = this.props.config
-        const { currentHealth, maxHealth, currentMeds } = this.props.player
         return (
             <div className={ cx("topMenu") }>
                 <div className={ cx("logo") }>
